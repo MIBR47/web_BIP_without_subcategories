@@ -1,0 +1,21 @@
+/* style.css */
+.text-customBlue {
+  color: #1e3a8a; /* Example color */
+}
+
+.desktop-text {
+  display: none;
+}
+
+.mobile-text {
+  display: block;
+}
+
+@media (min-width: 641px) {
+  .desktop-text {
+    display: block;
+  }
+  .mobile-text {
+    display: none;
+  }
+}

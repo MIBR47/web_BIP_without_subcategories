@@ -1,0 +1,7 @@
+.navbar {
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* Optional: Background color */
+    z-index: 1000; /* Optional: Ensure it stays above other content */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+  }

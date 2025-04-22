@@ -1,0 +1,17 @@
+.desktop-caption {
+  display: none;
+}
+
+.mobile-caption {
+  display: block;
+}
+
+@media (min-width: 769px) {
+  .desktop-caption {
+    display: block;
+  }
+
+  .mobile-caption {
+    display: none;
+  }
+}

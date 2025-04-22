@@ -1,0 +1,19 @@
+/* styles.css */
+.item {
+  color: #4a5568; /* Default text color */
+  background-color: transparent; /* Default background color */
+  border-radius: 8px; /* Rounded corners */
+  width: 100%;
+}
+
+.item:hover {
+  color: #f8f8f8; /* Hover text color */
+  background-color: #0063a4; /* Hover background color */
+  border-radius: 8px; /* Rounded corners */
+  width: 100%;
+  left: 0;
+}
+/* 
+
+customBlue: '#0063A4',
+customGreen: '#7ED957', //'#82BB52', */
