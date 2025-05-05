@@ -8,7 +8,8 @@ export interface Products {
   // category: Categories[];
   // tkdn_pctg: number;
   // bmp_pctg: number;
-  iShowedStatus: boolean;
+  iStatus: Status;
+  iShowedStatus: ShowedStatus;
   updatedAt: Date;
   ProductDesc: ProductDesc;
   ProductImage: ProductImage[];
@@ -25,17 +26,39 @@ export interface ProductImage {
   isPrimary: boolean;
   imageURL: string;
 }
+// export interface Categories {
+//   id: number;
+//   name: string;
+//   slug: string;
+//   remarks: string;
+//   iStatus: boolean;
+//   iShowedStatus: boolean;
+//   imageURL: string;
+//   // images: CategoryImages[];
+//   // href: string;
+//   // updatedAt: Date;
+// }
+
+// Buat enum untuk Status
+export enum Status {
+  Active = "Active",
+  Inactive = "Inactive",
+}
+
+export enum ShowedStatus {
+  Hidden = "Hidden",
+  Show = "Show",
+}
+
+// Ubah interface Categories
 export interface Categories {
   id: number;
   name: string;
   slug: string;
   remarks: string;
-  iStatus: boolean;
-  iShowedStatus: boolean;
+  iStatus: Status;
+  iShowedStatus: ShowedStatus;
   imageURL: string;
-  // images: CategoryImages[];
-  // href: string;
-  // updatedAt: Date;
 }
 
 export interface SubCategories {
@@ -45,8 +68,8 @@ export interface SubCategories {
   slug: string;
   remarks: string;
   categoryId: string;
-  iStatus: boolean;
-  iShowedStatus: boolean;
+  iStatus: Status;
+  iShowedStatus: ShowedStatus;
   imageURL: string;
 }
 

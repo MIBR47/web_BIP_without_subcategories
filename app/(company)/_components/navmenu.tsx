@@ -1,9 +1,8 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-// import { Home } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -16,54 +15,43 @@ import {
 import SearchBar from '@/app/(company)/_components/searchBar';
 import { routes } from '@/config/routes';
 import dynamic from 'next/dynamic';
-import { Separator } from '@/components/ui/separator';
-import { useMediaQuery } from 'react-responsive';
-
 import './navmenu.css';
+import useIsMobile from '@/hooks/use-is-mobile'; // ✅ pakai hook baru
 
 const NavIcons = dynamic(() => import('./navIcons'), {
   ssr: false,
 });
 
 export function NavMenu() {
-  const isMobile = useMediaQuery({ query: '(max-width: 640px)' });
+  const isMobile = useIsMobile(); // ✅ aman untuk SSR
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) return null;
 
   return (
-    <div className='sticky top-0  z-50 w-full flex flex-col md:flex-row bg-white items-center justify-between gap-2 p-2 h-full'>
-      <div className='flex flex-col w-full md:w-auto mb-2  md:mb-0 sm:items-start justify-start'>
+    <div className='sticky top-0 z-50 w-full flex flex-col md:flex-row bg-white items-center justify-between gap-2 p-2 h-full'>
+      <div className='flex flex-col w-full md:w-auto mb-2 md:mb-0 sm:items-start justify-start'>
         <Link href='/'>
           <Image
             src='/images/logo/logo.webp'
             alt='Company logo'
-            // width={isMobile ? 300 : 200}
-            // height={isMobile ? 80 : 70}
-            // className='object-cover object-center'
             width={isMobile ? 150 : 200}
             height={isMobile ? 40 : 70}
             className='object-cover object-center'
-            // style={{ width: 'auto', height: 'auto' }} // Maintain aspect ratio
             loading='eager'
             decoding='async'
             priority
           />
         </Link>
-        {/* {isMobile && (
-          <div className='mt-0'>
-            <Link
-              href='/'
-              className='text-center text-customBlue font-semibold'
-            >
-              Beranda
-            </Link>
-          </div>
-        )} */}
-        {/* <Separator /> */}
       </div>
 
       <div className='flex flex-col md:flex-row items-center justify-between w-full'>
         <NavigationMenu className='flex flex-row flex-wrap gap-2'>
           <NavigationMenuList className='flex flex-row gap-2'>
-            {/* <NavigationMenuItem key='home'> */}
             <NavigationMenuItem className='hidden md:block'>
               <Link href='/' legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -72,7 +60,7 @@ export function NavMenu() {
               </Link>
             </NavigationMenuItem>
 
-            <NavigationMenuItem key='about' className='hidden md:block'>
+            <NavigationMenuItem className='hidden md:block'>
               <NavigationMenuTrigger>Tentang Kami</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className='grid gap-1.5 p-1 md:w-[200px] lg:w-[300px]'>
@@ -102,10 +90,7 @@ export function NavMenu() {
               <Link href={routes.cms.pricelist} legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   {isMobile ? (
-                    <div className='mobile-view'>
-                      <div>eCatalogue</div>
-                      {/* <div>lkpp</div> */}
-                    </div>
+                    <div className='mobile-view'>eCatalogue</div>
                   ) : (
                     'eCatalogue.lkpp'
                   )}
@@ -130,9 +115,9 @@ export function NavMenu() {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-        <div className='hidden md:block'>
 
-          <div className='flex items-center gap-1 md:gap-1 mt-2 sm:mt-0sm-gap-0 md:mt-0 w-full '>
+        <div className='hidden md:block'>
+          <div className='flex items-center gap-1 mt-2 md:mt-0 w-full'>
             <SearchBar />
             <NavIcons />
           </div>

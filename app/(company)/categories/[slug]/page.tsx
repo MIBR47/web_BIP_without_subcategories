@@ -84,7 +84,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
   // const slug = params.slug.trim();
   // console.log('test page')
   const category = await getCategory({ slug: params.slug.trim() });
-  console.log(category)
+  // console.log(category)
 
 
 
@@ -92,7 +92,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
   // const id = category ? category.id.trim() : 'default';
   const category_id = category.id;
 
-  // console.log("category id:" + category.id)
+  console.log("category id:" + category.id)
 
 
   // const company_id = 'BIP';
@@ -131,7 +131,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
       <>
         <div>
           <span className='desktop-caption'>
-            Tidak ada produk pada kategorix test1 <strong>{categoryName}</strong>
+            Tidak ada produk pada kategori <strong>{categoryName}</strong>
           </span>
           <span className='mobile-caption'>
             Ada {products.length} produk pada kategori{' '}

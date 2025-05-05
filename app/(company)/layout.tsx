@@ -9,7 +9,6 @@ import Footer from '@/app/(company)/_components/footer'; // ./_components/footer
 
 // import { Analytics } from '@vercel/analytics/react';
 // import { SpeedInsights } from '@vercel/speed-insights/next';
-import '../globals.css';
 import HeaderMobile from '@/components/header-mobile';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -65,7 +64,7 @@ export default function RootLayout({
 
         {/* <title>Alkes Terlengkap-bipmed</title> */}
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className}`}>
         <NextProgress />
         <QueryClientProvider>
           <NavMenu />

@@ -17,7 +17,7 @@ const getProducts = async ({
     const res = await fetch(URL);
     // console.log(res)
     const data = await res.json();
-    // console.log(data);
+    console.log(data['data']);
 
     return data['data'];
   } catch (error) {

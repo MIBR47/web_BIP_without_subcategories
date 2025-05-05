@@ -30,16 +30,17 @@ const CategoryList = async () => {
 
   const subHeaderText = categoriesFound ? (
     <>
-      <span className='desktop-text'>
+      <span className='hidden sm:inline'>
         Terdapat {categoriesFound} kategori untuk ditampilkan
       </span>
-      <span className='mobile-text'>
+      <span className='inline sm:hidden'>
         {categoriesFound} kategori ditampilkan
       </span>
     </>
   ) : (
     <>Tidak ada kategori untuk ditampilkan</>
   );
+
 
   return (
     <>
@@ -55,7 +56,7 @@ const CategoryList = async () => {
             {categoriesFound === 0 && <NoResults />}
           </h3>
 
-          <div className='mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12'>
+          <div className='mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr'>
             {categories.length > 0 ? (
               categories.map((categoryList) => (
                 <div key={categoryList.id}>

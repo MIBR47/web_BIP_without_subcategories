@@ -70,10 +70,13 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
+    className={cn(
+      'w-full px-4 py-3 bg-gray-50 text-sm text-gray-800 font-semibold text-center flex items-center justify-center',
+      className
+    )}
     {...props}
   />
-))
+));
 CardFooter.displayName = "CardFooter"
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
