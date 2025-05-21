@@ -6,7 +6,7 @@ const VisiMisi = () => {
   return (
     // <Container>
     <div className='col-span-10 sm:col-span-8'>
-      <div className='space-y-2 pb-2'>
+      <div className='space-y-2 pb-2 px-4'>
         <div className='top-1 mt-2 font-semibold text-xl text-center items-center justify-center text-customBlue mb-2'>
           <h1>Visi dan Misi</h1>
           <hr className="h-px mx-auto bg-gray-400 border-0 invisible dark:bg-gray-700 sm:visible"></hr>

@@ -4,7 +4,7 @@ import qs from 'query-string';
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
 
 const getCategories = async (): Promise<Categories[]> => {
-  const query = {};
+  // const query = {};
 
   const url = qs.stringifyUrl({
     url: `${BASE_URL}/category/findall`,

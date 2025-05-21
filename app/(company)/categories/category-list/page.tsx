@@ -5,6 +5,7 @@ import getCategories from '@/actions/get-categories';
 import dynamic from 'next/dynamic';
 // import CategoryCard from '../_components/categoryCard';
 import './style.css';
+import { fetchCategoriesAll } from '@/lib/api/categoryApi';
 
 const CategoryCard = dynamic(() => import('../_components/categoryCard'), {
   ssr: false,
@@ -24,7 +25,7 @@ const pageHeader = {
 };
 
 const CategoryList = async () => {
-  const categories = await getCategories();
+  const categories = await fetchCategoriesAll();
 
   const categoriesFound = categories?.length;
 

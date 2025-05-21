@@ -12,7 +12,7 @@ const Footer = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 640px)' });
 
   return (
-    <div className='py-5 px-4 md:px-8 lg:px-4 xl:px-26 2xl:px-4 bg-customBlue text-sm text-slate-100 mt-20'>
+    <div className='py-5 px-4 md:px-8 lg:px-4 xl:px-26 2xl:px-4 bg-customBlue2 text-sm text-slate-100 mt-0'>
       <div
         className={`w-full ${isMobile ? 'flex flex-col items-center' : 'grid grid-cols-1 md:grid-cols-3 gap-8'}`}
       >

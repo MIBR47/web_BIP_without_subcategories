@@ -2,293 +2,359 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { fetchCategoriesAll } from "@/lib/api/categoryApi";
 import { UploadCloud } from "lucide-react";
+import { fetchCategoriesAll } from "@/lib/api/categoryApi";
+import { uploadToCloudinary } from "@/lib/utils/cloudinaryHandler";
+import { handleImageChange, handleRemoveImage } from "@/lib/utils/imageHandler";
+import { handleChange } from "@/lib/utils/formHandler";
+import { ProductDesc } from "@/types";
+import 'react-quill/dist/quill.snow.css';
+import RichTextEditorField from "../_components/RichTextEditorField";
+
+
+export interface ProductForm {
+    name: string;
+    slug: string;
+    eCatalogURL: string;
+    remarks: string;
+    iStatus: "Active" | "InActive";
+    iShowedStatus: "Show" | "Hidden";
+    category_id: number;
+    catalog_id: string,
+}
+
+interface Category {
+    id: number;
+    name: string;
+}
 
 const CreateProductPage = () => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<ProductForm>({
+        catalog_id: "",
         name: "",
         slug: "",
         eCatalogURL: "",
-        remarks: "",
-        iStatus: "ACTIVE",
-        iShowedStatus: "SHOW",
+        remarks: "test",
+        iStatus: "Active",
+        iShowedStatus: "Show",
         category_id: 0,
     });
 
-    const [categories, setCategories] = useState([]);
+    const [formDataDesc, setFormDataDesc] = useState<ProductDesc>({
+        descriptions: "",
+        productSpec: "",
+        benefits: "",
+    });
+
+    const [categories, setCategories] = useState<Category[]>([]);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [primaryIndex, setPrimaryIndex] = useState<number | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        getCategories();
-    }, []);
-
     const getCategories = async () => {
         try {
             const data: any = await fetchCategoriesAll();
             setCategories(data);
         } catch (err) {
-            setError('Failed to fetch categories.');
-        } finally {
-            setLoading(false);
+            console.error("Gagal mengambil kategori");
         }
     };
+    // const getCategories = async () => {
+    //     try {
+    //       const data: any = await fetchCategoriesAll();
+    //       setCategories(data);
+    //     } catch (err) {
+    //       setError('Failed to fetch categories.');
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    //   };
+    useEffect(() => {
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        getCategories();
+    }, []);
+
+    // const handleChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    //     const { name, value } = e.target;
+    //     setFormDataDesc((prev) => ({ ...prev, [name]: value }));
+    // };
+
+    const handleChangeDesc = (name: string, value: string) => {
+        setFormDataDesc((prev) => ({ ...prev, [name]: value }));
     };
-
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || []);
-        const newPreviews = files.map(file => URL.createObjectURL(file));
-
-        setImageFiles(prev => [...prev, ...files]);
-        setImagePreviews(prev => [...prev, ...newPreviews]);
-
-        // Set primaryIndex to 0 if it's the first image uploaded
-        if (imagePreviews.length === 0) {
-            setPrimaryIndex(0); // Automatically set the first image as primary
-        }
-    };
-
-
-    const handleRemoveImage = (index: number) => {
-        setImageFiles(prev => prev.filter((_, i) => i !== index));
-        setImagePreviews(prev => prev.filter((_, i) => i !== index));
-        if (primaryIndex === index) setPrimaryIndex(null);
-        else if (primaryIndex && primaryIndex > index) setPrimaryIndex(primaryIndex - 1);
-    };
-
-    const uploadToCloudinary = async (file: File): Promise<string> => {
-        const data = new FormData();
-        data.append("file", file);
-        data.append("upload_preset", "unsigned_BIP");
-
-        const res = await fetch("https://api.cloudinary.com/v1_1/dsad6wufm/image/upload", {
-            method: "POST",
-            body: data,
-        });
-        const json = await res.json();
-        return json.secure_url;
-    };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        // console.log(formData.category_id)
+        // console.log(formData)
+        // const formDataToSend = {
+        //     ...formData,
+        //     category_id: parseInt(formData.category_id, 10) // Pastikan category_id adalah number
+        // };
+
+
+        if (!formData.category_id || formData.category_id === 0) {
+            alert("Kategori harus dipilih.");
+            return;
+        }
+
         try {
-            const res = await fetch("http://localhost:5000/api/product/admin/create", {
+            const productRes = await fetch("http://localhost:5000/api/product/admin/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "e0eb4efb-58d7-48de-b5ce-a324bff7d21f",
+                    Authorization: "6465040d-9c34-471c-a8a6-12dd482f3262",
                 },
                 body: JSON.stringify(formData),
             });
 
-            if (!res.ok) throw new Error("Gagal submit");
-            const created = await res.json();
-            const productId = created.data.id;
+            if (!productRes.ok) throw new Error("Gagal menyimpan produk");
+
+            const { data } = await productRes.json();
+            const productId: number = data.id;
+            // console.log(data.name);
+
+            // const productId: number = 4;
+
 
             for (let i = 0; i < imageFiles.length; i++) {
-                const imageURL = await uploadToCloudinary(imageFiles[i]);
+                console.log("image=" + imageFiles)
 
-                await fetch("http://localhost:5000/api/product/admin/createImageProduct", {
+                // const imageURL = await uploadToCloudinary(imageFiles[i]);
+                const imageURL = "https://res.cloudinary.com/dsad6wufm/image/upload/v1747296741/hwlv3r37vlfbcdvp77to.jpg"
+
+                const productImageRes = await fetch("http://localhost:5000/api/product/admin/createImageProduct", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "e0eb4efb-58d7-48de-b5ce-a324bff7d21f",
+                        Authorization: "6465040d-9c34-471c-a8a6-12dd482f3262",
                     },
                     body: JSON.stringify({
-                        imageURL,
+                        imageURL: imageURL,
                         isPrimary: i === primaryIndex,
+                        iStatus: "Active",
                         product_id: productId,
                     }),
                 });
-            }
+                if (!productImageRes.ok) throw new Error("Gagal menyimpan produk image");
 
-            alert("Berhasil menyimpan produk!");
-            setFormData({ name: "", slug: "", eCatalogURL: "", remarks: "", iStatus: "", iShowedStatus: "", category_id: 0 });
+            }
+            console.log(formDataDesc.benefits)
+            const productDescRes = await fetch("http://localhost:5000/api/product/admin/createDescProduct", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "6465040d-9c34-471c-a8a6-12dd482f3262",
+                },
+                body: JSON.stringify({
+                    ...formDataDesc,
+                    product_id: productId,
+                }),
+            });
+            if (!productDescRes.ok) throw new Error("Gagal menyimpan produk desc");
+            alert("Produk berhasil disimpan!");
+
+            // Reset form
+            setFormData({
+                name: "",
+                slug: "",
+                eCatalogURL: "",
+                remarks: "",
+                iStatus: "Active",
+                iShowedStatus: "Show",
+                category_id: 0,
+                catalog_id: ""
+            });
+            setFormDataDesc({ descriptions: "", productSpec: "", benefits: "" });
             setImageFiles([]);
             setImagePreviews([]);
             setPrimaryIndex(null);
             if (fileInputRef.current) fileInputRef.current.value = "";
+
         } catch (err) {
             console.error(err);
-            alert("Terjadi kesalahan saat mengirim data.");
+            alert("Terjadi kesalahan saat menyimpan produk.");
         }
     };
 
     return (
-        <div className="min-h-screen w-full bg-gray-50 flex flex-col">
-            <div className="flex-grow flex justify-center items-start py-10 px-4 sm:px-8 lg:px-16">
-                <form
-                    onSubmit={handleSubmit}
-                    className="w-full max-w-4xl bg-white p-8 sm:p-10 rounded-2xl shadow-lg space-y-6"
-                >
-                    <h2 className="text-3xl font-bold text-gray-800">Tambah Produk</h2>
+        <div className="min-h-screen bg-gray-50 py-10 px-4 flex justify-center">
+            <form onSubmit={handleSubmit} className="w-full max-w-4xl bg-white p-8 rounded-2xl shadow space-y-6">
+                <h2 className="text-3xl font-bold text-gray-800">Tambah Produk</h2>
 
-                    {/* Upload Image Section */}
-                    <div className="space-y-4">
-                        <label className="block text-sm font-medium text-gray-700">Upload Gambar Produk</label>
-
-                        <div>
-                            <input
-                                ref={fileInputRef}
-                                id="imageUpload"
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                onChange={handleImageChange}
-                                className="hidden"
-                                disabled={imagePreviews.length >= 4}  // Disable input if 4 images are already uploaded
-                            />
-                            <label
-                                htmlFor="imageUpload"
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 cursor-pointer"
-                            >
-                                <UploadCloud className="w-5 h-5" />
-                                Upload Gambar
-                            </label>
+                {/* Upload Gambar */}
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Upload Gambar</label>
+                    <div>
+                        <input
+                            ref={fileInputRef}
+                            id="imageUpload"
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={(e) =>
+                                handleImageChange(e, setImageFiles, setImagePreviews, setPrimaryIndex, imagePreviews.length)
+                            }
+                            className="hidden"
+                            disabled={imagePreviews.length >= 4}
+                        />
+                        <label
+                            htmlFor="imageUpload"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 cursor-pointer"
+                        >
+                            <UploadCloud className="w-5 h-5" />
+                            Upload Gambar
+                        </label>
+                    </div>
+                    {imagePreviews.length > 0 && (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+                            {imagePreviews.map((src, i) => (
+                                <div key={i} className="relative">
+                                    <img
+                                        src={src}
+                                        className={`w-full h-32 object-cover rounded-xl border ${primaryIndex === i ? "ring-4 ring-blue-500" : "border-gray-300"}`}
+                                    />
+                                    <button
+                                        onClick={() => handleRemoveImage(i, setImageFiles, setImagePreviews, primaryIndex, setPrimaryIndex)}
+                                        type="button"
+                                        className="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full text-xs"
+                                    >
+                                        ✕
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setPrimaryIndex(i)}
+                                        className={`absolute bottom-1 left-1 text-xs px-2 py-1 rounded bg-white shadow ${primaryIndex === i ? "text-blue-600 font-bold" : "text-gray-700"}`}
+                                    >
+                                        {primaryIndex === i ? "Primary" : "Set Primary"}
+                                    </button>
+                                </div>
+                            ))}
                         </div>
+                    )}
+                    {imagePreviews.length >= 4 && (
+                        <p className="text-sm text-gray-500">Maksimal 4 gambar</p>
+                    )}
+                </div>
 
-                        {imagePreviews.length > 0 && (
-                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-                                {imagePreviews.map((src, i) => (
-                                    <div key={i} className="relative">
-                                        <img
-                                            src={src}
-                                            alt={`preview-${i}`}
-                                            className={`w-full h-32 object-cover rounded-xl border transition-transform duration-300 transform ${primaryIndex === i ? "ring-4 ring-blue-500 border-blue-500" : "border-gray-300"
-                                                }`}
-                                        />
-                                        {/* Delete Button */}
-                                        <button
-                                            type="button"
-                                            onClick={() => handleRemoveImage(i)}
-                                            className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 text-xs opacity-80 hover:opacity-100 transition-opacity duration-300"
-                                        >
-                                            ✕
-                                        </button>
-                                        {/* Primary Button */}
-                                        <button
-                                            type="button"
-                                            onClick={() => setPrimaryIndex(i)}
-                                            className={`absolute bottom-2 left-2 text-xs px-2 py-1 rounded bg-white shadow-md ${primaryIndex === i ? "text-blue-600 font-bold" : "text-gray-700"
-                                                }`}
-                                        >
-                                            {primaryIndex === i ? "Primary" : "Jadikan Primary"}
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                {/* Input Fields */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <InputField label="Nama Produk" name="name" value={formData.name} onChange={(e) => handleChange(e, setFormData)} />
+                    <InputField label="Slug" name="slug" value={formData.slug} onChange={(e) => handleChange(e, setFormData)} />
+                </div>
+                <InputField label="Catalog ID" name="catalog_id" value={formData.catalog_id} onChange={(e) => handleChange(e, setFormData)} />
+                <SelectField
+                    label="Kategori"
+                    name="category_id"
+                    value={formData.category_id}
+                    onChange={(e) => handleChange(e, setFormData)}
+                    options={[{ value: 0, label: "-- Pilih Kategori --" }, ...categories.map((c) => ({ value: c.id, label: c.name }))]}
+                />
 
-                        {imagePreviews.length >= 4 && (
-                            <p className="text-sm text-gray-500 mt-2">Maksimal 4 gambar yang dapat di-upload.</p>
-                        )}
-                    </div>
+                <InputField label="Link e-Catalog" name="eCatalogURL" value={formData.eCatalogURL} onChange={(e) => handleChange(e, setFormData)} />
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <InputField label="Nama Produk" name="name" value={formData.name} onChange={handleChange} />
-                        <InputField label="Slug" name="slug" value={formData.slug} onChange={handleChange} />
-                    </div>
-
+                {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <SelectField
-                        label="Kategori"
-                        name="category_id"
-                        value={formData.category_id}
-                        onChange={handleChange}
-                        options={[{ valueid: "", label: "-- Pilih Kategori --" }, ...categories.map((cat: any) => ({ valueid: cat.id, label: cat.name }))]}
+                        label="iStatus"
+                        name="iStatus"
+                        value={formData.iStatus}
+                        onChange={(e) => handleChange(e, setFormData)}
+                        options={[{ value: "ACTIVE", label: "Aktif" }, { value: "INACTIVE", label: "Nonaktif" }]}
                     />
+                    <SelectField
+                        label="iShowedStatus"
+                        name="iShowedStatus"
+                        value={formData.iShowedStatus}
+                        onChange={(e) => handleChange(e, setFormData)}
+                        options={[{ value: "SHOW", label: "Tampilkan" }, { value: "HIDDEN", label: "Sembunyikan" }]}
+                    />
+                </div> */}
 
-                    <InputField label="Link e-Catalog" name="eCatalogURL" value={formData.eCatalogURL} onChange={handleChange} />
-                    <TextAreaField label="Remarks" name="remarks" value={formData.remarks} onChange={handleChange} />
+                {/* Deskripsi Produk */}
+                <RichTextEditorField label="Deskripsi Produk" name="descriptions" content={formDataDesc.descriptions} onChange={handleChangeDesc} />
+                <RichTextEditorField label="Spesifikasi Produk" name="productSpec" content={formDataDesc.productSpec} onChange={handleChangeDesc} />
+                <RichTextEditorField label="Manfaat Produk" name="benefits" content={formDataDesc.benefits} onChange={handleChangeDesc} />
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <SelectField
-                            label="iStatus"
-                            name="iStatus"
-                            value={formData.iStatus}
-                            onChange={handleChange}
-                            options={[{ value: "ACTIVE", label: "Aktif" }, { value: "INACTIVE", label: "Nonaktif" }]}
-                        />
-                        <SelectField
-                            label="iShowedStatus"
-                            name="iShowedStatus"
-                            value={formData.iShowedStatus}
-                            onChange={handleChange}
-                            options={[{ value: "SHOW", label: "Tampilkan" }, { value: "HIDDEN", label: "Sembunyikan" }]}
-                        />
-                    </div>
 
-                    <div className="space-y-3">
-                        <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-xl text-lg hover:bg-blue-700 transition">
-                            Simpan Produk
-                        </button>
-                        <Link href="/admin/products" className="block text-center w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 transition">
-                            Kembali ke Daftar Produk
-                        </Link>
-                    </div>
-                </form>
-            </div>
+                <div className="space-y-3">
+                    <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-xl text-lg hover:bg-blue-700">
+                        Simpan Produk
+                    </button>
+                    <Link href="/admin/products" className="block text-center w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200">
+                        Kembali ke Daftar Produk
+                    </Link>
+                </div>
+            </form>
         </div>
     );
 };
 
-function InputField({ label, name, value, onChange }: any) {
-    return (
-        <div>
-            <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-            <input
-                type="text"
-                id={name}
-                name={name}
-                value={value}
-                onChange={onChange}
-                className="w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-        </div>
-    );
+interface InputFieldProps {
+    label: string;
+    name: string;
+    value: string | number;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function TextAreaField({ label, name, value, onChange }: any) {
-    return (
-        <div>
-            <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-            <textarea
-                id={name}
-                name={name}
-                value={value}
-                onChange={onChange}
-                rows={3}
-                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-        </div>
-    );
+const InputField = ({ label, name, value, onChange }: InputFieldProps) => (
+    <div>
+        <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+        <input
+            type="text"
+            name={name}
+            value={value}
+            onChange={onChange}
+            className="w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+    </div>
+);
+
+// interface TextAreaFieldProps {
+//     label: string;
+//     name: string;
+//     value: string;
+//     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+// }
+
+// const TextAreaField = ({ label, name, value, onChange }: TextAreaFieldProps) => (
+//     <div>
+//         <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+//         <textarea
+//             name={name}
+//             value={value}
+//             onChange={onChange}
+//             rows={3}
+//             className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//         />
+//     </div>
+// );
+
+interface SelectOption {
+    value: number;
+    label: string;
 }
 
-function SelectField({ label, name, value, onChange, options }: any) {
-    return (
-        <div>
-            <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-            <select
-                id={name}
-                name={name}
-                value={value}
-                onChange={onChange}
-                className="w-full border border-gray-300 rounded-xl p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-                {options.map((opt: any, index: number) => (
-                    <option key={`${opt.valueid}-${index}`} value={opt.valueid}>{opt.label}</option>
-                ))}
-            </select>
-        </div>
-    );
+interface SelectFieldProps {
+    label: string;
+    name: string;
+    value: number;
+    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    options: SelectOption[];
 }
+
+const SelectField = ({ label, name, value, onChange, options }: SelectFieldProps) => (
+    <div>
+        <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+        <select
+            name={name}
+            value={value}
+            onChange={onChange}
+            className="w-full border border-gray-300 rounded-xl p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+            {options.map((opt, index) => (
+                <option key={index} value={opt.value}>{opt.label}</option>
+            ))}
+        </select>
+    </div>
+);
 
 export default CreateProductPage;

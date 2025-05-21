@@ -6,271 +6,68 @@ import React from "react";
 import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
 
+
+const certificates = [
+    { title: 'ISO 9001:2015 dari TUV Rheinland - Germany', src: '/images/sertifikasi/sertifikat-1.webp' },
+    { title: 'CPAKB dari Kementrian Kesehatan Republik Indonesia', src: '/images/sertifikasi/sertifikat-1.webp' },
+    { title: 'Sertifikat IEC 60601 untuk Produk Elektrikal BIPMED', src: '/images/sertifikasi/sertifikat-1.webp' },
+    { title: 'Sertifikat Welder Training', src: '/images/sertifikasi/sertifikat-1.webp' },
+    { title: 'Sertifikat Arduino Software', src: '/images/sertifikasi/sertifikat-1.webp' },
+    { title: 'Sertifikat Audit Mutu Internal', src: '/images/sertifikasi/sertifikat-1.webp' },
+    { title: 'Sertifikat Quality Awareness', src: '/images/sertifikasi/sertifikat-1.webp' },
+];
+
 const Certificate = () => {
-    let [isOpen, setIsOpen] = useState(false)
+    // let [isOpen, setIsOpen] = useState(false)
+    const [openIndex, setOpenIndex] = useState<number | null>(null);
     return (
         // <Container>
         <div className='col-span-10 sm:col-span-8'>
 
-            <div className='space-y-2 pb-2'>
+            <div className="space-y-2 pb-2 px-4">
                 <div className='top-1 mt-2 font-semibold text-xl text-center items-center justify-center text-customBlue mb-2'>
                     <h1>Sertifikasi Perusahaan</h1>
                     <hr className="h-px mx-auto bg-gray-400 border-0 invisible dark:bg-gray-700 sm:visible"></hr>
                 </div>
-                {/* <div className='relative w-full h-full flex items-center justify-center rounded-lg drop-shadow-md mb-32'>
-                    <Image
-                        src={'/images/visi-misi.webp'}
-                        height={192} // Or any height closer to the image's actual height
-                        width={288} // Or any width closer tor any width closer to the image's actual width
-                        alt='Image'
-                        className='object-contain rounded-lg'
-                        style={{ width: '85%', height: 'auto' }} // Display image at full width and adjust height automatically
-                        sizes='100vw' // Adjusts image size according to the viewport width
-                        loading='eager'
-                    />
-                </div> */}
 
-                <div className='w-full flex items-center justify-center text-customBlue'>
-                    <div className='mt-3 px-4 md:px-10 lg:px-8 xl:px-8 2xl:px-8 text-base md:text-md text-gray-500 text-justify'>
-                        Demi meningkatkan kualitas dan mutu produk, BIPMED tidak pernah berhenti untuk melakukan UPGRADE baik dari
-                        sisi managemen maupun dari sisi SDM. Berikut beberapa sertifikasi PT BUMI INDAH PUTRA baik dari sisi
-                        managemen mutu maupun SDM :
-                        <div className='mt-4 text-justify'>
-                            <div className="grid grid-cols-1 gap-4 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 lg:gap-8">
-                                <div className="h-full rounded-lg  ">
-                                    1. ISO 9001:2015 dari TUV Rheinland - Germany
-                                    <div
-                                        className="relative cursor-pointer flex-col pt-2 "
-                                    >
+                <p className="text-gray-600 text-justify text-sm sm:text-base">
+                    Demi meningkatkan kualitas dan mutu produk, BIPMED tidak pernah berhenti untuk melakukan UPGRADE baik dari sisi
+                    manajemen maupun dari sisi SDM. Berikut beberapa sertifikasi PT BUMI INDAH PUTRA baik dari sisi manajemen mutu maupun SDM:
+                </p>
 
-                                        <img
-                                            alt="nature"
-                                            onClick={() => setIsOpen(true)}
-                                            className="h-96 w-auto object-cover object-center pl-8 "
-                                            // src="/images/sertifikasi/sertifikat-1.webp"
-                                            src="/images/sertifikasi/sertifikat-1.webp"
-
-                                        />
-                                        <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
-                                            <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                                                <DialogPanel className="max-w-lg space-y-2 border bg-white">
-                                                    <img
-                                                        alt="nature"
-                                                        onClick={() => setIsOpen(true)}
-                                                        className=" object-cover object-center"
-                                                        // src="/images/sertifikasi/sertifikat-1.webp"
-                                                        src="/images/sertifikasi/sertifikat-1.webp"
-
-                                                    />
-                                                </DialogPanel>
-                                            </div>
-                                        </Dialog>
-
-
-                                    </div>
-                                </div>
-                                <div className="h-full rounded-lg ">
-                                    2. CPAKB dari Kementrian Kesehatan Republik Indonesia
-                                    <div
-                                        className="relative cursor-pointer flex-col pt-2 "
-                                    >
-
-                                        <img
-                                            alt="nature"
-                                            onClick={() => setIsOpen(true)}
-                                            className="h-96 w-auto object-cover object-center pl-8 "
-                                            // src="/images/sertifikasi/sertifikat-1.webp"
-                                            src="/images/sertifikasi/sertifikat-1.webp"
-
-                                        />
-                                        <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
-                                            <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                                                <DialogPanel className="max-w-lg space-y-2 border bg-white">
-                                                    <img
-                                                        alt="nature"
-                                                        onClick={() => setIsOpen(true)}
-                                                        className=" object-cover object-center"
-                                                        // src="/images/sertifikasi/sertifikat-1.webp"
-                                                        src="/images/sertifikasi/sertifikat-1.webp"
-
-                                                    />
-                                                </DialogPanel>
-                                            </div>
-                                        </Dialog>
-
-
-                                    </div>
-                                </div>
-                                <div className="h-full rounded-lg ">
-                                    3. Sertifikat IEC 60601 untuk Produk Elektrikal BIPMED
-                                    <div
-                                        className="relative cursor-pointer flex-col pt-2 "
-                                    >
-
-                                        <img
-                                            alt="nature"
-                                            onClick={() => setIsOpen(true)}
-                                            className="h-96 w-auto object-cover object-center pl-8 "
-                                            // src="/images/sertifikasi/sertifikat-1.webp"
-                                            src="/images/sertifikasi/sertifikat-1.webp"
-
-                                        />
-                                        <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
-                                            <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                                                <DialogPanel className="max-w-lg space-y-2 border bg-white">
-                                                    <img
-                                                        alt="nature"
-                                                        onClick={() => setIsOpen(true)}
-                                                        className=" object-cover object-center"
-                                                        // src="/images/sertifikasi/sertifikat-1.webp"
-                                                        src="/images/sertifikasi/sertifikat-1.webp"
-
-                                                    />
-                                                </DialogPanel>
-                                            </div>
-                                        </Dialog>
-
-
-                                    </div>
-                                </div>
-                                <div className="h-full rounded-lg ">
-                                    4. Sertifikat Welder Training
-                                    <div
-                                        className="relative cursor-pointer flex-col pt-2 "
-                                    >
-
-                                        <img
-                                            alt="nature"
-                                            onClick={() => setIsOpen(true)}
-                                            className="h-96 w-auto object-cover object-center pl-8 "
-                                            // src="/images/sertifikasi/sertifikat-1.webp"
-                                            src="/images/sertifikasi/sertifikat-1.webp"
-
-                                        />
-                                        <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
-                                            <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                                                <DialogPanel className="max-w-lg space-y-2 border bg-white">
-                                                    <img
-                                                        alt="nature"
-                                                        onClick={() => setIsOpen(true)}
-                                                        className=" object-cover object-center"
-                                                        // src="/images/sertifikasi/sertifikat-1.webp"
-                                                        src="/images/sertifikasi/sertifikat-1.webp"
-
-                                                    />
-                                                </DialogPanel>
-                                            </div>
-                                        </Dialog>
-
-
-                                    </div>
-                                </div>
-                                <div className="h-full rounded-lg ">
-                                    5. Sertifikat Arduino Software
-                                    <div
-                                        className="relative cursor-pointer flex-col pt-2 "
-                                    >
-
-                                        <img
-                                            alt="nature"
-                                            onClick={() => setIsOpen(true)}
-                                            className="h-96 w-auto object-cover object-center pl-8 "
-                                            // src="/images/sertifikasi/sertifikat-1.webp"
-                                            src="/images/sertifikasi/sertifikat-1.webp"
-
-                                        />
-                                        <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
-                                            <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                                                <DialogPanel className="max-w-lg space-y-2 border bg-white">
-                                                    <img
-                                                        alt="nature"
-                                                        onClick={() => setIsOpen(true)}
-                                                        className=" object-cover object-center"
-                                                        // src="/images/sertifikasi/sertifikat-1.webp"
-                                                        src="/images/sertifikasi/sertifikat-1.webp"
-
-                                                    />
-                                                </DialogPanel>
-                                            </div>
-                                        </Dialog>
-
-
-                                    </div>
-                                </div>
-                                <div className="h-full rounded-lg ">
-                                    6. Sertifikat Audit Mutu Internal
-                                    <div
-                                        className="relative cursor-pointer flex-col pt-2 "
-                                    >
-
-                                        <img
-                                            alt="nature"
-                                            onClick={() => setIsOpen(true)}
-                                            className="h-96 w-auto object-cover object-center pl-8 "
-                                            // src="/images/sertifikasi/sertifikat-1.webp"
-                                            src="/images/sertifikasi/sertifikat-1.webp"
-
-                                        />
-                                        <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
-                                            <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                                                <DialogPanel className="max-w-lg space-y-2 border bg-white">
-                                                    <img
-                                                        alt="nature"
-                                                        onClick={() => setIsOpen(true)}
-                                                        className=" object-cover object-center"
-                                                        // src="/images/sertifikasi/sertifikat-1.webp"
-                                                        src="/images/sertifikasi/sertifikat-1.webp"
-
-                                                    />
-                                                </DialogPanel>
-                                            </div>
-                                        </Dialog>
-
-
-                                    </div>
-                                </div>
-                                <div className="h-full rounded-lg ">
-                                    7. Sertifikat Quality Awareness
-                                    <div
-                                        className="relative cursor-pointer flex-col pt-2 "
-                                    >
-
-                                        <img
-                                            alt="nature"
-                                            onClick={() => setIsOpen(true)}
-                                            className="h-96 w-auto object-cover object-center pl-8 "
-                                            // src="/images/sertifikasi/sertifikat-1.webp"
-                                            src="/images/sertifikasi/sertifikat-1.webp"
-
-                                        />
-                                        <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
-                                            <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                                                <DialogPanel className="max-w-lg space-y-2 border bg-white">
-                                                    <img
-                                                        alt="nature"
-                                                        onClick={() => setIsOpen(true)}
-                                                        className=" object-cover object-center"
-                                                        // src="/images/sertifikasi/sertifikat-1.webp"
-                                                        src="/images/sertifikasi/sertifikat-1.webp"
-
-                                                    />
-                                                </DialogPanel>
-                                            </div>
-                                        </Dialog>
-
-
-                                    </div>
-                                </div>
-
-
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+                    {certificates.map((cert, index) => (
+                        <div key={index}>
+                            <h2 className="font-medium text-sm sm:text-base">
+                                {index + 1}. {cert.title}
+                            </h2>
+                            <div
+                                className="cursor-pointer pt-2"
+                                onClick={() => setOpenIndex(index)}
+                            >
+                                <img
+                                    src={cert.src}
+                                    alt={`sertifikat-${index + 1}`}
+                                    className="h-60 sm:h-64 w-auto mx-auto object-cover rounded-md shadow-md"
+                                />
                             </div>
-
-
-
-
                         </div>
-                    </div>
+                    ))}
                 </div>
+
+                {openIndex !== null && (
+                    <Dialog open={openIndex !== null} onClose={() => setOpenIndex(null)} className="relative z-50">
+                        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4">
+                            <DialogPanel className="max-w-lg w-full bg-white rounded-lg p-4 shadow-lg">
+                                <img
+                                    src={certificates[openIndex].src}
+                                    alt={`sertifikat-${openIndex + 1}`}
+                                    className="w-full object-contain rounded-md"
+                                />
+                            </DialogPanel>
+                        </div>
+                    </Dialog>
+                )}
             </div>
         </div>
         //</Container >

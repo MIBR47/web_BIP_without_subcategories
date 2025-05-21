@@ -1,11 +1,11 @@
-import { Products } from '@/types';
+import { Product } from '@/types';
 import Link from 'next/link';
 // import Head from 'next/head';
 import SpectoDownload from './specdownload';
 import './style.css';
 
 interface InfoProps {
-  product: Products; // Assuming data is of type Products
+  product: Product; // Assuming data is of type Products
 }
 
 const Info: React.FC<InfoProps> = async ({ product }) => {

@@ -1,4 +1,4 @@
-export interface Products {
+export interface Product {
   id: number;
   catalog_id: string;
   name: string;
@@ -15,16 +15,26 @@ export interface Products {
   ProductImage: ProductImage[];
 }
 
-
+export interface ProductForm {
+  name: string;
+  slug: string;
+  eCatalogURL: string;
+  remarks: string;
+  iStatus: "Active" | "InActive";
+  iShowedStatus: "Show" | "Hidden";
+  category_id: number;
+  catalog_id: string,
+}
 
 export interface ProductsResponse {
-  products: Products[];
+  products: Product[];
 }
 
 export interface ProductImage {
-  id: number;
+  // id: number;
   isPrimary: boolean;
   imageURL: string;
+  product_id: number;
 }
 // export interface Categories {
 //   id: number;
@@ -61,23 +71,23 @@ export interface Categories {
   imageURL: string;
 }
 
-export interface SubCategories {
-  id: number;
-  // catalog_id: string;
-  name: string;
-  slug: string;
-  remarks: string;
-  categoryId: string;
-  iStatus: Status;
-  iShowedStatus: ShowedStatus;
-  imageURL: string;
-}
+// export interface SubCategories {
+//   id: number;
+//   // catalog_id: string;
+//   name: string;
+//   slug: string;
+//   remarks: string;
+//   categoryId: string;
+//   iStatus: Status;
+//   iShowedStatus: ShowedStatus;
+//   imageURL: string;
+// }
 
-export interface CategoryImages {
-  id: number;
-  name: string;
-  imageURL: string;
-}
+// export interface CategoryImages {
+//   id: number;
+//   name: string;
+//   imageURL: string;
+// }
 
 export interface ProductDesc {
   // id: string;  
@@ -87,12 +97,12 @@ export interface ProductDesc {
   // benefit: string;
 }
 
-export interface PriceList {
-  id: string;
-  name: string;
-  fileURL: string;
-  iShowedStatus: boolean;
-}
+// export interface PriceList {
+//   id: string;
+//   name: string;
+//   fileURL: string;
+//   iShowedStatus: boolean;
+// }
 
 export interface Billboards {
   // section: number;
@@ -104,19 +114,19 @@ export interface Billboards {
   iShowedStatus: boolean;
 }
 
-export interface BillboardContents {
-  tile: string;
-  contentURL: string;
-}
+// export interface BillboardContents {
+//   tile: string;
+//   contentURL: string;
+// }
 
-export interface Size {
-  id: number;
-  name: string;
-  value: string;
-}
+// export interface Size {
+//   id: number;
+//   name: string;
+//   value: string;
+// }
 
-export interface Color {
-  id: string;
-  name: string;
-  value: string;
-}
+// export interface Color {
+//   id: string;
+//   name: string;
+//   value: string;
+// }

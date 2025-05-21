@@ -21,6 +21,7 @@ const config = {
       colors: {
         pastelBlue: '#F1F5F9',
         customBlue: '#0063A4',
+        customBlue2: '#024A7AFF',
         customGreen: '#7ED957', //'#82BB52',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

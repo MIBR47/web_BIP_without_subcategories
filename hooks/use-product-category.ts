@@ -1,15 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
-import { Products } from '@/types';
-import getProducts from '@/actions/get-products';
+import { Product } from '@/types';
+import { getProducts } from '@/lib/api/productApi';
+
 
 interface useProductCategoryProps {
-  category_id: string;
+  category_id: number;
 }
 
 export const useProductCategory = ({
   category_id,
 }: useProductCategoryProps) => {
-  const { data, isLoading, error, ...rest } = useQuery<Products[], Error>({
+  const { data, isLoading, error, ...rest } = useQuery<Product[], Error>({
     queryKey: ['products', category_id],
     queryFn: async () => {
       try {
@@ -23,7 +24,7 @@ export const useProductCategory = ({
     },
     retry: 3,
     staleTime: 60 * 60 * 1000,
-    enabled: category_id !== '',
+    enabled: category_id !== 0,
   });
 
   return { data, isLoading, error, ...rest };

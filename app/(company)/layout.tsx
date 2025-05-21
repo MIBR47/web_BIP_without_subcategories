@@ -68,15 +68,16 @@ export default function RootLayout({
         <NextProgress />
         <QueryClientProvider>
           <NavMenu />
-          {/* <ModalProvider /> */}
+          {/* <ModalProvider /> */} {/*bisa diapus udh gak kepake modalnya */}
           <HeaderMobile />
 
           {children}
-
+          <div className='py-10'></div>
           <Footer />
         </QueryClientProvider>
         {/* <SpeedInsights /> */}
         {/* <Analytics /> */}
+
       </body>
     </html>
   );

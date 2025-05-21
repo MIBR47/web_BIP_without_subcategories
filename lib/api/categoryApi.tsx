@@ -2,10 +2,15 @@
 
 import { Categories } from "@/types";
 
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+// const BASE_URL = process.env.NEXT_PUBLIC_API_URL2;
+
+
 // Fungsi untuk mengambil semua kategori
-export const fetchCategoriesAll = async (): Promise<Categories> => {
+export const fetchCategoriesAll = async (): Promise<Categories[]> => {
+    let url = `${BASE_URL}/category/findall`;
     try {
-        const res = await fetch('http://localhost:5000/api/category/findall');
+        const res = await fetch(url);
         if (!res.ok) {
             throw new Error('Failed to fetch categories');
         }
@@ -19,8 +24,9 @@ export const fetchCategoriesAll = async (): Promise<Categories> => {
 
 // Fungsi untuk mengambil kategori berdasarkan ID
 export const fetchCategoryById = async (id: number): Promise<Categories> => {
+    let url = `${BASE_URL}/category/findbyid/${id}`;
     try {
-        const res = await fetch(`http://localhost:5000/api/category/findbyid/${id}`);
+        const res = await fetch(url);
         if (!res.ok) {
             throw new Error('Failed to fetch category');
         }
@@ -28,6 +34,38 @@ export const fetchCategoryById = async (id: number): Promise<Categories> => {
         return category.data; // Mengembalikan data kategori berdasarkan ID
     } catch (error) {
         console.error(`Error fetching category with ID ${id}:`, error);
+        throw error;
+    }
+};
+
+
+interface Query {
+    slug?: string;
+}
+
+export const fetchCategoryBySlug = async (query: Query): Promise<Categories> => {
+    let url = `${BASE_URL}/category/findbyslug/${query.slug}`;
+
+    console.log('Fetching category with URL:', url);
+
+    try {
+        const res = await fetch(url);
+
+        if (!res.ok) {
+            console.error(`Error fetching category: ${res.statusText}`);
+            throw new Error(`Error fetching category: ${res.statusText}`);
+        }
+
+        const contentType = res.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            console.error('Response is not JSON:', await res.text());
+            throw new Error('Response is not JSON');
+        }
+        const category = await res.json();
+
+        return category.data;
+    } catch (error) {
+        console.error('Failed to fetch category:', error);
         throw error;
     }
 };

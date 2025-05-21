@@ -38,8 +38,8 @@ const MobilMenu = () => {
         <div className='absolute bg-black text-white left-0 top-20 w-full h-[calc(100vh-80px)] flex flex-col items-center justify-center gap-8 text-xl z-10'>
           <Link href='/'>Beranda</Link>
           <Link href='/'>Tentang Perusahaan</Link>
-          <Link href={routes.cms.categoryList}>Produk</Link>
-          <Link href={routes.cms.pricelist}>eKatalog</Link>
+          <Link href={routes.categoryList}>Produk</Link>
+          <Link href={routes.ecatalog}>eKatalog</Link>
           <Link href='#'>Berita</Link>
           <Link href='#'>Kontak Kami </Link>
         </div>

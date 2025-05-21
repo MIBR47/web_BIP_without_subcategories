@@ -1,13 +1,13 @@
 import { Metadata, ResolvingMetadata } from 'next';
-import getProducts from '@/actions/get-products';
 import NoResults from '@/components/ui/no-results';
 import ProductCard from '@/app/(company)/products/_components/productCard';
-import getCategory from '@/actions/get-category';
 import { Categories } from '@/types';
 import PageHeader from '@/components/ui/page-header';
 import { routes } from '@/config/routes';
 
 import './style.css';
+import { getProducts } from '@/lib/api/productApi';
+import { fetchCategoryBySlug } from '@/lib/api/categoryApi';
 // import getSubCategories from '@/actions/get-subcategories';
 
 export const revalidate = 0;
@@ -29,7 +29,7 @@ export async function generateMetadata(
   // fetch data
   // const product = await fetch(``).then((res) => res.json())
 
-  const category = await getCategory({ slug: params.slug.trim() });
+  const category = await fetchCategoryBySlug({ slug: params.slug.trim() });
 
   // optionally access and extend (rather than replace) parent metadata
   // const previousImages = (await parent).openGraph?.images || []
@@ -83,7 +83,7 @@ export async function generateMetadata(
 const CategoryPage = async ({ params }: CategoryPageProps) => {
   // const slug = params.slug.trim();
   // console.log('test page')
-  const category = await getCategory({ slug: params.slug.trim() });
+  const category = await fetchCategoryBySlug({ slug: params.slug.trim() });
   // console.log(category)
 
 
@@ -110,7 +110,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
       },
       {
         name: 'Daftar Kategori',
-        href: routes.cms.categoryList,
+        href: routes.categoryList,
       },
     ],
   };

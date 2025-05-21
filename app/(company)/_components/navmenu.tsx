@@ -63,23 +63,24 @@ export function NavMenu() {
             <NavigationMenuItem className='hidden md:block'>
               <NavigationMenuTrigger>Tentang Kami</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className='grid gap-1.5 p-1 md:w-[200px] lg:w-[300px]'>
-                  <ListItem href={routes.cms.directorsays}>
+                <ul className='grid gap-1.5 p-1 md:w-[200px] lg:w-[300px] '>
+                  <ListItem href={routes.directorsays}>
                     Pesan Direktur
                   </ListItem>
-                  <ListItem href={routes.cms.aboutcompany}>
+                  <ListItem href={routes.aboutcompany}>
                     Tentang Perusahaan
                   </ListItem>
-                  <ListItem href={routes.cms.visimisi}>Visi dan Misi</ListItem>
-                  <ListItem href={routes.cms.certificate}>
+                  <ListItem href={routes.visimisi}>Visi dan Misi</ListItem>
+                  <ListItem href={routes.certificate}>
                     Sertifikasi Perusahaan
                   </ListItem>
                 </ul>
               </NavigationMenuContent>
+
             </NavigationMenuItem>
 
             <NavigationMenuItem className='hidden md:block'>
-              <Link href={routes.cms.categoryList} legacyBehavior passHref>
+              <Link href={routes.categoryList} legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   Produk
                 </NavigationMenuLink>
@@ -87,7 +88,7 @@ export function NavMenu() {
             </NavigationMenuItem>
 
             <NavigationMenuItem className='hidden md:block'>
-              <Link href={routes.cms.pricelist} legacyBehavior passHref>
+              <Link href={routes.ecatalog} legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   {isMobile ? (
                     <div className='mobile-view'>eCatalogue</div>
@@ -107,7 +108,7 @@ export function NavMenu() {
             </NavigationMenuItem>
 
             <NavigationMenuItem className='hidden md:block'>
-              <Link href='#' legacyBehavior passHref>
+              <Link href={routes.contactus} legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   Kontak Kami
                 </NavigationMenuLink>
@@ -129,17 +130,19 @@ export function NavMenu() {
 
 const ListItem = React.forwardRef<
   React.ElementRef<'a'>,
-  React.ComponentPropsWithoutRef<'a'>
->(({ className, children, ...props }, ref) => (
-  <a
-    ref={ref}
-    className={cn(
-      'block px-4 py-2 text-sm font-medium text-customBlue transition-colors duration-150 rounded-md hover:bg-customBlue hover:text-white focus:bg-customBlue focus:text-white focus:outline-none',
-      className
-    )}
-    {...props}
-  >
-    {children}
-  </a>
+  React.ComponentPropsWithoutRef<'a'> & { href: string }
+>(({ className, children, href, ...props }, ref) => (
+  <Link href={href} passHref legacyBehavior>
+    <a
+      ref={ref}
+      className={cn(
+        'block px-4 py-2 text-sm font-medium text-customBlue transition-colors duration-150 rounded-md hover:bg-customBlue hover:text-white focus:bg-customBlue focus:text-white focus:outline-none',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </a>
+  </Link>
 ));
 ListItem.displayName = 'ListItem';

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { Products, Categories } from '@/types';
+import { Product, Categories } from '@/types';
 
-type PreviewData = Products | Categories;
+type PreviewData = Product | Categories;
 
 interface PreviewModalStore {
   isOpen: boolean;

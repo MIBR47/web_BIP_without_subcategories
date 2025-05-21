@@ -22,6 +22,8 @@ const ProductListPage = () => {
     search: name,
   });
 
+  // console.log(name)
+
   if (isLoading)
     return (
       <div>
@@ -40,7 +42,7 @@ const ProductListPage = () => {
       },
       {
         name: 'Daftar Kategori',
-        href: routes.cms.categoryList,
+        href: routes.categoryList,
       },
       {
         name: 'Hasil Pencarian Produk',
@@ -89,7 +91,7 @@ const ProductListPage = () => {
             {productsFound! > 0 && (
               <div className='flex justify-end items-right'>
                 <Link
-                  href={routes.cms.categoryList}
+                  href={routes.categoryList}
                   className={`text-customBlue ${isMobile ? 'text-sm' : 'text-sm'}`}
                 >
                   {isMobile ? 'Daftar Kategori' : 'Kembali ke daftar kategori'}
@@ -97,8 +99,8 @@ const ProductListPage = () => {
               </div>
             )}
           </div>
-          <div className='mt-10 flex justify-center'>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12'>
+          {/* <div className='mt-10 flex justify-center'>
+            <div className='mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-12'>
               {Array.isArray(products) &&
                 products.map((item) => (
                   <div key={item.id}>
@@ -106,6 +108,14 @@ const ProductListPage = () => {
                   </div>
                 ))}
             </div>
+          </div> */}
+          <div className='mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-12'>
+            {Array.isArray(products) &&
+              products.map((item) => (
+                <div key={item.id}>
+                  <ProductCard key={item.id} data={item} />
+                </div>
+              ))}
           </div>
         </div>
       </div>

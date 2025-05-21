@@ -1,14 +1,15 @@
 import { Metadata } from 'next';
-import { Products } from '@/types';
+import { Product } from '@/types';
 import { routes } from '@/config/routes';
 
-import getProductBySlug from '@/actions/get-productBySlug';
+// import getProductBySlug from '@/actions/get-productBySlug';
 import { fetchCategoryById } from '@/lib/api/categoryApi';
 
 import Container from '@/components/ui/container';
 import Gallery from '@/components/gallery';
 import Info from './_components/info';
 import PageHeader from '@/components/ui/page-header';
+import { getProductBySlug } from '@/lib/api/productApi';
 
 export const revalidate = 0;
 
@@ -22,7 +23,7 @@ interface ProductPageProps {
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata | undefined> {
-  const product: Products = await getProductBySlug({ slug: params.slug.trim() });
+  const product: Product = await getProductBySlug({ slug: params.slug.trim() });
 
   return {
     title: product.name,
@@ -60,8 +61,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
     title: product.name || 'Nama Produk',
     breadcrumb: [
       { name: 'Beranda', href: routes.home },
-      { name: 'Daftar Kategori', href: routes.cms.categoryList },
-      { name: categoryName, href: routes.cms.categorySlug(categorySlug) },
+      { name: 'Daftar Kategori', href: routes.categoryList },
+      { name: categoryName, href: routes.categorySlug(categorySlug) },
     ],
   };
 
