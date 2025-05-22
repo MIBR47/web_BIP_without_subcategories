@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchCategoriesAll, fetchCategoryById } from '@/lib/api/categoryApi';
+import { deleteCategoryById, fetchCategoriesAll, fetchCategoryById } from '@/lib/api/categoryApi';
 import { Categories, Status } from '@/types';
 import { Dialog } from '@headlessui/react';
 import { useRouter } from 'next/navigation';
@@ -31,36 +31,48 @@ const CategoriesPage = () => {
     getCategories();
   }, []);
 
-  const handleView = async (id: number) => {
+  // const handleView = async (id: number) => {
+  //   try {
+  //     const data = await fetchCategoryById(id);
+  //     setCategoryDetail(data);
+  //     setViewModalOpen(true);
+  //   } catch (err) {
+  //     setError(`Failed to fetch category details.`);
+  //   }
+  // };
+
+  // const handleEdit = (category: Categories) => {
+  //   setEditingCategory(category);
+  //   setEditModalOpen(true);
+  // };
+
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   if (!editingCategory) return;
+
+  //   setCategories(prev =>
+  //     prev.map(cat => (cat.id === editingCategory.id ? editingCategory : cat))
+  //   );
+  //   setEditingCategory(null);
+  //   setEditModalOpen(false);
+  // };
+
+  const handleDelete = async (id: number) => {
+    const confirmed = confirm("Are you sure you want to delete this category?");
+    if (!confirmed) return;
+
     try {
-      const data = await fetchCategoryById(id);
-      setCategoryDetail(data);
-      setViewModalOpen(true);
+      await deleteCategoryById(id); // Buat function ini di file categoryApi.ts
+      setCategories(prev => prev.filter(cat => cat.id !== id));
     } catch (err) {
-      setError(`Failed to fetch category details.`);
+      alert("Failed to delete category.");
+      console.log(err)
     }
   };
-
-  const handleEdit = (category: Categories) => {
-    setEditingCategory(category);
-    setEditModalOpen(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!editingCategory) return;
-
-    setCategories(prev =>
-      prev.map(cat => (cat.id === editingCategory.id ? editingCategory : cat))
-    );
-    setEditingCategory(null);
-    setEditModalOpen(false);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingCategory(null);
-    setEditModalOpen(false);
-  };
+  // const handleCancelEdit = () => {
+  //   setEditingCategory(null);
+  //   setEditModalOpen(false);
+  // };
 
   return (
     <div className="pt-2 px-4 pb-4 space-y-4">
@@ -143,17 +155,25 @@ const CategoriesPage = () => {
                     </td>
                     <td className="py-2 px-4 text-center space-x-2">
                       <button
-                        onClick={() => handleView(category.id)}
+                        onClick={() => router.push(`/admin/categories/${category.id}/view`)}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
                       >
                         View
                       </button>
                       <button
-                        onClick={() => handleEdit(category)}
+                        onClick={() => router.push(`/admin/categories/${category.id}/edit`)}
                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded"
                       >
                         Edit
                       </button>
+
+                      <button
+                        onClick={() => handleDelete(category.id)}
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded"
+                      >
+                        Delete
+                      </button>
+
                     </td>
                   </tr>
                 ))}
@@ -162,7 +182,7 @@ const CategoriesPage = () => {
           </div>
 
           {/* Modal View */}
-          <Dialog open={viewModalOpen} onClose={() => setViewModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* <Dialog open={viewModalOpen} onClose={() => setViewModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
             <div className="relative bg-white rounded-lg p-6 w-96">
               <h2 className="text-xl font-bold mb-4">Category Details</h2>
@@ -189,10 +209,10 @@ const CategoriesPage = () => {
                 </button>
               </div>
             </div>
-          </Dialog>
+          </Dialog> */}
 
           {/* Modal Edit */}
-          <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
             <div className="relative bg-white rounded-lg p-6 w-96">
               <h2 className="text-xl font-bold mb-4">Edit Category</h2>
@@ -245,7 +265,7 @@ const CategoriesPage = () => {
                 </form>
               )}
             </div>
-          </Dialog>
+          </Dialog> */}
         </>
       )}
     </div>

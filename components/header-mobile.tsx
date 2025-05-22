@@ -45,7 +45,7 @@ const HeaderMobile = () => {
       initial={false}
       animate={isOpen ? 'open' : 'closed'}
       custom={height}
-      className={`fixed inset-0 z-50 w-full md:hidden ${isOpen ? '' : 'pointer-events-none'
+      className={`fixed inset-0 z-50 w-full text-customBlue md:hidden ${isOpen ? '' : 'pointer-events-none'
         }`}
       ref={containerRef}
     >
@@ -69,7 +69,7 @@ const HeaderMobile = () => {
                   <Link
                     href={item.path}
                     onClick={() => toggleOpen()}
-                    className={`flex w-full text-2xl ${item.path === pathname ? 'font-bold' : ''
+                    className={`flex w-full text-2xl text-customBlue ${item.path === pathname ? 'font-bold' : ''
                       }`}
                   >
                     {item.title}

@@ -17,9 +17,26 @@ export const getProducts = async ({
         const res = await fetch(URL);
         // console.log(res)
         const data = await res.json();
-        console.log(data['data']);
+        // console.log(data['data']);
 
         return data['data'];
+    } catch (error) {
+        console.error('Failed to fetch product:', error);
+        throw error;
+    }
+};
+
+export const getAllProducts = async (page: number = 1, limit: number = 20) => {
+    try {
+        const URL = `${BASE_URL}/product/findall?page=${page}&limit=${limit}`;
+        // console.log(category_id)
+
+        const res = await fetch(URL);
+        // console.log(res)
+        const data = await res.json();
+        // console.log(data['data']);
+
+        return data;
     } catch (error) {
         console.error('Failed to fetch product:', error);
         throw error;

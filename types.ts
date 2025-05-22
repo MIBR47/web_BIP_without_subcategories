@@ -93,7 +93,7 @@ export interface ProductDesc {
   // id: string;  
   descriptions: string;
   productSpec: string;
-  benefits: string;
+  // benefits: string;
   // benefit: string;
 }
 

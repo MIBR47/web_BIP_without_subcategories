@@ -5,7 +5,18 @@ import { Categories } from "@/types";
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
 // const BASE_URL = process.env.NEXT_PUBLIC_API_URL2;
 
+export const updateCategory = async (id: number, category: Categories) => {
 
+}
+export const deleteCategoryById = async (id: number) => {
+    const res = await fetch(`${BASE_URL}/category/admin/delete/${id}`, {
+        method: 'DELETE',
+        headers: { "Content-Type": "application/json", Authorization: "ffacb7f7-0337-4768-a045-989005531895" },
+
+    });
+    if (!res.ok) throw new Error('Delete failed');
+    return await res.json();
+};
 // Fungsi untuk mengambil semua kategori
 export const fetchCategoriesAll = async (): Promise<Categories[]> => {
     let url = `${BASE_URL}/category/findall`;

@@ -10,13 +10,14 @@ import { handleChange } from "@/lib/utils/formHandler";
 import { ProductDesc } from "@/types";
 import 'react-quill/dist/quill.snow.css';
 import RichTextEditorField from "../_components/RichTextEditorField";
+import { useRouter } from "next/navigation";
 
 
 export interface ProductForm {
     name: string;
     slug: string;
     eCatalogURL: string;
-    remarks: string;
+    // remarks: string;
     iStatus: "Active" | "InActive";
     iShowedStatus: "Show" | "Hidden";
     category_id: number;
@@ -29,12 +30,14 @@ interface Category {
 }
 
 const CreateProductPage = () => {
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState<ProductForm>({
         catalog_id: "",
         name: "",
         slug: "",
         eCatalogURL: "",
-        remarks: "test",
+        // remarks: "test",
         iStatus: "Active",
         iShowedStatus: "Show",
         category_id: 0,
@@ -43,7 +46,7 @@ const CreateProductPage = () => {
     const [formDataDesc, setFormDataDesc] = useState<ProductDesc>({
         descriptions: "",
         productSpec: "",
-        benefits: "",
+        // benefits: "",
     });
 
     const [categories, setCategories] = useState<Category[]>([]);
@@ -96,13 +99,13 @@ const CreateProductPage = () => {
             alert("Kategori harus dipilih.");
             return;
         }
-
+        setIsLoading(true);
         try {
             const productRes = await fetch("http://localhost:5000/api/product/admin/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "6465040d-9c34-471c-a8a6-12dd482f3262",
+                    Authorization: "ffacb7f7-0337-4768-a045-989005531895",
                 },
                 body: JSON.stringify(formData),
             });
@@ -119,14 +122,14 @@ const CreateProductPage = () => {
             for (let i = 0; i < imageFiles.length; i++) {
                 console.log("image=" + imageFiles)
 
-                // const imageURL = await uploadToCloudinary(imageFiles[i]);
-                const imageURL = "https://res.cloudinary.com/dsad6wufm/image/upload/v1747296741/hwlv3r37vlfbcdvp77to.jpg"
+                const imageURL = await uploadToCloudinary(imageFiles[i]);
+                // const imageURL = "https://res.cloudinary.com/dsad6wufm/image/upload/v1747296741/hwlv3r37vlfbcdvp77to.jpg"
 
                 const productImageRes = await fetch("http://localhost:5000/api/product/admin/createImageProduct", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "6465040d-9c34-471c-a8a6-12dd482f3262",
+                        Authorization: "ffacb7f7-0337-4768-a045-989005531895",
                     },
                     body: JSON.stringify({
                         imageURL: imageURL,
@@ -138,12 +141,12 @@ const CreateProductPage = () => {
                 if (!productImageRes.ok) throw new Error("Gagal menyimpan produk image");
 
             }
-            console.log(formDataDesc.benefits)
+            // console.log(formDataDesc.benefits)
             const productDescRes = await fetch("http://localhost:5000/api/product/admin/createDescProduct", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "6465040d-9c34-471c-a8a6-12dd482f3262",
+                    Authorization: "ffacb7f7-0337-4768-a045-989005531895",
                 },
                 body: JSON.stringify({
                     ...formDataDesc,
@@ -152,27 +155,31 @@ const CreateProductPage = () => {
             });
             if (!productDescRes.ok) throw new Error("Gagal menyimpan produk desc");
             alert("Produk berhasil disimpan!");
-
+            router.push("/admin/products");
             // Reset form
-            setFormData({
-                name: "",
-                slug: "",
-                eCatalogURL: "",
-                remarks: "",
-                iStatus: "Active",
-                iShowedStatus: "Show",
-                category_id: 0,
-                catalog_id: ""
-            });
-            setFormDataDesc({ descriptions: "", productSpec: "", benefits: "" });
-            setImageFiles([]);
-            setImagePreviews([]);
-            setPrimaryIndex(null);
-            if (fileInputRef.current) fileInputRef.current.value = "";
+            // setFormData({
+            //     name: "",
+            //     slug: "",
+            //     eCatalogURL: "",
+            //     // remarks: "",
+            //     iStatus: "Active",
+            //     iShowedStatus: "Show",
+            //     category_id: 0,
+            //     catalog_id: ""
+            // });
+            // setFormDataDesc({ descriptions: "", productSpec: "" });
+            // setImageFiles([]);
+            // setImagePreviews([]);
+            // setPrimaryIndex(null);
+            // if (fileInputRef.current) fileInputRef.current.value = "";
+            // router.push("/admin/products/create")
+
 
         } catch (err) {
             console.error(err);
             alert("Terjadi kesalahan saat menyimpan produk.");
+        } finally {
+            setIsLoading(false); // End loading
         }
     };
 
@@ -272,12 +279,16 @@ const CreateProductPage = () => {
                 {/* Deskripsi Produk */}
                 <RichTextEditorField label="Deskripsi Produk" name="descriptions" content={formDataDesc.descriptions} onChange={handleChangeDesc} />
                 <RichTextEditorField label="Spesifikasi Produk" name="productSpec" content={formDataDesc.productSpec} onChange={handleChangeDesc} />
-                <RichTextEditorField label="Manfaat Produk" name="benefits" content={formDataDesc.benefits} onChange={handleChangeDesc} />
+                {/* <RichTextEditorField label="Manfaat Produk" name="benefits" content={formDataDesc.benefits} onChange={handleChangeDesc} /> */}
 
 
                 <div className="space-y-3">
-                    <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-xl text-lg hover:bg-blue-700">
-                        Simpan Produk
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className={`w-full py-3 rounded-xl text-lg ${isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 text-white"}`}
+                    >
+                        {isLoading ? "Menyimpan..." : "Simpan Produk"}
                     </button>
                     <Link href="/admin/products" className="block text-center w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200">
                         Kembali ke Daftar Produk
