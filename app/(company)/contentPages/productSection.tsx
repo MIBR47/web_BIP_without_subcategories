@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Product } from '@/types';
 import ProductCard from '../_components/productCard';
+import { getAllProducts } from '@/lib/api/productApi';
 // import { Products } from './types'; // ganti path sesuai struktur proyekmu
 
 const ProductSection = () => {
@@ -12,8 +13,10 @@ const ProductSection = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/product/findall');
-                const data = await res.json();
+                // const res = await fetch('http://localhost:5000/api/product/findall?page=1&limit=6');
+                const data = await getAllProducts(1, 6);
+                // console.log("res =" + res.text)
+                // const data = await res.json();
                 setProducts(data.data); // Pastikan respon API bentuknya { data: [...] }
             } catch (error) {
                 console.error('Gagal fetch produk:', error);
@@ -26,7 +29,7 @@ const ProductSection = () => {
     return (
         <section className="pt-10 pb-40 px-6">
             <div className="max-w-6xl mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-6">Produk bipMED</h2>
+                <h2 className="text-3xl font-bold mb-6 text-customBlue">━ Produk Kami ━</h2>
                 <div className="mt-10 flex justify-center">
                     <div className="flex flex-wrap justify-center gap-x-6 gap-y-12 max-w-6xl">
                         {Array.isArray(products) &&

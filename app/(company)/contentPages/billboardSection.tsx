@@ -13,7 +13,7 @@ interface BillboardProps {
 const BillboardPage: React.FC<BillboardProps> = ({ data }) => {
   const [isMobile, setIsMobile] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  console.log("data = " + data)
+  // console.log("data = " + data)
 
   useEffect(() => {
     const handleResize = () => {

@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'bipMED',
+    default: 'PT. Bumi Indah Putra',
     template: '%s - bipmed',
   },
   description: 'Terlengkap dan Terpercaya sejak dua dekade',
@@ -64,7 +64,7 @@ export default function RootLayout({
 
         {/* <title>Alkes Terlengkap-bipmed</title> */}
       </head>
-      <body className={`${inter.className}`}>
+      <body className={`${inter.className}`} suppressHydrationWarning={true}>
         <NextProgress />
         <QueryClientProvider>
           <NavMenu />

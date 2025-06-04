@@ -19,7 +19,7 @@ export interface ProductForm {
   name: string;
   slug: string;
   eCatalogURL: string;
-  remarks: string;
+  // remarks: string;
   iStatus: "Active" | "InActive";
   iShowedStatus: "Show" | "Hidden";
   category_id: number;

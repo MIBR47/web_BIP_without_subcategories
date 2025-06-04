@@ -1,7 +1,7 @@
 import PageHeader from '@/components/ui/page-header';
 import { routes } from '@/config/routes';
 import NoResults from '@/components/ui/no-results';
-import getCategories from '@/actions/get-categories';
+// import getCategories from '@/actions/get-categories';
 import dynamic from 'next/dynamic';
 // import CategoryCard from '../_components/categoryCard';
 import './style.css';

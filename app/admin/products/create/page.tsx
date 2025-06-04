@@ -11,6 +11,7 @@ import { ProductDesc } from "@/types";
 import 'react-quill/dist/quill.snow.css';
 import RichTextEditorField from "../_components/RichTextEditorField";
 import { useRouter } from "next/navigation";
+import { createProduct, uploadDescriptions, uploadImages } from "@/lib/api/productApi";
 
 
 export interface ProductForm {
@@ -28,6 +29,8 @@ interface Category {
     id: number;
     name: string;
 }
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+
 
 const CreateProductPage = () => {
     const router = useRouter();
@@ -87,101 +90,124 @@ const CreateProductPage = () => {
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // console.log(formData.category_id)
-        // console.log(formData)
-        // const formDataToSend = {
-        //     ...formData,
-        //     category_id: parseInt(formData.category_id, 10) // Pastikan category_id adalah number
-        // };
-
 
         if (!formData.category_id || formData.category_id === 0) {
             alert("Kategori harus dipilih.");
             return;
         }
+
         setIsLoading(true);
         try {
-            const productRes = await fetch("http://localhost:5000/api/product/admin/create", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "ffacb7f7-0337-4768-a045-989005531895",
-                },
-                body: JSON.stringify(formData),
-            });
+            const productId = await createProduct(formData);
+            await uploadImages(productId, imageFiles, primaryIndex);
+            await uploadDescriptions(productId, formDataDesc);
 
-            if (!productRes.ok) throw new Error("Gagal menyimpan produk");
-
-            const { data } = await productRes.json();
-            const productId: number = data.id;
-            // console.log(data.name);
-
-            // const productId: number = 4;
-
-
-            for (let i = 0; i < imageFiles.length; i++) {
-                console.log("image=" + imageFiles)
-
-                const imageURL = await uploadToCloudinary(imageFiles[i]);
-                // const imageURL = "https://res.cloudinary.com/dsad6wufm/image/upload/v1747296741/hwlv3r37vlfbcdvp77to.jpg"
-
-                const productImageRes = await fetch("http://localhost:5000/api/product/admin/createImageProduct", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: "ffacb7f7-0337-4768-a045-989005531895",
-                    },
-                    body: JSON.stringify({
-                        imageURL: imageURL,
-                        isPrimary: i === primaryIndex,
-                        iStatus: "Active",
-                        product_id: productId,
-                    }),
-                });
-                if (!productImageRes.ok) throw new Error("Gagal menyimpan produk image");
-
-            }
-            // console.log(formDataDesc.benefits)
-            const productDescRes = await fetch("http://localhost:5000/api/product/admin/createDescProduct", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "ffacb7f7-0337-4768-a045-989005531895",
-                },
-                body: JSON.stringify({
-                    ...formDataDesc,
-                    product_id: productId,
-                }),
-            });
-            if (!productDescRes.ok) throw new Error("Gagal menyimpan produk desc");
             alert("Produk berhasil disimpan!");
             router.push("/admin/products");
-            // Reset form
-            // setFormData({
-            //     name: "",
-            //     slug: "",
-            //     eCatalogURL: "",
-            //     // remarks: "",
-            //     iStatus: "Active",
-            //     iShowedStatus: "Show",
-            //     category_id: 0,
-            //     catalog_id: ""
-            // });
-            // setFormDataDesc({ descriptions: "", productSpec: "" });
-            // setImageFiles([]);
-            // setImagePreviews([]);
-            // setPrimaryIndex(null);
-            // if (fileInputRef.current) fileInputRef.current.value = "";
-            // router.push("/admin/products/create")
-
-
         } catch (err) {
             console.error(err);
             alert("Terjadi kesalahan saat menyimpan produk.");
         } finally {
-            setIsLoading(false); // End loading
+            setIsLoading(false);
         }
     };
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     // console.log(formData.category_id)
+    //     // console.log(formData)
+    //     // const formDataToSend = {
+    //     //     ...formData,
+    //     //     category_id: parseInt(formData.category_id, 10) // Pastikan category_id adalah number
+    //     // };
+
+
+    //     if (!formData.category_id || formData.category_id === 0) {
+    //         alert("Kategori harus dipilih.");
+    //         return;
+    //     }
+    //     setIsLoading(true);
+    //     try {
+    //         const productRes = await fetch(`${BASE_URL}/product/admin/create`, {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 Authorization: "ffacb7f7-0337-4768-a045-989005531895",
+    //             },
+    //             body: JSON.stringify(formData),
+    //         });
+
+    //         if (!productRes.ok) throw new Error("Gagal menyimpan produk");
+
+    //         const { data } = await productRes.json();
+    //         const productId: number = data.id;
+    //         // console.log(data.name);
+
+    //         // const productId: number = 4;
+
+
+    //         for (let i = 0; i < imageFiles.length; i++) {
+    //             console.log("image=" + imageFiles)
+
+    //             const imageURL = await uploadToCloudinary(imageFiles[i]);
+    //             // const imageURL = "https://res.cloudinary.com/dsad6wufm/image/upload/v1747296741/hwlv3r37vlfbcdvp77to.jpg"
+
+    //             const productImageRes = await fetch("http://localhost:5000/api/product/admin/createImageProduct", {
+    //                 method: "POST",
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     Authorization: "ffacb7f7-0337-4768-a045-989005531895",
+    //                 },
+    //                 body: JSON.stringify({
+    //                     imageURL: imageURL,
+    //                     isPrimary: i === primaryIndex,
+    //                     iStatus: "Active",
+    //                     product_id: productId,
+    //                 }),
+    //             });
+    //             if (!productImageRes.ok) throw new Error("Gagal menyimpan produk image");
+
+    //         }
+    //         // console.log(formDataDesc.benefits)
+    //         const productDescRes = await fetch("http://localhost:5000/api/product/admin/createDescProduct", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 Authorization: "ffacb7f7-0337-4768-a045-989005531895",
+    //             },
+    //             body: JSON.stringify({
+    //                 ...formDataDesc,
+    //                 product_id: productId,
+    //             }),
+    //         });
+    //         if (!productDescRes.ok) throw new Error("Gagal menyimpan produk desc");
+    //         alert("Produk berhasil disimpan!");
+    //         router.push("/admin/products");
+    //         // Reset form
+    //         // setFormData({
+    //         //     name: "",
+    //         //     slug: "",
+    //         //     eCatalogURL: "",
+    //         //     // remarks: "",
+    //         //     iStatus: "Active",
+    //         //     iShowedStatus: "Show",
+    //         //     category_id: 0,
+    //         //     catalog_id: ""
+    //         // });
+    //         // setFormDataDesc({ descriptions: "", productSpec: "" });
+    //         // setImageFiles([]);
+    //         // setImagePreviews([]);
+    //         // setPrimaryIndex(null);
+    //         // if (fileInputRef.current) fileInputRef.current.value = "";
+    //         // router.push("/admin/products/create")
+
+
+    //     } catch (err) {
+    //         console.error(err);
+    //         alert("Terjadi kesalahan saat menyimpan produk.");
+    //     } finally {
+    //         setIsLoading(false); // End loading
+    //     }
+    // };
 
     return (
         <div className="min-h-screen bg-gray-50 py-10 px-4 flex justify-center">

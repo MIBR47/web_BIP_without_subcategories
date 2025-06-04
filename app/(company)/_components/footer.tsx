@@ -20,8 +20,8 @@ const Footer = () => {
         <div
           className={`flex flex-col gap-2 ${isMobile ? 'items-center text-center' : 'items-start'}`}
         >
-          <Link href='/'>
-            <div className='flex items-center justify-center'>
+          <div className='flex items-center justify-center'>
+            <Link href='/'>
               <Image
                 src='/images/logo/logo.webp'
                 alt='footerlogo'
@@ -33,8 +33,8 @@ const Footer = () => {
                 decoding='async'
                 priority
               />
-            </div>
-          </Link>
+            </Link>
+          </div>
           <div className='mb-3'>
             <div>Alex Bangun Cipendawa Baru</div>
             <div>RT.003 RW.002, Bantar Gebang </div>
@@ -103,6 +103,9 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      <p className="text-center text-sm text-gray-500 text-white py-4">
+        Copyright © {new Date().getFullYear()} - PT. Bumi Indah Putra. All Rights Reserved
+      </p>
     </div>
   );
 };

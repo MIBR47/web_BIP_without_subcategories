@@ -4,14 +4,37 @@ import { Categories } from "@/types";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
 // const BASE_URL = process.env.NEXT_PUBLIC_API_URL2;
+const getAuthHeaders = () => {
+    const token = localStorage.getItem("authToken");
+    return {
+        "Content-Type": "application/json",
+        Authorization: token || "",
+    };
+};
 
-export const updateCategory = async (id: number, category: Categories) => {
+export const updateCategory = async (category: Categories): Promise<Categories> => {
+    const res = await fetch(`${BASE_URL}/category/admin/update`, {
+        method: 'PATCH',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+            ...category,
+        }),
+    });
 
-}
+    if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Failed to update category:', errorText);
+        throw new Error('Update failed');
+    }
+
+    const data = await res.json();
+    return data.data; // Sesuai response API-mu
+};
+
 export const deleteCategoryById = async (id: number) => {
     const res = await fetch(`${BASE_URL}/category/admin/delete/${id}`, {
         method: 'DELETE',
-        headers: { "Content-Type": "application/json", Authorization: "ffacb7f7-0337-4768-a045-989005531895" },
+        headers: getAuthHeaders(),
 
     });
     if (!res.ok) throw new Error('Delete failed');

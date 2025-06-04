@@ -1,4 +1,5 @@
 NEXT_PUBLIC_API_URL = 'http://localhost:3000/api/cms';
+NEXT_PUBLIC_API_URL2='http://localhost:5000/api';
 NEXT_PUBLIC_URL = 'http://localhost:3001';
 
 const publicUrl = process.NEXT_PUBLIC_URL;

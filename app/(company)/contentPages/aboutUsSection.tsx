@@ -59,7 +59,7 @@ const AboutUsSection = () => {
                     animate={textControls}
                     transition={{ duration: 0.6 }}
                 >
-                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-customBlue mb-4">
                         Tentang Kami
                     </h2>
                     <p className="text-gray-700 text-base sm:text-lg leading-relaxed text-justify">

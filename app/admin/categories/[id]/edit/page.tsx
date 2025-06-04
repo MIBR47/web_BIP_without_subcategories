@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useParams } from 'next/navigation';
-import { fetchCategoryById, updateCategory } from '@/lib/api/categoryApi'; // updateCategory: API untuk update
-import { Categories } from '@/types';
+import React, { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { fetchCategoryById, updateCategory } from "@/lib/api/categoryApi";
+import { Categories } from "@/types";
 
 const CategoryEditPage = () => {
     const router = useRouter();
@@ -13,14 +12,14 @@ const CategoryEditPage = () => {
     const [category, setCategory] = useState<Categories | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
         if (!id) return;
 
         fetchCategoryById(Number(id))
             .then((data) => setCategory(data))
-            .catch(() => setError('Gagal memuat data kategori'))
+            .catch(() => setErrorMessage("Gagal memuat data kategori"))
             .finally(() => setLoading(false));
     }, [id]);
 
@@ -29,19 +28,41 @@ const CategoryEditPage = () => {
         if (!category) return;
 
         setSaving(true);
-        setError(null);
         try {
-            await updateCategory(category.id, category);
-            router.push('/admin/categories');
-        } catch {
-            setError('Gagal menyimpan perubahan');
+            await updateCategory(category);
+            router.push("/admin/categories");
+        } catch (err: any) {
+            const message = err?.message || "Gagal menyimpan perubahan";
+            setErrorMessage(message);
         } finally {
             setSaving(false);
         }
     };
 
+    const ErrorModal = ({
+        message,
+        onClose,
+    }: {
+        message: string;
+        onClose: () => void;
+    }) => (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+            <div className="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
+                <h2 className="text-xl font-semibold text-red-600 mb-4">Error</h2>
+                <p className="text-gray-700 mb-6">{message}</p>
+                <div className="text-right">
+                    <button
+                        onClick={onClose}
+                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                    >
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+
     if (loading) return <div className="p-4 text-center">Loading...</div>;
-    if (error) return <div className="p-4 text-center text-red-600">{error}</div>;
 
     return (
         <div className="min-h-screen w-full bg-gray-50 flex flex-col">
@@ -96,7 +117,7 @@ const CategoryEditPage = () => {
                                 </label>
                                 <textarea
                                     id="remarks"
-                                    value={category.remarks || ''}
+                                    value={category.remarks || ""}
                                     onChange={(e) =>
                                         setCategory({ ...category, remarks: e.target.value })
                                     }
@@ -119,15 +140,17 @@ const CategoryEditPage = () => {
                                     disabled={saving}
                                     className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold transition"
                                 >
-                                    {saving ? 'Saving...' : 'Save Changes'}
+                                    {saving ? "Saving..." : "Save Changes"}
                                 </button>
                             </div>
-
-                            {error && <p className="text-red-600 text-center mt-2">{error}</p>}
                         </form>
                     )}
                 </div>
             </div>
+
+            {errorMessage && (
+                <ErrorModal message={errorMessage} onClose={() => setErrorMessage(null)} />
+            )}
         </div>
     );
 };

@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRef } from "react";
 
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+
 const CreateCategoryPage = () => {
     const [formData, setFormData] = useState({
         name: "",
@@ -87,20 +89,28 @@ const CreateCategoryPage = () => {
                 ...formData,
                 imageURL,
             };
-            console.log(imageURL)
-            const res = await fetch("http://localhost:5000/api/category/admin/create", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", Authorization: "e0eb4efb-58d7-48de-b5ce-a324bff7d21f" },
-                body: JSON.stringify(payload),
-            });
+            // console.log(imageURL)
+            const token = localStorage.getItem('authToken');
+            console.log(token)
+            if (token) {
+                const res = await fetch(`${BASE_URL}/category/admin/create`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", Authorization: token },
+                    body: JSON.stringify(payload),
+                });
 
-            if (!res.ok) throw new Error("Gagal submit");
+                // console.log('[Auth] Response status:', res.status);
+                // const text = await res.text();
+                // console.log('[Auth] Response text:', text);
 
-            alert("Berhasil menyimpan kategori!");
-            setFormData({ name: "", slug: "", remarks: "", iStatus: "", iShowedStatus: "" });
-            setImageFile(null);
-            setImagePreview("");
-            if (fileInputRef.current) fileInputRef.current.value = "";
+                if (!res.ok) throw new Error("Gagal submit");
+
+                alert("Berhasil menyimpan kategori!");
+                setFormData({ name: "", slug: "", remarks: "", iStatus: "", iShowedStatus: "" });
+                setImageFile(null);
+                setImagePreview("");
+                if (fileInputRef.current) fileInputRef.current.value = "";
+            }
         } catch (err) {
             console.error(err);
             alert("Terjadi kesalahan saat mengirim data.");
@@ -162,8 +172,8 @@ const CreateCategoryPage = () => {
                             onChange={handleChange}
                             options={[
                                 { value: "", label: "-- Pilih Status --" },
-                                { value: "ACTIVE", label: "Aktif" },
-                                { value: "INACTIVE", label: "Nonaktif" },
+                                { value: "Active", label: "Aktif" },
+                                { value: "Inactive", label: "Nonaktif" },
                             ]}
                         />
 
@@ -174,8 +184,8 @@ const CreateCategoryPage = () => {
                             onChange={handleChange}
                             options={[
                                 { value: "", label: "-- Tampilkan di Frontend? --" },
-                                { value: "SHOW", label: "Tampilkan" },
-                                { value: "HIDDEn", label: "Sembunyikan" },
+                                { value: "Show", label: "Tampilkan" },
+                                { value: "Hidden", label: "Sembunyikan" },
                             ]}
                         />
                     </div>

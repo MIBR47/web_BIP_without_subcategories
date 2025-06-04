@@ -1,7 +1,69 @@
-import { Product } from '@/types';
-import qs from 'query-string';
+import { ProductForm, ProductDesc, Product } from "@/types";
+import { uploadToCloudinary } from "../utils/cloudinaryHandler";
+
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+
+// const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+const getAuthHeaders = () => {
+    const token = localStorage.getItem("authToken");
+    return {
+        "Content-Type": "application/json",
+        Authorization: token || "",
+    };
+};
+
+export const createProduct = async (formData: ProductForm): Promise<number> => {
+    const res = await fetch(`${BASE_URL}/product/admin/create`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify(formData),
+    });
+
+    if (!res.ok) throw new Error("Gagal membuat produk");
+
+    const { data } = await res.json();
+    return data.id;
+};
+
+export const uploadImages = async (
+    productId: number,
+    imageFiles: File[],
+    primaryIndex: number | null
+): Promise<void> => {
+    for (let i = 0; i < imageFiles.length; i++) {
+        const imageURL = await uploadToCloudinary(imageFiles[i]);
+
+        const res = await fetch(`${BASE_URL}/product/admin/createImageProduct`, {
+            method: "POST",
+            headers: getAuthHeaders(),
+            body: JSON.stringify({
+                imageURL,
+                isPrimary: i === primaryIndex,
+                iStatus: "Active",
+                product_id: productId,
+            }),
+        });
+
+        if (!res.ok) throw new Error(`Gagal upload gambar ke-${i + 1}`);
+    }
+};
+
+export const uploadDescriptions = async (
+    productId: number,
+    formDataDesc: ProductDesc
+): Promise<void> => {
+    const res = await fetch(`${BASE_URL}/product/admin/createDescProduct`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+            ...formDataDesc,
+            product_id: productId,
+        }),
+    });
+
+    if (!res.ok) throw new Error("Gagal upload deskripsi produk");
+};
 
 interface GetProductsProps {
     category_id: number;
@@ -89,3 +151,4 @@ export const getProductsByName = async ({
         throw error;
     }
 };
+
