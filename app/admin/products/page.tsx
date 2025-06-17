@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getAllProducts } from '@/lib/api/productApi';
+import { getAllProducts, getAllProductsAdmin } from '@/lib/api/productApi';
 import ProductCard from './_components/productCard';
 import { ProductResponse } from '@/types';
 
@@ -16,7 +16,7 @@ const MessagesPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await getAllProducts(page, limit);
+        const res = await getAllProductsAdmin(page, limit);
         setProducts(res.data); // pastikan API return { data, total }
         setTotal(res.total);
       } catch (err) {

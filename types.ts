@@ -8,7 +8,7 @@ export interface ProductResponse {
   // category: Categories[];
   // tkdn_pctg: number;
   // bmp_pctg: number;
-  iStatus: Status;
+  // iStatus: Status;
   iShowedStatus: ShowedStatus;
   updatedAt: Date;
   ProductDesc: ProductDescResponse;
@@ -21,7 +21,7 @@ export interface ProductRequest {
   slug: string;
   eCatalogURL: string;
   // remarks: string;
-  iStatus: "Active" | "InActive";
+  // iStatus: "Active" | "InActive";
   iShowedStatus: "Show" | "Hidden";
   category_id: number;
   catalog_id: string,
@@ -33,7 +33,7 @@ export interface UpdateProductRequest {
   slug: string;
   eCatalogURL: string;
   // remarks: string;
-  iStatus: "Active" | "InActive";
+  // iStatus: "Active" | "InActive";
   iShowedStatus: "Show" | "Hidden";
   category_id: number;
   catalog_id: string,
@@ -77,10 +77,10 @@ export interface ProductDescResponse {
 // }
 
 // Buat enum untuk Status
-export enum Status {
-  Active = "Active",
-  Inactive = "InActive",
-}
+// export enum Status {
+//   Active = "Active",
+//   Inactive = "InActive",
+// }
 
 export enum ShowedStatus {
   Hidden = "Hidden",
@@ -92,20 +92,20 @@ export interface Categories {
   name: string;
   slug: string;
   remarks: string;
-  iStatus: Status;
+  // iStatus: Status;
   iShowedStatus: ShowedStatus;
   imageURL: string;
 }
 
 export interface News {
-  id: number;
+  // id: number;
   title: string;
   slug: string;
   article: string;
   imageURL: string;
   // iStatus: Status;
   iShowedStatus: ShowedStatus;
-  NewsDate: Date;
+  newsDate: Date;
 }
 
 // export interface SubCategories {

@@ -40,7 +40,23 @@ export const deleteCategoryById = async (id: number) => {
     if (!res.ok) throw new Error('Delete failed');
     return await res.json();
 };
+
 // Fungsi untuk mengambil semua kategori
+export const fetchCategoriesAllAdmin = async (): Promise<Categories[]> => {
+    let url = `${BASE_URL}/category/findall/admin`;
+    try {
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error('Failed to fetch categories');
+        }
+        const categories = await res.json();
+        return categories.data; // Mengembalikan data kategori
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        throw error;
+    }
+};
+// Fungsi untuk mengambil semua kategori yang status show
 export const fetchCategoriesAll = async (): Promise<Categories[]> => {
     let url = `${BASE_URL}/category/findall`;
     try {
