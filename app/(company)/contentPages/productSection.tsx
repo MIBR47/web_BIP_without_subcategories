@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Product } from '@/types';
+import { ProductResponse } from '@/types';
 import ProductCard from '../_components/productCard';
 import { getAllProducts } from '@/lib/api/productApi';
 // import { Products } from './types'; // ganti path sesuai struktur proyekmu
 
 const ProductSection = () => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<ProductResponse[]>([]);
 
     useEffect(() => {
         const fetchProducts = async () => {

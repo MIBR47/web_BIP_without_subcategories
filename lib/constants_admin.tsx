@@ -25,6 +25,11 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     icon: <Icon icon="lucide:mail" width="24" height="24" />,
   },
   {
+    title: 'News',
+    path: '/admin/news',
+    icon: <Icon icon="lucide:help-circle" width="24" height="24" />,
+  },
+  {
     title: 'Settings',
     path: '/admin/settings',
     icon: <Icon icon="lucide:settings" width="24" height="24" />,
@@ -34,11 +39,7 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
       { title: 'Privacy', path: '/admin/settings/privacy' },
     ],
   },
-  {
-    title: 'Help',
-    path: '/admin/help',
-    icon: <Icon icon="lucide:help-circle" width="24" height="24" />,
-  },
+
 ];
 
 export const SIDENAV_ITEMS_ADMIN: SideNavItem[] = [

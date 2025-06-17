@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useMediaQuery } from 'react-responsive';
 
-import { Product } from '@/types';
+import { ProductResponse } from '@/types';
 import { cn } from '@/lib/utils';
 import {
   Card,
@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/card';
 
 interface ProductCardProps {
-  data: Product;
+  data: ProductResponse;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {

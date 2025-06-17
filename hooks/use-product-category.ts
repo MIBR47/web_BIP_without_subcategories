@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Product } from '@/types';
+import { ProductResponse } from '@/types';
 import { getProducts } from '@/lib/api/productApi';
 
 
@@ -10,7 +10,7 @@ interface useProductCategoryProps {
 export const useProductCategory = ({
   category_id,
 }: useProductCategoryProps) => {
-  const { data, isLoading, error, ...rest } = useQuery<Product[], Error>({
+  const { data, isLoading, error, ...rest } = useQuery<ProductResponse[], Error>({
     queryKey: ['products', category_id],
     queryFn: async () => {
       try {

@@ -1,6 +1,6 @@
 // import getProductsByName from '@/actions/get-products-by-name';
 import { getProductsByName } from '@/lib/api/productApi';
-import { Product } from '@/types';
+import { ProductResponse } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from 'use-debounce';
 
@@ -11,7 +11,7 @@ interface UseProductsProps {
 export const useProducts = ({ search }: UseProductsProps) => {
   const [debouncedSearch] = useDebounce(search, 1000); // 1000ms debounce
 
-  const { data, isLoading, error, ...rest } = useQuery<Product[], Error>({
+  const { data, isLoading, error, ...rest } = useQuery<ProductResponse[], Error>({
     queryKey: ['products', debouncedSearch],
     queryFn: async () => {
       try {

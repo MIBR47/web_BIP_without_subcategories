@@ -1,21 +1,22 @@
-export interface Product {
+export interface ProductResponse {
   id: number;
   catalog_id: string;
   name: string;
   slug: string;
-  category_id: string;
-  ecatalog_URL: string;
+  category_id: number;
+  eCatalogURL: string;
   // category: Categories[];
   // tkdn_pctg: number;
   // bmp_pctg: number;
   iStatus: Status;
   iShowedStatus: ShowedStatus;
   updatedAt: Date;
-  ProductDesc: ProductDesc;
+  ProductDesc: ProductDescResponse;
   ProductImage: ProductImage[];
 }
 
-export interface ProductForm {
+
+export interface ProductRequest {
   name: string;
   slug: string;
   eCatalogURL: string;
@@ -26,15 +27,41 @@ export interface ProductForm {
   catalog_id: string,
 }
 
-export interface ProductsResponse {
-  products: Product[];
+export interface UpdateProductRequest {
+  id: number;
+  name: string;
+  slug: string;
+  eCatalogURL: string;
+  // remarks: string;
+  iStatus: "Active" | "InActive";
+  iShowedStatus: "Show" | "Hidden";
+  category_id: number;
+  catalog_id: string,
 }
+
+// export interface ProductsResponse {
+//   products: ProductResponse[];
+// }
 
 export interface ProductImage {
   // id: number;
   isPrimary: boolean;
   imageURL: string;
   product_id: number;
+}
+export interface ProductDescRequest {
+  // id: number;
+  other_info: string;
+  productSpec: string;
+  // benefits: string;
+  // benefit: string;
+}
+export interface ProductDescResponse {
+  id: number;
+  other_info: string;
+  productSpec: string;
+  // benefits: string;
+  // benefit: string;
 }
 // export interface Categories {
 //   id: number;
@@ -52,7 +79,7 @@ export interface ProductImage {
 // Buat enum untuk Status
 export enum Status {
   Active = "Active",
-  Inactive = "Inactive",
+  Inactive = "InActive",
 }
 
 export enum ShowedStatus {
@@ -60,7 +87,6 @@ export enum ShowedStatus {
   Show = "Show",
 }
 
-// Ubah interface Categories
 export interface Categories {
   id: number;
   name: string;
@@ -71,6 +97,17 @@ export interface Categories {
   imageURL: string;
 }
 
+export interface News {
+  id: number;
+  title: string;
+  slug: string;
+  article: string;
+  imageURL: string;
+  // iStatus: Status;
+  iShowedStatus: ShowedStatus;
+  NewsDate: Date;
+}
+
 // export interface SubCategories {
 //   id: number;
 //   // catalog_id: string;
@@ -78,9 +115,9 @@ export interface Categories {
 //   slug: string;
 //   remarks: string;
 //   categoryId: string;
-//   iStatus: Status;
 //   iShowedStatus: ShowedStatus;
 //   imageURL: string;
+//   iStatus: Status;
 // }
 
 // export interface CategoryImages {
@@ -89,13 +126,7 @@ export interface Categories {
 //   imageURL: string;
 // }
 
-export interface ProductDesc {
-  // id: string;  
-  descriptions: string;
-  productSpec: string;
-  // benefits: string;
-  // benefit: string;
-}
+
 
 // export interface PriceList {
 //   id: string;

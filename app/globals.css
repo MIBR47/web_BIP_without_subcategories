@@ -87,3 +87,9 @@
 .scrollbar-hide {
   scrollbar-width: none;
 }
+
+/* html,
+body {
+  @apply h-full;
+}
+ */

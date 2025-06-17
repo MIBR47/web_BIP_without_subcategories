@@ -9,11 +9,12 @@ import PageWrapper from '@/components/page-wrapper';
 import SideNav from '@/app/admin/_components/side-nav';
 import Header from './_components/header';
 import HeaderMobileAdmin from '@/app/admin/_components/header-mobile-admin';
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ['latin'] });
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL2;
 
-export default function RootLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -32,13 +33,10 @@ export default function RootLayout({
       try {
         const res = await fetch(`${BASE_URL}/users/me`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: token,
           },
         });
-        console.log('[Auth] Response status:', res.status);
-        const text = await res.text();
-        console.log('[Auth] Response text:', text);
         if (!res.ok) {
           router.push('/auth/login');
           return;
@@ -64,19 +62,20 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en">
-      <body className={`bg-white ${inter.className} h-screen overflow-hidden`}>
-        <div className="flex flex-col md:flex-row h-full">
-          <SideNav />
-          <main className="flex-1 flex flex-col h-full">
-            <MarginWidthWrapper className="flex flex-col h-full overflow-hidden">
-              <Header />
-              <HeaderMobileAdmin />
-              <PageWrapper className="flex-1 overflow-y-auto">{children}</PageWrapper>
-            </MarginWidthWrapper>
-          </main>
-        </div>
-      </body>
-    </html>
+    <>
+      <Toaster position="top-center" />
+      <div className={`bg-white ${inter.className} flex flex-col md:flex-row h-screen`}>
+        <SideNav />
+        <main className="flex-1 flex flex-col h-full">
+          <MarginWidthWrapper className="flex flex-col h-full overflow-hidden">
+            <Header />
+            <HeaderMobileAdmin />
+            <PageWrapper className="flex-1 overflow-y-auto pt-[47px]">
+              {children}
+            </PageWrapper>
+          </MarginWidthWrapper>
+        </main>
+      </div>
+    </>
   );
 }

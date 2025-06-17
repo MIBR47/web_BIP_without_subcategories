@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Product } from '@/types';
+import { ProductResponse } from '@/types';
 import { routes } from '@/config/routes';
 
 // import getProductBySlug from '@/actions/get-productBySlug';
@@ -23,14 +23,14 @@ interface ProductPageProps {
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata | undefined> {
-  const product: Product = await getProductBySlug({ slug: params.slug.trim() });
+  const product: ProductResponse = await getProductBySlug({ slug: params.slug.trim() });
 
   return {
     title: product.name,
-    description: product.ProductDesc?.descriptions || 'Detail produk',
+    description: product.ProductDesc?.other_info || 'Detail produk',
     openGraph: {
       title: product.name,
-      description: product.ProductDesc?.descriptions || 'Detail produk',
+      description: product.ProductDesc?.other_info || 'Detail produk',
       type: 'website',
       locale: 'id_ID',
       siteName: 'bipmed',
@@ -53,7 +53,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     );
   }
 
-  const category = await fetchCategoryById(parseInt(product.category_id));
+  const category = await fetchCategoryById(product.category_id);
   const categorySlug = category?.slug || '';
   const categoryName = category?.name || 'Kategori Tidak Ditemukan';
 
@@ -79,7 +79,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {/* Main Content */}
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-10 mt-8'>
             {/* Product Gallery */}
-            <div className='w-full lg:sticky top-24 h-max shadow-md rounded-lg border border-gray-200 p-4 bg-white'>
+            <div className='w-full lg:sticky top-24 p-4 h-max '>
               <Gallery images={product.ProductImage} />
             </div>
 

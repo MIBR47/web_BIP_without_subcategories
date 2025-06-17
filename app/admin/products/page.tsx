@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAllProducts } from '@/lib/api/productApi';
 import ProductCard from './_components/productCard';
-import { Product } from '@/types';
+import { ProductResponse } from '@/types';
 
 const MessagesPage = () => {
   const router = useRouter();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductResponse[]>([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const limit = 10;

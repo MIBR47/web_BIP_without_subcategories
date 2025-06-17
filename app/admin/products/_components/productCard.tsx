@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useMediaQuery } from 'react-responsive';
 
-import { Product } from '@/types';
+import { ProductResponse } from '@/types';
 import { cn } from '@/lib/utils';
 import {
   Card,
@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/card';
 
 interface ProductCardProps {
-  data: Product;
+  data: ProductResponse;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
@@ -24,7 +24,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   const isMobile = useMediaQuery({ query: '(max-width: 640px)' });
 
   const handleClick = () => {
-    router.push(`/products/${data?.slug.trim()}`);
+    // router.push(`/products/${data?.slug.trim()}`);
+    router.push(`/admin/products/${data.slug}/view`)
   };
 
   const primaryImage = data.ProductImage.find((img) => img.isPrimary);

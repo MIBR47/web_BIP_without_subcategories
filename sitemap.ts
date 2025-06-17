@@ -1,9 +1,9 @@
 import { MetadataRoute } from 'next';
-import { Product, Categories } from '@/types';
+import { ProductResponse, Categories } from '@/types';
 import { apiUrl, publicUrl } from '@/env.mjs';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  async function getProducts(): Promise<Product[]> {
+  async function getProducts(): Promise<ProductResponse[]> {
     const URL = `${apiUrl}/products`;
 
     const data = await fetch(URL, {
@@ -29,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return data.result; // Assuming the API returns the result in this format
   }
 
-  const products: Product[] = await getProducts();
+  const products: ProductResponse[] = await getProducts();
   const categories: Categories[] = await getCategories();
 
   const filteredProducts = products.filter((product) => product.iShowedStatus);

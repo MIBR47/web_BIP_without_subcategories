@@ -7,7 +7,7 @@ import { toast } from "react-hot-toast";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
 
-const CreateCategoryPage = () => {
+const CreateNewsPage = () => {
     const router = useRouter();
 
     const [formData, setFormData] = useState({
@@ -288,4 +288,4 @@ function SelectField({ label, name, value, onChange, options }: any) {
     );
 }
 
-export default CreateCategoryPage;
+export default CreateNewsPage;

@@ -7,11 +7,13 @@ import { fetchCategoriesAll } from "@/lib/api/categoryApi";
 import { uploadToCloudinary } from "@/lib/utils/cloudinaryHandler";
 import { handleImageChange, handleRemoveImage } from "@/lib/utils/imageHandler";
 import { handleChange } from "@/lib/utils/formHandler";
-import { ProductDesc } from "@/types";
+import { ProductDescRequest } from "@/types";
 import 'react-quill/dist/quill.snow.css';
 import RichTextEditorField from "../_components/RichTextEditorField";
 import { useRouter } from "next/navigation";
 import { createProduct, uploadDescriptions, uploadImages } from "@/lib/api/productApi";
+import { toast } from "react-hot-toast";
+
 
 
 export interface ProductForm {
@@ -29,7 +31,7 @@ interface Category {
     id: number;
     name: string;
 }
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+// const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
 
 
 const CreateProductPage = () => {
@@ -46,8 +48,9 @@ const CreateProductPage = () => {
         category_id: 0,
     });
 
-    const [formDataDesc, setFormDataDesc] = useState<ProductDesc>({
-        descriptions: "",
+    const [formDataDesc, setFormDataDesc] = useState<ProductDescRequest>({
+        // id: 0,
+        other_info: "",
         productSpec: "",
         // benefits: "",
     });
@@ -91,10 +94,21 @@ const CreateProductPage = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!formData.category_id || formData.category_id === 0) {
-            alert("Kategori harus dipilih.");
-            return;
-        }
+        const stripHtml = (html: string) => html.replace(/<[^>]*>?/gm, '').trim();
+
+        if (!formData.name.trim()) return toast.error("Nama produk tidak boleh kosong.");
+        if (!formData.slug.trim()) return toast.error("Slug tidak boleh kosong.");
+        if (!formData.catalog_id.trim()) return toast.error("Catalog ID tidak boleh kosong.");
+        if (!formData.eCatalogURL.trim()) return toast.error("Link e-Catalog tidak boleh kosong.");
+        if (!formData.category_id || formData.category_id === 0) return toast.error("Kategori harus dipilih.");
+
+        if (!stripHtml(formDataDesc.other_info)) return toast.error("Deskripsi produk tidak boleh kosong.");
+        if (!stripHtml(formDataDesc.productSpec)) return toast.error("Spesifikasi produk tidak boleh kosong.");
+
+        // if (!formDataDesc.other_info.trim()) return toast.error("Deskripsi produk tidak boleh kosong.");
+        // if (!formDataDesc.productSpec.trim()) return toast.error("Spesifikasi produk tidak boleh kosong.");
+        if (imageFiles.length === 0) return toast.error("Minimal 1 gambar harus diupload.");
+        if (primaryIndex === null) return toast.error("Pilih gambar utama (primary).");
 
         setIsLoading(true);
         try {
@@ -102,11 +116,21 @@ const CreateProductPage = () => {
             await uploadImages(productId, imageFiles, primaryIndex);
             await uploadDescriptions(productId, formDataDesc);
 
-            alert("Produk berhasil disimpan!");
+            toast.success("Produk berhasil disimpan!");
             router.push("/admin/products");
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
-            alert("Terjadi kesalahan saat menyimpan produk.");
+
+            let errorMessage = "Terjadi kesalahan saat menyimpan produk.";
+            if (err instanceof Error) {
+                errorMessage = err.message;
+            } else if (err?.response?.data?.message) {
+                errorMessage = err.response.data.message;
+            } else if (err?.message) {
+                errorMessage = err.message;
+            }
+
+            toast.error(errorMessage);
         } finally {
             setIsLoading(false);
         }
@@ -303,7 +327,7 @@ const CreateProductPage = () => {
                 </div> */}
 
                 {/* Deskripsi Produk */}
-                <RichTextEditorField label="Deskripsi Produk" name="descriptions" content={formDataDesc.descriptions} onChange={handleChangeDesc} />
+                <RichTextEditorField label="Deskripsi Produk" name="other_info" content={formDataDesc.other_info} onChange={handleChangeDesc} />
                 <RichTextEditorField label="Spesifikasi Produk" name="productSpec" content={formDataDesc.productSpec} onChange={handleChangeDesc} />
                 {/* <RichTextEditorField label="Manfaat Produk" name="benefits" content={formDataDesc.benefits} onChange={handleChangeDesc} /> */}
 
