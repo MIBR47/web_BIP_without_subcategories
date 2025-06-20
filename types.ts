@@ -98,7 +98,7 @@ export interface Categories {
 }
 
 export interface News {
-  // id: number;
+  id: number;
   title: string;
   slug: string;
   article: string;
@@ -106,7 +106,10 @@ export interface News {
   // iStatus: Status;
   iShowedStatus: ShowedStatus;
   newsDate: Date;
+  contentURL?: string;
+
 }
+
 
 // export interface SubCategories {
 //   id: number;

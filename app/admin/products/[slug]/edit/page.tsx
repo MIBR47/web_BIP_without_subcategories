@@ -4,9 +4,17 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ProductResponse, ProductDescRequest, UpdateProductRequest } from '@/types';
 import { getProductBySlug, updateProduct, updateProductDesc } from "@/lib/api/productApi";
-// import SimpleEditor from "@/components/SimpleEditor"; // assuming you're using it
-import RichTextEditorField from "../../_components/RichTextEditorField";
+import RichTextEditorField from "../../../../../components/form/RichTextEditorField";
 import toast from "react-hot-toast";
+import { fetchCategoriesAll } from "@/lib/api/categoryApi";
+import { handleChange } from "@/lib/utils/formHandler";
+import SelectField from "@/components/form/selectField";
+import InputField from "@/components/form/inputField";
+
+interface Category {
+    id: number;
+    name: string;
+}
 
 const ProductEditPage = () => {
     const { slug } = useParams();
@@ -14,6 +22,8 @@ const ProductEditPage = () => {
     const [product, setProduct] = useState<ProductResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [categories, setCategories] = useState<Category[]>([]);
+
 
     const [form, setForm] = useState<UpdateProductRequest>({
         id: 0,
@@ -21,23 +31,27 @@ const ProductEditPage = () => {
         slug: "",
         catalog_id: "",
         eCatalogURL: "",
-        iStatus: "Active",
         iShowedStatus: "Show",
         category_id: 0,
-        // productSpec: "",
-        // other_info: "",
     });
 
     const [formDataDesc, setFormDataDesc] = useState<ProductDescRequest>({
-        // id: 0,
         other_info: "",
         productSpec: "",
-        // benefits: "",
     });
 
+    const getCategories = async () => {
+        try {
+            const data: any = await fetchCategoriesAll();
+            setCategories(data);
+        } catch (err) {
+            console.error("Gagal mengambil kategori");
+        }
+    };
 
     useEffect(() => {
         if (typeof slug !== "string") return;
+        getCategories();
         getProductBySlug({ slug })
             .then((data) => {
                 setProduct(data);
@@ -47,166 +61,152 @@ const ProductEditPage = () => {
                     slug: data.slug,
                     catalog_id: data.catalog_id || "",
                     eCatalogURL: data.eCatalogURL || "",
-                    iStatus: data.iStatus,
                     iShowedStatus: data.iShowedStatus,
-                    category_id: data.category_id
+                    category_id: data.category_id,
                 });
                 setFormDataDesc({
-                    // id: data.ProductDesc?.id ?? "",
                     other_info: data.ProductDesc?.other_info ?? "",
-                    productSpec: data.ProductDesc?.productSpec ?? ""
+                    productSpec: data.ProductDesc?.productSpec ?? "",
                 });
             })
-            .catch((erorr) => setError("error: " + erorr))
+            .catch((err) => setError("error: " + err))
             .finally(() => setLoading(false));
     }, [slug]);
 
-    const handleChange = (field: string, value: string) => {
-        setForm((prev) => ({ ...prev, [field]: value }));
-    };
-    const handleChangeDesc = (name: string, value: string) => {
-        setFormDataDesc((prev) => ({ ...prev, [name]: value }));
+    // const handleChange = (field: string, value: string) => {
+    //     setForm((prev) => ({ ...prev, [field]: value }));
+    // };
+
+    const handleChangeDesc = (field: string, value: string) => {
+        setFormDataDesc((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleSubmit = async () => {
         if (!product) return;
-
         const productDescID = product.ProductDesc.id;
-        // console.log(formDataDesc.other_info + formDataDesc.productSpec)
-
         try {
             await updateProduct(form);
             await updateProductDesc(productDescID, formDataDesc);
-            toast.success("Product information updated successfully!");
+            toast.success("Produk berhasil diperbarui!");
             router.push("/admin/products");
         } catch (err) {
-            toast.error("Failed to update product info.");
+            toast.error("Gagal memperbarui produk.");
         }
-
-        // try {
-
-        //     toast.success("Product description updated successfully!");
-        // } catch (err) {
-        //     toast.error("Failed to update product description.");
-        // }
     };
 
-
-    if (loading) return <div className="p-6 text-center text-gray-500">Loading...</div>;
-    if (error) return <div className="p-6 text-center text-red-600">{error}</div>;
+    if (loading) return <div className="p-6 text-center">Loading...</div>;
+    if (error) return <div className="p-6 text-red-600 text-center">{error}</div>;
 
     return (
-        <div className="min-h-screen w-full bg-gray-50 flex justify-center items-start py-10 px-4">
-            <div className="w-full max-w-5xl bg-white p-8 sm:p-10 rounded-2xl shadow-lg space-y-6">
-                <button onClick={() => router.back()} className="text-blue-600 hover:underline">
-                    &larr; Back
-                </button>
-
-                <h1 className="text-3xl font-bold text-gray-800">Edit Product</h1>
-
-                {/* Product Images */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {product?.ProductImage.map((img, i) => (
-                        <div key={i} className="relative">
-                            <img
-                                src={img.imageURL || "/placeholder.png"}
-                                alt={`Product ${i + 1}`}
-                                className="w-full h-64 object-contain border rounded-lg"
-                            />
-                            {img.isPrimary && (
-                                <span className="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded">
-                                    Primary
-                                </span>
-                            )}
-                        </div>
-                    ))}
+        <div className="min-h-screen px-4 py-10 bg-gray-50">
+            <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow p-6 space-y-8">
+                <div className="flex justify-between items-center">
+                    <h1 className="text-2xl font-semibold">Edit Produk</h1>
+                    <button onClick={() => router.back()} className="text-sm text-blue-600 hover:underline">
+                        &larr; Kembali
+                    </button>
                 </div>
 
-                {/* Form Fields */}
-                <div className="space-y-4">
+                {/* SECTION 2: Gambar Produk */}
+                {product?.ProductImage?.length! > 0 && (
                     <div>
-                        <label className="block text-sm font-medium">Name</label>
-                        <input
+                        <h2 className="text-lg font-semibold">Gambar Produk</h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
+                            {product?.ProductImage.map((img, index) => (
+                                <div key={index} className="relative">
+                                    <img
+                                        src={img.imageURL || "/placeholder.png"}
+                                        alt={`Image ${index + 1}`}
+                                        className="w-full h-48 object-contain border rounded"
+                                    />
+                                    {img.isPrimary && (
+                                        <span className="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded">
+                                            Primary
+                                        </span>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* SECTION 1: Informasi Produk */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        {/* <label className="text-sm font-medium">Nama Produk</label> */}
+                        <InputField
+                            label="Nama Produk"
+                            name="name"
                             type="text"
                             value={form.name}
-                            onChange={(e) => handleChange("name", e.target.value)}
-                            className="mt-1 w-full rounded border px-4 py-2"
+                            onChange={(e) => handleChange(e, setForm)}
+                        // className="mt-1 w-full rounded border px-4 py-2"
                         />
                     </div>
-
                     <div>
-                        <label className="block text-sm font-medium">Slug</label>
-                        <input
+                        {/* <label className="text-sm font-medium">Slug</label> */}
+                        <InputField
+                            label="Slug"
+                            name="slug"
                             type="text"
                             value={form.slug}
-                            onChange={(e) => handleChange("slug", e.target.value)}
-                            className="mt-1 w-full rounded border px-4 py-2"
+                            onChange={(e) => handleChange(e, setForm)}
+                        // className="mt-1 w-full rounded border px-4 py-2"
                         />
                     </div>
-
                     <div>
-                        <label className="block text-sm font-medium">Catalog ID</label>
-                        <input
+                        {/* <label className="text-sm font-medium">Catalog ID</label> */}
+                        <InputField
+                            label="Catalog ID"
+                            name="catalog_id"
                             type="text"
                             value={form.catalog_id}
-                            onChange={(e) => handleChange("catalog_id", e.target.value)}
-                            className="mt-1 w-full rounded border px-4 py-2"
+                            onChange={(e) => handleChange(e, setForm)}
+                        // className="mt-1 w-full rounded border px-4 py-2"
                         />
                     </div>
-
                     <div>
-                        <label className="block text-sm font-medium">e-Catalog URL</label>
-                        <input
+                        {/* <label className="text-sm font-medium">e-Catalog URL</label> */}
+                        <InputField
+                            label="e-Catalog URL"
+                            name="eCatalogURL"
                             type="text"
                             value={form.eCatalogURL}
-                            onChange={(e) => handleChange("eCatalogURL", e.target.value)}
-                            className="mt-1 w-full rounded border px-4 py-2"
+                            onChange={(e) => handleChange(e, setForm)}
+                        // className="mt-1 w-full rounded border px-4 py-2"
                         />
                     </div>
+                    <div>
+                        {/* <label className="text-sm font-medium">Status Tampil</label> */}
+                        <SelectField
+                            label="Status Tampil"
+                            name="iShowedStatus"
+                            value={form.iShowedStatus}
+                            onChange={(e) => handleChange(e, setForm)}
+                            // className="mt-1 w-full rounded border px-4 py-2"
+                            options={[
+                                { value: "", label: "-- Pilih --" },
+                                { value: "Show", label: "Show" },
+                                { value: "Hidden", label: "Hidden" },
+                            ]} />
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium">Status</label>
-                            <select
-                                value={form.iStatus}
-                                onChange={(e) => handleChange("iStatus", e.target.value)}
-                                className="mt-1 w-full rounded border px-4 py-2"
-                            >
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium">Showed Status</label>
-                            <select
-                                value={form.iShowedStatus}
-                                onChange={(e) => handleChange("iShowedStatus", e.target.value)}
-                                className="mt-1 w-full rounded border px-4 py-2"
-                            >
-                                <option value="Show">Show</option>
-                                <option value="Hide">Hide</option>
-                            </select>
-                        </div>
                     </div>
-
-                    {/* Product Specification */}
-                    {/* <div>
-                        <label className="block text-sm font-medium">Product Specification</label>
-                        <SimpleEditor
-                            value={form.productSpec}
-                            onChange={(value: string) => handleChange("productSpec", value)}
+                    <div>
+                        <SelectField
+                            label="Kategori"
+                            name="category_id"
+                            value={form.category_id}
+                            onChange={(e) => handleChange(e, setForm)}
+                            options={[{ value: 0, label: "-- Pilih Kategori --" }, ...categories.map((c) => ({ value: c.id, label: c.name }))]}
                         />
-                    </div> */}
 
-                    {/* Other Info */}
-                    {/* <div>
-                        <label className="block text-sm font-medium">Other Info</label>
-                        <SimpleEditor
-                            value={form.other_info}
-                            onChange={(value: string) => handleChange("other_info", value)}
-                        />
-                    </div> */}
+                    </div>
+                </div>
+
+
+
+                {/* SECTION 3: Deskripsi */}
+                <div className="space-y-4">
                     <RichTextEditorField
                         label="Spesifikasi Produk"
                         name="productSpec"
@@ -219,18 +219,19 @@ const ProductEditPage = () => {
                         content={formDataDesc.other_info}
                         onChange={handleChangeDesc}
                     />
+                </div>
 
-                    <div className="pt-6">
-                        <button
-                            onClick={handleSubmit}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm"
-                        >
-                            Update Product
-                        </button>
-                    </div>
+                {/* BUTTON SIMPAN */}
+                <div className="pt-4">
+                    <button
+                        onClick={handleSubmit}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm"
+                    >
+                        Simpan Perubahan
+                    </button>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

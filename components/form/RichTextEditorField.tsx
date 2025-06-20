@@ -4,7 +4,7 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from "@tiptap/extension-text-align"
 import Highlight from "@tiptap/extension-highlight"
-import MenuBar from "./menubar";
+import MenuBar from "../../app/admin/products/_components/menubar";
 
 interface RichTextEditorFieldProps {
     name: string;
@@ -38,13 +38,14 @@ const RichTextEditorField: FC<RichTextEditorFieldProps> = ({
             }),
             TextAlign.configure({
                 types: ["heading", "paragraph"],
+                alignments: ["left", "center", "right", "justify"],
             }),
             Highlight,
         ],
         content: content,
         editorProps: {
             attributes: {
-                class: "min-h-[156px] border rounded-md bg-slate-50 py-2 px-3",
+                class: "min-h-[156px] border rounded-md bg-white py-2 px-3",
             },
         },
         onUpdate: ({ editor }) => {
@@ -53,7 +54,7 @@ const RichTextEditorField: FC<RichTextEditorFieldProps> = ({
     });
     return (
         <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-black mb-1">
                 {label}
             </label>
             <div>

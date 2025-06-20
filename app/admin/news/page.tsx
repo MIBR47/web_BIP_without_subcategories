@@ -3,10 +3,11 @@
 import React, { useState, useEffect, startTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { News } from '@/types';
-import { fetchNewsAllAdmin, deleteNewsBySlug } from '@/lib/api/newsAPI';
+// import { fetchNewsAllAdmin, deleteNewsBySlug } from '@/lib/api/newsApi';
 import { toast } from 'react-hot-toast';
 import { XCircle, CheckCircle2 } from 'lucide-react';
-import { deleteCategoryById } from '@/lib/api/categoryApi';
+// import { deleteCategoryById } from '@/lib/api/categoryApi';
+import { deleteNewsBySlug, fetchNewsAllAdmin } from '@/lib/api/newsApi';
 
 const NewsPage = () => {
   const router = useRouter();
@@ -99,7 +100,7 @@ const NewsPage = () => {
             <h1 className="text-2xl font-bold">News</h1>
             <button
               type="button"
-              onClick={() => handleNavigate("/admin/categories/create")}
+              onClick={() => handleNavigate("/admin/news/create")}
               className="bg-[#035ea2] hover:bg-[#024b85] text-white font-semibold py-2 px-4 rounded-lg transition disabled:opacity-50"
               disabled={navigating}
             >

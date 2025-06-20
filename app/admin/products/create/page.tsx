@@ -9,10 +9,13 @@ import { handleImageChange, handleRemoveImage } from "@/lib/utils/imageHandler";
 import { handleChange } from "@/lib/utils/formHandler";
 import { ProductDescRequest } from "@/types";
 import 'react-quill/dist/quill.snow.css';
-import RichTextEditorField from "../_components/RichTextEditorField";
+import RichTextEditorField from "../../../../components/form/RichTextEditorField";
 import { useRouter } from "next/navigation";
 import { createProduct, uploadDescriptions, uploadImages } from "@/lib/api/productApi";
 import { toast } from "react-hot-toast";
+import SelectField from "@/components/form/selectField";
+import InputField from "@/components/form/inputField";
+// import InputField from "@/components/form/inputfield";
 
 
 
@@ -21,7 +24,7 @@ export interface ProductForm {
     slug: string;
     eCatalogURL: string;
     // remarks: string;
-    iStatus: "Active" | "InActive";
+    // iStatus: "Active" | "InActive";
     iShowedStatus: "Show" | "Hidden";
     category_id: number;
     catalog_id: string,
@@ -43,7 +46,7 @@ const CreateProductPage = () => {
         slug: "",
         eCatalogURL: "",
         // remarks: "test",
-        iStatus: "Active",
+        // iStatus: "Active",
         iShowedStatus: "Show",
         category_id: 0,
     });
@@ -135,103 +138,6 @@ const CreateProductPage = () => {
             setIsLoading(false);
         }
     };
-    // const handleSubmit = async (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     // console.log(formData.category_id)
-    //     // console.log(formData)
-    //     // const formDataToSend = {
-    //     //     ...formData,
-    //     //     category_id: parseInt(formData.category_id, 10) // Pastikan category_id adalah number
-    //     // };
-
-
-    //     if (!formData.category_id || formData.category_id === 0) {
-    //         alert("Kategori harus dipilih.");
-    //         return;
-    //     }
-    //     setIsLoading(true);
-    //     try {
-    //         const productRes = await fetch(`${BASE_URL}/product/admin/create`, {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 Authorization: "ffacb7f7-0337-4768-a045-989005531895",
-    //             },
-    //             body: JSON.stringify(formData),
-    //         });
-
-    //         if (!productRes.ok) throw new Error("Gagal menyimpan produk");
-
-    //         const { data } = await productRes.json();
-    //         const productId: number = data.id;
-    //         // console.log(data.name);
-
-    //         // const productId: number = 4;
-
-
-    //         for (let i = 0; i < imageFiles.length; i++) {
-    //             console.log("image=" + imageFiles)
-
-    //             const imageURL = await uploadToCloudinary(imageFiles[i]);
-    //             // const imageURL = "https://res.cloudinary.com/dsad6wufm/image/upload/v1747296741/hwlv3r37vlfbcdvp77to.jpg"
-
-    //             const productImageRes = await fetch("http://localhost:5000/api/product/admin/createImageProduct", {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                     Authorization: "ffacb7f7-0337-4768-a045-989005531895",
-    //                 },
-    //                 body: JSON.stringify({
-    //                     imageURL: imageURL,
-    //                     isPrimary: i === primaryIndex,
-    //                     iStatus: "Active",
-    //                     product_id: productId,
-    //                 }),
-    //             });
-    //             if (!productImageRes.ok) throw new Error("Gagal menyimpan produk image");
-
-    //         }
-    //         // console.log(formDataDesc.benefits)
-    //         const productDescRes = await fetch("http://localhost:5000/api/product/admin/createDescProduct", {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 Authorization: "ffacb7f7-0337-4768-a045-989005531895",
-    //             },
-    //             body: JSON.stringify({
-    //                 ...formDataDesc,
-    //                 product_id: productId,
-    //             }),
-    //         });
-    //         if (!productDescRes.ok) throw new Error("Gagal menyimpan produk desc");
-    //         alert("Produk berhasil disimpan!");
-    //         router.push("/admin/products");
-    //         // Reset form
-    //         // setFormData({
-    //         //     name: "",
-    //         //     slug: "",
-    //         //     eCatalogURL: "",
-    //         //     // remarks: "",
-    //         //     iStatus: "Active",
-    //         //     iShowedStatus: "Show",
-    //         //     category_id: 0,
-    //         //     catalog_id: ""
-    //         // });
-    //         // setFormDataDesc({ descriptions: "", productSpec: "" });
-    //         // setImageFiles([]);
-    //         // setImagePreviews([]);
-    //         // setPrimaryIndex(null);
-    //         // if (fileInputRef.current) fileInputRef.current.value = "";
-    //         // router.push("/admin/products/create")
-
-
-    //     } catch (err) {
-    //         console.error(err);
-    //         alert("Terjadi kesalahan saat menyimpan produk.");
-    //     } finally {
-    //         setIsLoading(false); // End loading
-    //     }
-    // };
 
     return (
         <div className="min-h-screen bg-gray-50 py-10 px-4 flex justify-center">
@@ -349,25 +255,25 @@ const CreateProductPage = () => {
     );
 };
 
-interface InputFieldProps {
-    label: string;
-    name: string;
-    value: string | number;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+// interface InputFieldProps {
+//     label: string;
+//     name: string;
+//     value: string | number;
+//     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+// }
 
-const InputField = ({ label, name, value, onChange }: InputFieldProps) => (
-    <div>
-        <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-        <input
-            type="text"
-            name={name}
-            value={value}
-            onChange={onChange}
-            className="w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-    </div>
-);
+// const InputField = ({ label, name, value, onChange }: InputFieldProps) => (
+//     <div>
+//         <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+//         <input
+//             type="text"
+//             name={name}
+//             value={value}
+//             onChange={onChange}
+//             className="w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+//         />
+//     </div>
+// );
 
 // interface TextAreaFieldProps {
 //     label: string;
@@ -389,33 +295,33 @@ const InputField = ({ label, name, value, onChange }: InputFieldProps) => (
 //     </div>
 // );
 
-interface SelectOption {
-    value: number;
-    label: string;
-}
+// interface SelectOption {
+//     value: number;
+//     label: string;
+// }
 
-interface SelectFieldProps {
-    label: string;
-    name: string;
-    value: number;
-    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    options: SelectOption[];
-}
+// interface SelectFieldProps {
+//     label: string;
+//     name: string;
+//     value: number;
+//     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+//     options: SelectOption[];
+// }
 
-const SelectField = ({ label, name, value, onChange, options }: SelectFieldProps) => (
-    <div>
-        <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-        <select
-            name={name}
-            value={value}
-            onChange={onChange}
-            className="w-full border border-gray-300 rounded-xl p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-            {options.map((opt, index) => (
-                <option key={index} value={opt.value}>{opt.label}</option>
-            ))}
-        </select>
-    </div>
-);
+// const SelectField = ({ label, name, value, onChange, options }: SelectFieldProps) => (
+//     <div>
+//         <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+//         <select
+//             name={name}
+//             value={value}
+//             onChange={onChange}
+//             className="w-full border border-gray-300 rounded-xl p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+//         >
+//             {options.map((opt, index) => (
+//                 <option key={index} value={opt.value}>{opt.label}</option>
+//             ))}
+//         </select>
+//     </div>
+// );
 
 export default CreateProductPage;

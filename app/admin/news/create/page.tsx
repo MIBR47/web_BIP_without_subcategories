@@ -1,32 +1,44 @@
 "use client";
 
 import { useState, useRef } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { toast } from "react-hot-toast";
+// import RichTextEditorField from "../../../../components/form/RichTextEditorField";
+import RichTextEditorField from "@/components/form/RichTextEditorField";
+import InputField from "@/components/form/inputField";
+import SelectField from "@/components/form/selectField";
+import { handleChange, handleChangeRichEditor } from "@/lib/utils/formHandler";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
 
 const CreateNewsPage = () => {
     const router = useRouter();
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const [formData, setFormData] = useState({
-        name: "",
+        title: "",
         slug: "",
-        remarks: "",
-        iStatus: "",
-        iShowedStatus: "",
+        article: "",
+        iShowedStatus: "Show",
+        newsDate: "",
+        contentURL: "",
     });
 
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string>("");
+    const [imagePreview, setImagePreview] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+    // const handleChange2 = (
+    //     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    // ) => {
+    //     const { name, value } = e.target;
+    //     setFormData((prev) => ({ ...prev, [name]: value }));
+    // };
+
+    // const handleChange = (name: string, value: string) => {
+    //     setFormData((prev) => ({ ...prev, [name]: value }));
+    // };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -39,40 +51,40 @@ const CreateNewsPage = () => {
     const handleRemoveImage = () => {
         setImageFile(null);
         setImagePreview("");
-        setFormData((prev) => ({
-            ...prev,
-            name: "",
-            slug: "",
-        }));
         if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!formData.name.trim()) return toast.error("Nama kategori tidak boleh kosong.");
-        if (!formData.slug.trim()) return toast.error("Slug tidak boleh kosong.");
+        if (!formData.title.trim() || !formData.slug.trim()) {
+            toast.error("Judul dan slug wajib diisi");
+            return;
+        }
+
+        if (!imageFile) {
+            toast.error("Gambar belum dipilih.");
+            return;
+        }
+
         setIsLoading(true);
 
         try {
-            if (!imageFile) {
-                toast.error("Silakan pilih gambar kategori.");
-                setIsLoading(false);
-                return;
-            }
-
             const formDataToSend = new FormData();
             formDataToSend.append("file", imageFile);
-            formDataToSend.append("name", formData.name);
+            formDataToSend.append("title", formData.title);
             formDataToSend.append("slug", formData.slug);
-            formDataToSend.append("remarks", formData.remarks);
-            formDataToSend.append("iStatus", formData.iStatus);
+            formDataToSend.append("article", formData.article);
             formDataToSend.append("iShowedStatus", formData.iShowedStatus);
+            formDataToSend.append("newsDate", formData.newsDate);
+            if (formData.contentURL) {
+                formDataToSend.append("contentURL", formData.contentURL);
+            }
 
             const token = localStorage.getItem("authToken");
-            if (!token) throw toast.error("Token tidak ditemukan");
+            if (!token) throw new Error("Token tidak ditemukan");
 
-            const res = await fetch(`${BASE_URL}/category/admin/create`, {
+            const res = await fetch(`${BASE_URL}/news/admin/create`, {
                 method: "POST",
                 headers: {
                     Authorization: token,
@@ -80,212 +92,100 @@ const CreateNewsPage = () => {
                 body: formDataToSend,
             });
 
-            if (!res.ok) throw toast.error("Gagal submit kategori");
+            if (!res.ok) {
+                let errorMessage = `(${res.status}) ${res.statusText}`;
 
-            toast.success("Category berhasil disimpan!");
-            setFormData({ name: "", slug: "", remarks: "", iStatus: "", iShowedStatus: "" });
-            setImageFile(null);
-            setImagePreview("");
-            if (fileInputRef.current) fileInputRef.current.value = "";
-            router.push("/admin/categories");
+                try {
+                    const errorData = await res.json();
+                    if (errorData?.message) {
+                        errorMessage += ` - ${errorData.message}`;
+                    } else if (errorData?.error) {
+                        errorMessage += ` - ${errorData.error}`;
+                    }
+                    console.error("🧨 JSON error response:", errorData);
+                } catch (jsonErr) {
+                    const text = await res.text();
+                    console.error("🧨 Raw text error response:", text);
+                    errorMessage += ` - ${text}`;
+                }
 
-        } catch (err: any) {
-            console.error(err);
-            let errorMessage = "Terjadi kesalahan saat menyimpan produk.";
-            if (err instanceof Error) {
-                errorMessage = err.message;
-            } else if (err?.response?.data?.message) {
-                errorMessage = err.response.data.message;
-            } else if (err?.message) {
-                errorMessage = err.message;
+                throw new Error(errorMessage);
             }
-            toast.error(errorMessage);
 
+            toast.success("Berita berhasil disimpan!");
+            router.push("/admin/news");
+        } catch (err: any) {
+            toast.error(err.message || "Gagal menyimpan berita");
         } finally {
             setIsLoading(false);
         }
     };
 
+
     return (
-        <div className="min-h-screen w-full bg-gray-50 flex flex-col">
-            <div className="flex-grow flex justify-center items-start py-10 px-4 sm:px-8 lg:px-16">
-                <form
-                    onSubmit={handleSubmit}
-                    className="w-full max-w-4xl bg-white p-8 sm:p-10 rounded-2xl shadow-lg space-y-6"
-                >
-                    <h2 className="text-3xl font-bold text-gray-800">Tambah Kategori</h2>
+        <div className="min-h-screen bg-gray-50 p-8">
+            <form
+                onSubmit={handleSubmit}
+                className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow space-y-6"
+            >
+                <h1 className="text-3xl font-bold">Tambah Berita</h1>
 
-                    {/* Upload */}
-                    <div className="flex flex-col items-center gap-4">
-                        <input
-                            ref={fileInputRef}
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                            className="w-full border border-gray-300 rounded-xl p-2 text-sm"
-                        />
-
-                        {imagePreview && (
-                            <div className="relative">
-                                <img
-                                    src={imagePreview}
-                                    alt="preview"
-                                    className="w-48 h-48 object-cover rounded-xl border shadow"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={handleRemoveImage}
-                                    className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full px-2 text-xs hover:bg-red-700"
-                                >
-                                    ✕
-                                </button>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Nama dan Slug */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <InputField label="Nama Kategori" name="name" value={formData.name} onChange={handleChange} />
-                        <InputField label="Slug" name="slug" value={formData.slug} onChange={handleChange} />
-                    </div>
-
-                    {/* Remarks */}
-                    <TextAreaField label="Remarks" name="remarks" value={formData.remarks} onChange={handleChange} />
-
-                    {/* Dropdown */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <SelectField
-                            label="iStatus"
-                            name="iStatus"
-                            value={formData.iStatus}
-                            onChange={handleChange}
-                            options={[
-                                { value: "", label: "-- Pilih Status --" },
-                                { value: "Active", label: "Aktif" },
-                                { value: "Inactive", label: "Nonaktif" },
-                            ]}
-                        />
-
-                        <SelectField
-                            label="iShowedStatus"
-                            name="iShowedStatus"
-                            value={formData.iShowedStatus}
-                            onChange={handleChange}
-                            options={[
-                                { value: "", label: "-- Tampilkan di Frontend? --" },
-                                { value: "Show", label: "Tampilkan" },
-                                { value: "Hidden", label: "Sembunyikan" },
-                            ]}
-                        />
-                    </div>
-
-                    {/* Tombol */}
-                    <div className="space-y-3">
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full border rounded p-2"
+                />
+                {imagePreview && (
+                    <div className="relative w-48">
+                        <img src={imagePreview} className="rounded border" />
                         <button
-                            type="submit"
-                            className="w-full bg-blue-600 text-white py-3 rounded-xl text-lg hover:bg-blue-700 transition flex items-center justify-center"
-                            disabled={isLoading}
+                            type="button"
+                            onClick={handleRemoveImage}
+                            className="absolute top-0 right-0 bg-red-600 text-white text-xs px-2 py-1 rounded"
                         >
-                            {isLoading ? (
-                                <>
-                                    <svg
-                                        className="animate-spin h-5 w-5 mr-2 text-white"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <circle
-                                            className="opacity-25"
-                                            cx="12"
-                                            cy="12"
-                                            r="10"
-                                            stroke="currentColor"
-                                            strokeWidth="4"
-                                        ></circle>
-                                        <path
-                                            className="opacity-75"
-                                            fill="currentColor"
-                                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                                        ></path>
-                                    </svg>
-                                    Menyimpan...
-                                </>
-                            ) : (
-                                "Simpan Kategori"
-                            )}
+                            ✕
                         </button>
-
-                        <Link
-                            href="/admin/categories"
-                            className="block text-center w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 transition"
-                        >
-                            Kembali ke Daftar Kategori
-                        </Link>
                     </div>
-                </form>
-            </div>
+                )}
+
+                <InputField label="Judul Berita" name="title" value={formData.title} onChange={(e) => handleChange(e, setFormData)} />
+                <InputField label="Slug" name="slug" value={formData.slug} onChange={(e) => handleChange(e, setFormData)} />
+                {/* <TextAreaField label="Isi Artikel" name="article" value={formData.article} onChange={handleChange} /> */}
+                <RichTextEditorField label="Isi Artikel" name="article" content={formData.article} onChange={(name, value) => handleChangeRichEditor(name, value, setFormData)} />
+                <InputField label="Tanggal Berita" name="newsDate" type="datetime-local" value={formData.newsDate} onChange={(e) => handleChange(e, setFormData)} />
+                <InputField label="Link Sumber (opsional)" name="contentURL" value={formData.contentURL} onChange={(e) => handleChange(e, setFormData)} />
+
+                {/* <SelectField
+                    label="Showed Status"
+                    name="iShowedStatus"
+                    value={formData.iShowedStatus}
+                    onChange={(e) => handleChange(e, setFormData)}
+                    options={[
+                        { value: "", label: "-- Pilih --" },
+                        { value: "Show", label: "Show" },
+                        { value: "Hidden", label: "Hidden" },
+                    ]}
+                /> */}
+
+                <div className="space-y-3">
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700"
+                    >
+                        {isLoading ? "Menyimpan..." : "Simpan Berita"}
+                    </button>
+                    <Link
+                        href="/admin/news"
+                        className="block text-center w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200"
+                    >
+                        Kembali ke Daftar Berita
+                    </Link>
+                </div>
+            </form>
         </div>
     );
 };
-
-// Komponen Reusable
-function InputField({ label, name, value, onChange }: any) {
-    return (
-        <div>
-            <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
-                {label}
-            </label>
-            <input
-                type="text"
-                id={name}
-                name={name}
-                value={value}
-                onChange={onChange}
-                className="w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-        </div>
-    );
-}
-
-function TextAreaField({ label, name, value, onChange }: any) {
-    return (
-        <div>
-            <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
-                {label}
-            </label>
-            <textarea
-                id={name}
-                name={name}
-                value={value}
-                onChange={onChange}
-                rows={3}
-                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-        </div>
-    );
-}
-
-function SelectField({ label, name, value, onChange, options }: any) {
-    return (
-        <div>
-            <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
-                {label}
-            </label>
-            <select
-                id={name}
-                name={name}
-                value={value}
-                onChange={onChange}
-                className="w-full border border-gray-300 rounded-xl p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-                {options.map((opt: any) => (
-                    <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                    </option>
-                ))}
-            </select>
-        </div>
-    );
-}
-
 export default CreateNewsPage;

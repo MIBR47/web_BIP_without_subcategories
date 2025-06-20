@@ -2,6 +2,7 @@ import {
     AlignCenter,
     AlignLeft,
     AlignRight,
+    AlignJustify,
     Bold,
     Heading1,
     Heading2,
@@ -65,6 +66,11 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
             icon: <AlignRight className="size-4" />,
             onClick: () => editor.chain().focus().setTextAlign("right").run(),
             preesed: editor.isActive({ textAlign: "right" }),
+        },
+        {
+            icon: <AlignJustify className="size-4" />,
+            onClick: () => editor.chain().focus().setTextAlign("justify").run(),
+            preesed: editor.isActive({ textAlign: "justify" }),
         },
         {
             icon: <List className="size-4" />,
