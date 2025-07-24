@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import usePreviewModal from '@/hooks/use-preview-modal';
 import MainButton from '@/components/ui/MainButton';
+import { BASE_IMAGE_URL } from '@/lib/global_constant.';
 
 interface CategoryCardProps {
   data: Categories;
@@ -53,7 +54,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
     <motion.div
       initial="initial"
       animate="initial"
-      whileHover="animate"
+      whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.4 }}
       className="relative rounded-lg overflow-hidden w-full max-w-xs shadow-md"
     >
@@ -62,7 +63,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
           <CardContent className="h-64">
             {primaryImage ? (
               <Image
-                src={primaryImage}
+                src={BASE_IMAGE_URL + primaryImage}
                 priority
                 height={250}
                 width={250}
@@ -81,7 +82,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
         </Card>
       </div>
 
-      {(
+      {/* {(
         <motion.div
           className={cn('absolute p-4 left-0 right-0 top-0 bottom-0 bg-[#AEC6CF]/80')}
           variants={cardVariant}
@@ -94,7 +95,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
             />
           </div>
         </motion.div>
-      )}
+      )} */}
     </motion.div>
   );
 };

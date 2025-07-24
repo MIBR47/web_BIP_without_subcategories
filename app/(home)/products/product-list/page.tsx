@@ -1,5 +1,5 @@
 'use client';
-import ProductCard from '../_components/productCard';
+// import ProductCard from '../_components/productCard';
 import LayoutLoader from '@/components/ui/layout-loader';
 import NoResults from '@/components/ui/no-results';
 import PageHeader from '@/components/ui/page-header';
@@ -8,6 +8,7 @@ import { routes } from '@/config/routes';
 import { useProducts } from '@/hooks/useProducts';
 import { useSearchParams } from 'next/navigation';
 import { useMediaQuery } from 'react-responsive';
+import ProductCard from '../../_components/productCard';
 
 const ProductListPage = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 640px)' });

@@ -44,7 +44,7 @@ export interface UpdateProductRequest {
 // }
 
 export interface ProductImage {
-  // id: number;
+  id: number;
   isPrimary: boolean;
   imageURL: string;
   product_id: number;

@@ -14,6 +14,7 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/ui/card';
+import { BASE_IMAGE_URL } from '@/lib/global_constant.';
 
 interface ProductCardProps {
   data: ProductResponse;
@@ -44,11 +45,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
       className='transition-transform duration-300 ease-in-out'
     >
       <Card
-        className='w-full sm:w-60 md:w-64 lg:w-72 relative flex flex-col rounded-2xl overflow-hidden shadow-sm border border-gray-200 bg-white cursor-pointer'
+        className='relative flex flex-col rounded-2xl overflow-hidden shadow-sm border border-gray-200 bg-white cursor-pointer'
         onClick={handleClick}
       >
         {/* Catalog ID */}
-        <CardHeader className='bg-gray-100 text-xs text-gray-600 font-medium text-center py-2'>
+        <CardHeader className='bg-gray-100 text-xs text-customBlue font-medium text-center py-2'>
           {data.catalog_id}
         </CardHeader>
 
@@ -56,7 +57,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
         <CardContent className='relative h-40 flex items-center justify-center p-4 bg-white'>
           {primaryImage ? (
             <Image
-              src={primaryImage.imageURL}
+              src={BASE_IMAGE_URL + primaryImage.imageURL}
               alt={productName}
               layout='fill'
               objectFit='contain'
@@ -70,7 +71,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
 
         {/* Product Name */}
         <CardFooter className='flex items-center justify-center bg-gray-50 px-4 py-3'>
-          <p className='text-sm font-semibold text-gray-800 text-center leading-tight'>
+          <p className='text-sm font-semibold text-customBlue text-center leading-tight'>
             {productName}
           </p>
         </CardFooter>

@@ -5,11 +5,12 @@ import NoResults from '@/components/ui/no-results';
 import dynamic from 'next/dynamic';
 // import CategoryCard from '../_components/categoryCard';
 import './style.css';
-import { fetchCategoriesAll } from '@/lib/api/categoryApi';
+import { fetchCategoriesAll, fetchCategoriesAllAdmin } from '@/lib/api/categoryApi';
+import CategoryCard from '../_components/categoryCard';
 
-const CategoryCard = dynamic(() => import('../_components/categoryCard'), {
-  ssr: false,
-});
+// const CategoryCard = dynamic(() => import('../_components/categoryCard'), {
+//   ssr: false,
+// });
 
 const pageHeader = {
   title: 'Daftar Kategori',
@@ -26,6 +27,7 @@ const pageHeader = {
 
 const CategoryList = async () => {
   const categories = await fetchCategoriesAll();
+  console.log(categories)
 
   const categoriesFound = categories?.length;
 
@@ -61,6 +63,7 @@ const CategoryList = async () => {
             {categories.length > 0 ? (
               categories.map((categoryList) => (
                 <div key={categoryList.id}>
+
                   <CategoryCard data={categoryList} />
                 </div>
               ))

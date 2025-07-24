@@ -12,7 +12,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import SearchBar from '@/app/(company)/_components/searchBar';
+import SearchBar from '@/app/(home)/_components/searchBar';
 import { routes } from '@/config/routes';
 import dynamic from 'next/dynamic';
 import './navmenu.css';
@@ -100,7 +100,7 @@ export function NavMenu() {
             </NavigationMenuItem>
 
             <NavigationMenuItem className='hidden md:block'>
-              <Link href='#' legacyBehavior passHref>
+              <Link href={routes.beritalist} legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   Berita
                 </NavigationMenuLink>

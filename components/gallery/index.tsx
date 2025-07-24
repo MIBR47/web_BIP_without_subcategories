@@ -6,10 +6,12 @@ import { TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { ProductImage } from '@/types';
 
 import GalleryTab from './gallery-tab';
+import { BASE_IMAGE_URL } from '@/lib/global_constant.';
 
 interface GalleryProps {
   images: ProductImage[];
 }
+// const BASE_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
 
 const Gallery: React.FC<GalleryProps> = ({ images = [] }) => {
   const sortedImages = images.sort((a, b) =>
@@ -17,7 +19,6 @@ const Gallery: React.FC<GalleryProps> = ({ images = [] }) => {
   );
 
   const primaryImage = sortedImages[0];
-
   return (
     <TabGroup as='div' className='flex flex-col-reverse'>
       <div className='mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none'>
@@ -34,7 +35,7 @@ const Gallery: React.FC<GalleryProps> = ({ images = [] }) => {
               <NextImage
                 priority
                 fill
-                src={image.imageURL}
+                src={BASE_IMAGE_URL + image.imageURL}
                 alt='Image'
                 className='object-contain rounded-lg'
               />

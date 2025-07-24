@@ -9,7 +9,7 @@ import { XCircle, CheckCircle2 } from 'lucide-react';
 // import { deleteCategoryById } from '@/lib/api/categoryApi';
 import { deleteNewsBySlug, fetchNewsAllAdmin } from '@/lib/api/newsApi';
 
-const NewsPage = () => {
+const ListBeritaPageAdmin = () => {
   const router = useRouter();
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -213,4 +213,4 @@ const NewsPage = () => {
   );
 };
 
-export default NewsPage;
+export default ListBeritaPageAdmin;

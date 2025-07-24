@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import NextProgress from '@/components/ui/next-progress';
 import QueryClientProvider from '@/provider/QueryClientProvider';
-import { NavMenu } from '@/app/(company)/_components/navmenu';
-import Footer from '@/app/(company)/_components/footer';
+import { NavMenu } from '@/app/(home)/_components/navmenu';
+import Footer from '@/app/(home)/_components/footer';
 import HeaderMobile from '@/components/header-mobile';
 
 const inter = Inter({ subsets: ['latin'] });

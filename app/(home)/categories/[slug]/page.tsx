@@ -1,6 +1,6 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import NoResults from '@/components/ui/no-results';
-import ProductCard from '@/app/(company)/products/_components/productCard';
+// import ProductCard from '@/app/(home)/products/_components/productCard';
 import { Categories } from '@/types';
 import PageHeader from '@/components/ui/page-header';
 import { routes } from '@/config/routes';
@@ -8,6 +8,9 @@ import { routes } from '@/config/routes';
 import './style.css';
 import { getProducts } from '@/lib/api/productApi';
 import { fetchCategoryBySlug } from '@/lib/api/categoryApi';
+import ProductCard from '../../_components/productCard';
+
+// import ProductCard from '../../_components/productCard';
 // import getSubCategories from '@/actions/get-subcategories';
 
 export const revalidate = 0;
@@ -34,12 +37,35 @@ export async function generateMetadata(
   // optionally access and extend (rather than replace) parent metadata
   // const previousImages = (await parent).openGraph?.images || []
 
+  // return {
+  //   title: category.name,
+  //   // openGraph: {
+  //   //   images: ['/some-specific-page-image.jpg', ...previousImages],
+  //   // },
+  // }
   return {
     title: category.name,
-    // openGraph: {
-    //   images: ['/some-specific-page-image.jpg', ...previousImages],
-    // },
-  }
+    description: category.name,
+    openGraph: {
+      title: category.name,
+      description: category.name,
+      type: 'website',
+      locale: 'id_ID',
+      url: `https://bipmed.vercel.app/${params.slug}`,
+      siteName: 'bipmed',
+      images: [
+        {
+          url: category.imageURL,
+        },
+        // {
+        //   url: urlForImage(post?.body?.find((b: any) => b._type === "image")).width(1200).height(630).url(),
+        //   width: 1200,
+        //   height: 630,
+        // },
+      ],
+    },
+  };
+
 }
 
 // export const metadata = {
@@ -92,7 +118,7 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
   // const id = category ? category.id.trim() : 'default';
   const category_id = category.id;
 
-  console.log("category id:" + category.id)
+  // console.log("category id:" + category.id)
 
 
   // const company_id = 'BIP';

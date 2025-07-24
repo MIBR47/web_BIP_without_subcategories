@@ -10,6 +10,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'assets.aceternity.com',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5000',
+      }
     ],
   },
 };

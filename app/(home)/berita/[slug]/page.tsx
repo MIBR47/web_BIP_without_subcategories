@@ -18,7 +18,7 @@ interface News {
     contentURL?: string;
 }
 
-export default function BeritaPageAdmin({ params }: { params: { slug: string } }) {
+export default function BeritaPage({ params }: { params: { slug: string } }) {
     const router = useRouter();
     const [news, setNews] = useState<News | null>(null);
 

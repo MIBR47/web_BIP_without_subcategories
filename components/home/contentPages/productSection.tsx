@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { ProductResponse } from '@/types';
-import ProductCard from '../_components/productCard';
+import ProductCard from '../../../app/(home)/_components/productCardHome';
 import { getAllProducts } from '@/lib/api/productApi';
 // import { Products } from './types'; // ganti path sesuai struktur proyekmu
 

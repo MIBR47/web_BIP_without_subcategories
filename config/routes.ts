@@ -9,6 +9,8 @@ export const routes = {
   categoryId: (categoryId: string) => `/categories/${categoryId}`,
   productSlug: (productSlug: string) => `/products/${productSlug}`,
   ecatalog: '/products/eCatalog',
+  beritalist: '/berita/',
+  berita: (beritaSlug: string) => `/berita/${beritaSlug}`,
   // pricelist: '/products/pricelist',
   tkdn: '/products/tkdn',
   aboutcompany: '/about-us/about-company',

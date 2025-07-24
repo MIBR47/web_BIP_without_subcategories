@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Categories',
+  title: 'Kategori',
 };
 export default function CategoriesLayout({
   children,

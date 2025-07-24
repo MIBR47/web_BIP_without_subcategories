@@ -138,6 +138,62 @@ export const updateProductDesc = async (id: number, formDataDesc: ProductDescReq
     // return data.data; // Sesuai response API-mu
 };
 
+// export const updateProductImage = async (
+//     productId: number,
+//     imageList: {
+//         id: number | null; // null untuk gambar baru
+//         file?: File;        // hanya wajib jika id === null (gambar baru)
+//         isPrimary: boolean;
+//     }[]
+// ): Promise<void> => {
+//     for (let { id, file, isPrimary } of imageList) {
+//         const formData = new FormData();
+//         formData.append("product_id", productId.toString());
+//         formData.append("isPrimary", isPrimary.toString());
+//         formData.append("iStatus", "Active");
+
+//         if (file) formData.append("file", file);
+//         if (id !== null) formData.append("id", id.toString());
+
+//         const url = id === null
+//             ? `${BASE_URL}/product/admin/updateImageProduct` // bisa sama dengan create, tergantung backend
+//             : `${BASE_URL}/product/admin/updateImageProduct`;
+
+//         const res = await fetch(url, {
+//             method: "PATCH",
+//             headers: {
+//                 Authorization: getAuthHeaders().Authorization,
+//             },
+//             body: formData,
+//         });
+
+//         if (!res.ok) {
+//             throw new Error(`${id ? "Gagal update" : "Gagal upload"} gambar ${id ?? "(baru)"}`);
+//         }
+//     }
+// };
+
+
+export const updateProductImage = async (id: number, data: { isPrimary: boolean; iStatus: string; product_id: number }) => {
+    const res = await fetch(`${BASE_URL}/product/admin/updateImageProduct/${id}`, {
+        method: "PATCH",
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error("Gagal update gambar");
+    return res.json();
+};
+
+export const deleteProductImageById = async (id: number) => {
+    const res = await fetch(`${BASE_URL}/product/admin/deleteImageProduct/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: getAuthHeaders().Authorization
+        }
+    });
+    if (!res.ok) throw new Error("Gagal menghapus gambar");
+};
+
 
 interface GetProductsProps {
     category_id: number;

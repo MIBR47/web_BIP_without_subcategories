@@ -130,25 +130,44 @@ const CreateNewsPage = () => {
             >
                 <h1 className="text-3xl font-bold">Tambah Berita</h1>
 
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="w-full border rounded p-2"
-                />
-                {imagePreview && (
-                    <div className="relative w-48">
-                        <img src={imagePreview} className="rounded border" />
-                        <button
-                            type="button"
-                            onClick={handleRemoveImage}
-                            className="absolute top-0 right-0 bg-red-600 text-white text-xs px-2 py-1 rounded"
-                        >
-                            ✕
-                        </button>
-                    </div>
-                )}
+                {/* Upload */}
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Image</label>
+
+                    {imagePreview ? (
+                        <>
+                            <div
+                                className="relative w-full max-w-2xl h-72 mx-auto overflow-hidden cursor-pointer hover:opacity-80 transition"
+                            // onClick={() => setShowPreview(true)} 
+                            >
+                                <img
+                                    src={imagePreview}
+                                    alt="Uploaded"
+                                    className="w-full h-full object-contain bg-white"
+                                />
+                            </div>
+                            <button
+                                onClick={handleRemoveImage}
+                                type="button"
+                                className="mt-2 text-sm text-red-600 hover:underline"
+                            >
+                                🗑 Hapus Gambar
+                            </button>
+                        </>
+                    ) : (
+                        <label className="w-full h-72 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:bg-gray-100 text-gray-500">
+                            + Pilih Gambar
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className="hidden"
+                            />
+                        </label>
+                    )}
+                </div>
+
 
                 <InputField label="Judul Berita" name="title" value={formData.title} onChange={(e) => handleChange(e, setFormData)} />
                 <InputField label="Slug" name="slug" value={formData.slug} onChange={(e) => handleChange(e, setFormData)} />

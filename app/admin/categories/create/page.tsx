@@ -24,9 +24,12 @@ const CreateCategoryPage = () => {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
+    const [showPreview, setShowPreview] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
@@ -42,11 +45,6 @@ const CreateCategoryPage = () => {
     const handleRemoveImage = () => {
         setImageFile(null);
         setImagePreview("");
-        setFormData((prev) => ({
-            ...prev,
-            name: "",
-            slug: "",
-        }));
         if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
@@ -91,19 +89,9 @@ const CreateCategoryPage = () => {
             setImagePreview("");
             if (fileInputRef.current) fileInputRef.current.value = "";
             router.push("/admin/categories");
-
         } catch (err: any) {
             console.error(err);
-            let errorMessage = "Terjadi kesalahan saat menyimpan produk.";
-            if (err instanceof Error) {
-                errorMessage = err.message;
-            } else if (err?.response?.data?.message) {
-                errorMessage = err.response.data.message;
-            } else if (err?.message) {
-                errorMessage = err.message;
-            }
-            toast.error(errorMessage);
-
+            toast.error("Terjadi kesalahan saat menyimpan kategori.");
         } finally {
             setIsLoading(false);
         }
@@ -119,30 +107,40 @@ const CreateCategoryPage = () => {
                     <h2 className="text-3xl font-bold text-gray-800">Tambah Kategori</h2>
 
                     {/* Upload */}
-                    <div className="flex flex-col items-center gap-4">
-                        <input
-                            ref={fileInputRef}
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                            className="w-full border border-gray-300 rounded-xl p-2 text-sm"
-                        />
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-700">Image</label>
 
-                        {imagePreview && (
-                            <div className="relative">
-                                <img
-                                    src={imagePreview}
-                                    alt="preview"
-                                    className="w-48 h-48 object-cover rounded-xl border shadow"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={handleRemoveImage}
-                                    className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full px-2 text-xs hover:bg-red-700"
+                        {imagePreview ? (
+                            <>
+                                <div
+                                    className="relative w-full max-w-2xl h-72 mx-auto overflow-hidden cursor-pointer hover:opacity-80 transition"
+                                    onClick={() => setShowPreview(true)}
                                 >
-                                    ✕
+                                    <img
+                                        src={imagePreview}
+                                        alt="Uploaded"
+                                        className="w-full h-full object-contain bg-white"
+                                    />
+                                </div>
+                                <button
+                                    onClick={handleRemoveImage}
+                                    type="button"
+                                    className="mt-2 text-sm text-red-600 hover:underline"
+                                >
+                                    🗑 Hapus Gambar
                                 </button>
-                            </div>
+                            </>
+                        ) : (
+                            <label className="w-full h-72 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:bg-gray-100 text-gray-500">
+                                + Pilih Gambar
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    className="hidden"
+                                />
+                            </label>
                         )}
                     </div>
 
@@ -158,31 +156,19 @@ const CreateCategoryPage = () => {
                     {/* Dropdown */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <SelectField
-                            label="iStatus"
-                            name="iStatus"
-                            value={formData.iStatus}
-                            onChange={handleChange}
-                            options={[
-                                { value: "", label: "-- Pilih Status --" },
-                                { value: "Active", label: "Aktif" },
-                                { value: "Inactive", label: "Nonaktif" },
-                            ]}
-                        />
-
-                        <SelectField
-                            label="iShowedStatus"
+                            label="Status Visibilitass"
                             name="iShowedStatus"
                             value={formData.iShowedStatus}
                             onChange={handleChange}
                             options={[
-                                { value: "", label: "-- Tampilkan di Frontend? --" },
+                                { value: "", label: "-- Pilih Status Visibilitas --" },
                                 { value: "Show", label: "Tampilkan" },
                                 { value: "Hidden", label: "Sembunyikan" },
                             ]}
                         />
                     </div>
 
-                    {/* Tombol */}
+                    {/* Tombol Aksi */}
                     <div className="space-y-3">
                         <button
                             type="submit"
@@ -227,52 +213,33 @@ const CreateCategoryPage = () => {
                     </div>
                 </form>
             </div>
+
+            {/* Fullscreen Image Modal */}
+            {showPreview && (
+                <div
+                    className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
+                    onClick={() => setShowPreview(false)}
+                >
+                    <div className="relative max-w-full max-h-full p-4">
+                        <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="max-w-full max-h-screen object-contain rounded-xl"
+                        />
+                        <button
+                            className="absolute top-4 right-4 text-white text-2xl bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-80"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setShowPreview(false);
+                            }}
+                        >
+                            ❌
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
-
-// // Komponen Reusable
-// function InputField({ label, name, value, onChange }: any) {
-//     return (
-//         <div>
-//             <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
-//                 {label}
-//             </label>
-//             <input
-//                 type="text"
-//                 id={name}
-//                 name={name}
-//                 value={value}
-//                 onChange={onChange}
-//                 className="w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             />
-//         </div>
-//     );
-// }
-
-
-
-// function SelectField({ label, name, value, onChange, options }: any) {
-//     return (
-//         <div>
-//             <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
-//                 {label}
-//             </label>
-//             <select
-//                 id={name}
-//                 name={name}
-//                 value={value}
-//                 onChange={onChange}
-//                 className="w-full border border-gray-300 rounded-xl p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             >
-//                 {options.map((opt: any) => (
-//                     <option key={opt.value} value={opt.value}>
-//                         {opt.label}
-//                     </option>
-//                 ))}
-//             </select>
-//         </div>
-//     );
-// }
 
 export default CreateCategoryPage;

@@ -3,7 +3,7 @@
 
 // import BillboardPage from './contentPages/billboardSection';
 import { useBillboards } from '@/hooks/use-billboard';
-import BillboardPage from '../contentPages/billboardSection';
+import BillboardPage from '../../../components/home/contentPages/billboardSection';
 
 const BillboardClientWrapper = () => {
     const { data, isLoading, error } = useBillboards();

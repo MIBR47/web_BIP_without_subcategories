@@ -12,23 +12,45 @@ const getAuthHeaders = () => {
     };
 };
 
-export const updateCategory = async (category: Categories): Promise<Categories> => {
+// export const updateCategory = async (category: Categories): Promise<Categories> => {
+//     const res = await fetch(`${BASE_URL}/category/admin/update`, {
+//         method: 'PATCH',
+//         headers: getAuthHeaders(),
+//         body: JSON.stringify({
+//             ...category,
+//         }),
+//     });
+
+//     if (!res.ok) {
+//         const errorText = await res.text();
+//         console.error('Failed to update category:', errorText);
+//         throw new Error('Update failed');
+//     }
+
+//     const data = await res.json();
+//     return data.data; // Sesuai response API-mu
+// };
+
+export const updateCategory = async (form: FormData): Promise<any> => {
+    const token = localStorage.getItem("authToken");
+    if (!token) throw new Error("Unauthorized");
+
     const res = await fetch(`${BASE_URL}/category/admin/update`, {
-        method: 'PATCH',
-        headers: getAuthHeaders(),
-        body: JSON.stringify({
-            ...category,
-        }),
+        method: "PATCH",
+        headers: {
+            Authorization: token, // Jangan set 'Content-Type' jika pakai FormData
+        },
+        body: form,
     });
 
     if (!res.ok) {
         const errorText = await res.text();
-        console.error('Failed to update category:', errorText);
-        throw new Error('Update failed');
+        console.error("Failed to update category:", errorText);
+        throw new Error("Update failed");
     }
 
     const data = await res.json();
-    return data.data; // Sesuai response API-mu
+    return data.data; // Sesuaikan dengan struktur respons API-mu
 };
 
 export const deleteCategoryById = async (id: number) => {
@@ -60,11 +82,12 @@ export const fetchCategoriesAllAdmin = async (): Promise<Categories[]> => {
 export const fetchCategoriesAll = async (): Promise<Categories[]> => {
     let url = `${BASE_URL}/category/findall`;
     try {
-        const res = await fetch(url);
+        const res = await fetch(url, { cache: 'no-store', });
         if (!res.ok) {
             throw new Error('Failed to fetch categories');
         }
         const categories = await res.json();
+        // console.log(categories)
         return categories.data; // Mengembalikan data kategori
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -96,7 +119,7 @@ interface Query {
 export const fetchCategoryBySlug = async (query: Query): Promise<Categories> => {
     let url = `${BASE_URL}/category/findbyslug/${query.slug}`;
 
-    console.log('Fetching category with URL:', url);
+    // console.log('Fetching category with URL:', url);
 
     try {
         const res = await fetch(url);

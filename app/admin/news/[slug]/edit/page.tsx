@@ -8,11 +8,12 @@ import { fetchNewsBySlug } from "@/lib/api/newsApi";
 import InputField from "@/components/form/inputField";
 import RichTextEditorField from "@/components/form/RichTextEditorField";
 import { handleChange, handleChangeRichEditor } from "@/lib/utils/formHandler";
+import SelectField from "@/components/form/selectField";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
-const BASE_URL_IMAGE = `${process.env.NEXT_PUBLIC_IMAGE_URL}`;
+const BASE_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
 
-const EditNewsPage = () => {
+const EditBeritaPage = () => {
     const { slug } = useParams();
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -150,35 +151,47 @@ const EditNewsPage = () => {
             >
                 <h1 className="text-3xl font-bold">Edit Berita</h1>
 
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="w-full border rounded p-2"
-                />
+                {/* Upload Image - sama dengan Create Page */}
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Image</label>
 
-                {imagePreview && (
-                    <div className="relative w-48">
-                        <img
-                            src={
-                                imagePreview.type === "local"
-                                    ? imagePreview.src
-                                    : BASE_URL_IMAGE + imagePreview.src
-                            }
-                            className="rounded border"
-                            alt="Preview"
-                        />
-                        <button
-                            type="button"
-                            onClick={handleRemoveImage}
-                            className="absolute top-0 right-0 bg-red-600 text-white text-xs px-2 py-1 rounded"
-                        >
-                            ✕
-                        </button>
-                    </div>
-                )}
-
+                    {imagePreview ? (
+                        <>
+                            <div
+                                className="relative w-full max-w-2xl h-72 mx-auto overflow-hidden cursor-pointer hover:opacity-80 transition"
+                            // onClick={() => setShowPreview(true)}
+                            >
+                                <img
+                                    src={
+                                        imagePreview.type === "local"
+                                            ? imagePreview.src
+                                            : BASE_IMAGE_URL + imagePreview.src
+                                    }
+                                    alt="Preview"
+                                    className="w-full h-full object-contain bg-white"
+                                />
+                            </div>
+                            <button
+                                onClick={handleRemoveImage}
+                                type="button"
+                                className="mt-2 text-sm text-red-600 hover:underline"
+                            >
+                                🗑 Hapus Gambar
+                            </button>
+                        </>
+                    ) : (
+                        <label className="w-full h-72 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:bg-gray-100 text-gray-500">
+                            + Pilih Gambar
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className="hidden"
+                            />
+                        </label>
+                    )}
+                </div>
                 <InputField
                     label="Judul Berita"
                     name="title"
@@ -210,6 +223,16 @@ const EditNewsPage = () => {
                     value={formData.contentURL}
                     onChange={(e) => handleChange(e, setFormData)}
                 />
+                <SelectField
+                    label="Status Visibilitas"
+                    name="iShowedStatus"
+                    value={formData.iShowedStatus}
+                    onChange={(e) => handleChange(e, setFormData)}
+                    options=
+                    {[{ value: "", label: "-- Pilih Status Visibilitas --" },
+                    { value: "Show", label: "Tampilkan" },
+                    { value: "Hidden", label: "Sembunyikan" },]}
+                />
 
                 <div className="space-y-3">
                     <button
@@ -231,4 +254,4 @@ const EditNewsPage = () => {
     );
 };
 
-export default EditNewsPage;
+export default EditBeritaPage;
