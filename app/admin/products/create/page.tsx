@@ -34,7 +34,7 @@ interface Category {
     id: number;
     name: string;
 }
-// const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+// const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 
 const CreateProductPage = () => {

@@ -3,9 +3,9 @@ import { uploadToCloudinary } from "../utils/cloudinaryHandler";
 // import { updateProduct } from '@/lib/api/productApi';
 
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
-// const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+// const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 const getAuthHeaders = () => {
     const token = localStorage.getItem("authToken");
     return {

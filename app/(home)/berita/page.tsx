@@ -2,7 +2,7 @@
 
 import BeritaCard from "./_components/beritaCard";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL2;
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 type NewsResponse = {
     title: string;

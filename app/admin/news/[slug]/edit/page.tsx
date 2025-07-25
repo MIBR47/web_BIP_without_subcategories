@@ -10,7 +10,7 @@ import RichTextEditorField from "@/components/form/RichTextEditorField";
 import { handleChange, handleChangeRichEditor } from "@/lib/utils/formHandler";
 import SelectField from "@/components/form/selectField";
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 const BASE_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
 
 const EditBeritaPage = () => {

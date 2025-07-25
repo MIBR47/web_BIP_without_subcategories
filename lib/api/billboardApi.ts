@@ -1,7 +1,7 @@
 import { Billboards } from '@/types';
 
 // const URL = `${process.env.NEXT_PUBLIC_API_URL}/billboards`;
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 export const getBillboard = async (iShowedStatus: string): Promise<Billboards> => {
     try {

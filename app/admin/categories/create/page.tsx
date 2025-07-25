@@ -8,7 +8,7 @@ import SelectField from "@/components/form/selectField";
 import InputField from "@/components/form/inputField";
 import TextAreaField from "@/components/form/textareaField";
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 const CreateCategoryPage = () => {
     const router = useRouter();

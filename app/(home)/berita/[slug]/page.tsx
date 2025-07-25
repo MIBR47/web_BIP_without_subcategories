@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL2;
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface News {
     title: string;

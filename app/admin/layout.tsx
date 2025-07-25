@@ -12,7 +12,7 @@ import HeaderMobileAdmin from '@/app/admin/_components/header-mobile-admin';
 import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ['latin'] });
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL2;
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function AdminLayout({
   children,

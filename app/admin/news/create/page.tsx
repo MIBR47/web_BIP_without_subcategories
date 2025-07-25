@@ -10,7 +10,7 @@ import InputField from "@/components/form/inputField";
 import SelectField from "@/components/form/selectField";
 import { handleChange, handleChangeRichEditor } from "@/lib/utils/formHandler";
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL2}`;
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 const CreateNewsPage = () => {
     const router = useRouter();
