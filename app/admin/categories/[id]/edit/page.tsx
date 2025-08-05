@@ -7,6 +7,7 @@ import { Categories, ShowedStatus } from "@/types";
 import InputField from "@/components/form/inputField";
 import SelectField from "@/components/form/selectField";
 import { handleChange } from "@/lib/utils/formHandler";
+import Image from 'next/image'
 
 const BASE_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
 
@@ -119,7 +120,7 @@ const CategoryEditPage = () => {
                                         className="relative w-full max-w-2xl h-72 mx-auto overflow-hidden cursor-pointer hover:opacity-80 transition"
                                         onClick={() => setShowPreview(true)}
                                     >
-                                        <img
+                                        <Image
                                             src={
                                                 imagePreview.type === "local"
                                                     ? imagePreview.src

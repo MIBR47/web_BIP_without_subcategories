@@ -15,6 +15,7 @@ import { createProduct, uploadDescriptions, uploadImages } from "@/lib/api/produ
 import { toast } from "react-hot-toast";
 import SelectField from "@/components/form/selectField";
 import InputField from "@/components/form/inputField";
+import Image from 'next/image'
 // import InputField from "@/components/form/inputfield";
 
 
@@ -172,8 +173,9 @@ const CreateProductPage = () => {
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
                             {imagePreviews.map((src, i) => (
                                 <div key={i} className="relative">
-                                    <img
+                                    <Image
                                         src={src}
+                                        alt={`product image ${i + 1}`}
                                         className={`w-full h-32 object-cover rounded-xl border ${primaryIndex === i ? "ring-4 ring-blue-500" : "border-gray-300"}`}
                                     />
                                     <button

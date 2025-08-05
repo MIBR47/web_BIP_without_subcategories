@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ProductResponse } from "@/types";
 import { getProductBySlug } from "@/lib/api/productApi";
+import Image from 'next/image'
 
 const ProductViewPage = () => {
     const router = useRouter();
@@ -58,7 +59,7 @@ const ProductViewPage = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {product.ProductImage.map((img, index) => (
                                     <div key={index} className="relative">
-                                        <img
+                                        <Image
                                             src={img.imageURL || "/placeholder.png"}
                                             alt={`Image ${index + 1}`}
                                             className="w-full h-48 object-contain border rounded-md bg-white"

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { fetchCategoryById } from '@/lib/api/categoryApi';
 import { Categories } from '@/types';
+import Image from 'next/image'
 
 const CategoryViewPage = () => {
     const router = useRouter();
@@ -40,7 +41,7 @@ const CategoryViewPage = () => {
                     {category ? (
                         <div className="space-y-8 text-gray-800">
                             <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
-                                <img
+                                <Image
                                     src={category.imageURL || '/placeholder.png'}
                                     alt={category.name}
                                     className="w-40 h-40 sm:w-48 sm:h-48 rounded-xl object-contain border border-gray-300 flex-shrink-0"
@@ -58,17 +59,17 @@ const CategoryViewPage = () => {
                                     <div className=" flex flex-row mt-4 space-x-4">
 
 
-                                        <div>
+                                        {/* <div>
                                             <h3 className="font-semibold text-sm">Status</h3>
                                             <span
-                                                className={`inline-block px-4 py-1 rounded-full text-sm font-semibold ${category.iStatus === 'Active'
+                                                className={`inline-block px-4 py-1 rounded-full text-sm font-semibold ${category.iShowedStatus === 'Active'
                                                     ? 'bg-green-100 text-green-800'
                                                     : 'bg-red-100 text-red-800'
                                                     }`}
                                             >
-                                                {category.iStatus}
+                                                {category.iShowedStatus}
                                             </span>
-                                        </div>
+                                        </div> */}
 
                                         <div>
                                             <h3 className="font-semibold text-sm">Showed Status</h3>

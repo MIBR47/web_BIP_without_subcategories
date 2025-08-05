@@ -8,6 +8,7 @@ import { toast } from 'react-hot-toast';
 import { XCircle, CheckCircle2 } from 'lucide-react';
 // import { deleteCategoryById } from '@/lib/api/categoryApi';
 import { deleteNewsBySlug, fetchNewsAllAdmin } from '@/lib/api/newsApi';
+import Image from 'next/image'
 
 const ListBeritaPageAdmin = () => {
   const router = useRouter();
@@ -147,7 +148,7 @@ const ListBeritaPageAdmin = () => {
                     </span>
                   </td>
                   <td className="py-2 px-4">
-                    <img
+                    <Image
                       src={item.imageURL}
                       alt={item.title}
                       className="w-12 h-12 object-cover rounded-full"

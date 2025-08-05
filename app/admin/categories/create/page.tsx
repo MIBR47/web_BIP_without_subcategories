@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import SelectField from "@/components/form/selectField";
 import InputField from "@/components/form/inputField";
 import TextAreaField from "@/components/form/textareaField";
+import Image from 'next/image'
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
@@ -116,7 +117,7 @@ const CreateCategoryPage = () => {
                                     className="relative w-full max-w-2xl h-72 mx-auto overflow-hidden cursor-pointer hover:opacity-80 transition"
                                     onClick={() => setShowPreview(true)}
                                 >
-                                    <img
+                                    <Image
                                         src={imagePreview}
                                         alt="Uploaded"
                                         className="w-full h-full object-contain bg-white"
@@ -221,7 +222,7 @@ const CreateCategoryPage = () => {
                     onClick={() => setShowPreview(false)}
                 >
                     <div className="relative max-w-full max-h-full p-4">
-                        <img
+                        <Image
                             src={imagePreview}
                             alt="Preview"
                             className="max-w-full max-h-screen object-contain rounded-xl"

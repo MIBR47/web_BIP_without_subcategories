@@ -17,7 +17,7 @@ const PriceListPage = () => {
 
   return (
     <Container>
-      <div className='space-y-3 pb-2'>
+      <div className='space-y-3 pb-2 pt-10'>
         <div className='w-full h-full flex items-center justify-center '>
           <Image
             src={'/images/logo/ekatalog.jpg'}

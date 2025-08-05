@@ -1,10 +1,11 @@
 'use client'
-import Image from 'next/image';
+// import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import Container from '@/components/ui/container';
 import React from "react";
 import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
+import Image from 'next/image'
 
 
 const certificates = [
@@ -45,9 +46,11 @@ const Certificate = () => {
                                 className="cursor-pointer pt-2"
                                 onClick={() => setOpenIndex(index)}
                             >
-                                <img
+                                <Image
                                     src={cert.src}
                                     alt={`sertifikat-${index + 1}`}
+                                    height={60}
+                                    width={60}
                                     className="h-60 sm:h-64 w-auto mx-auto object-cover rounded-md shadow-md"
                                 />
                             </div>
@@ -59,10 +62,12 @@ const Certificate = () => {
                     <Dialog open={openIndex !== null} onClose={() => setOpenIndex(null)} className="relative z-50">
                         <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4">
                             <DialogPanel className="max-w-lg w-full bg-white rounded-lg p-4 shadow-lg">
-                                <img
+                                <Image
                                     src={certificates[openIndex].src}
                                     alt={`sertifikat-${openIndex + 1}`}
                                     className="w-full object-contain rounded-md"
+                                    height={180}
+                                    width={180}
                                 />
                             </DialogPanel>
                         </div>

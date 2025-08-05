@@ -9,6 +9,7 @@ import InputField from "@/components/form/inputField";
 import RichTextEditorField from "@/components/form/RichTextEditorField";
 import { handleChange, handleChangeRichEditor } from "@/lib/utils/formHandler";
 import SelectField from "@/components/form/selectField";
+import Image from 'next/image'
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 const BASE_IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
@@ -161,7 +162,7 @@ const EditBeritaPage = () => {
                                 className="relative w-full max-w-2xl h-72 mx-auto overflow-hidden cursor-pointer hover:opacity-80 transition"
                             // onClick={() => setShowPreview(true)}
                             >
-                                <img
+                                <Image
                                     src={
                                         imagePreview.type === "local"
                                             ? imagePreview.src

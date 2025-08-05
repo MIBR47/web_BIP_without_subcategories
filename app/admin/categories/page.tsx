@@ -6,6 +6,7 @@ import { CheckCircle2, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, startTransition } from 'react';
 import toast from 'react-hot-toast';
+import Image from 'next/image'
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState<Categories[]>([]);
@@ -204,7 +205,7 @@ const CategoriesPage = () => {
                     </span>
                   </td>
                   <td className="py-2 px-4">
-                    <img
+                    <Image
                       src={category.imageURL}
                       alt={category.name}
                       className="w-12 h-12 object-cover rounded-full"
@@ -265,7 +266,7 @@ const CategoriesPage = () => {
                   <p><strong>Remarks:</strong> {categoryDetail.remarks}</p>
                   <p><strong>Status:</strong> {categoryDetail.iStatus}</p>
                   <p><strong>Showed Status:</strong> {categoryDetail.iShowedStatus}</p>
-                  <img
+                  <Image
                     src={categoryDetail.imageURL}
                     alt={categoryDetail.name}
                     className="w-32 h-32 object-cover rounded-full mx-auto mt-4"

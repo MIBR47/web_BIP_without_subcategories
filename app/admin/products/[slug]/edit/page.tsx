@@ -23,6 +23,7 @@ import SelectField from "@/components/form/selectField";
 import InputField from "@/components/form/inputField";
 import { Plus, Trash2 } from "lucide-react";
 import { BASE_IMAGE_URL } from "@/lib/global_constant.";
+import Image from 'next/image'
 
 interface Category {
     id: number;
@@ -307,7 +308,7 @@ const ProductEditPage = () => {
                                     className="relative w-48 h-48 rounded-md overflow-hidden border bg-white group"
                                 >
                                     {img.id}
-                                    <img
+                                    <Image
                                         src={BASE_IMAGE_URL + img.imageURL || "/placeholder.png"}
                                         alt={`Image ${index + 1}`}
                                         className="w-full h-full object-contain"
@@ -345,7 +346,7 @@ const ProductEditPage = () => {
                                     key={`new-${idx}`}
                                     className="relative w-48 h-48 rounded-md overflow-hidden border bg-white group"
                                 >
-                                    <img
+                                    <Image
                                         src={img}
                                         alt={`Uploaded ${idx}`}
                                         className="w-full h-full object-contain"
