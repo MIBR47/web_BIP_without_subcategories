@@ -1,3 +1,5 @@
+'use client';
+
 import PageHeader from '@/components/ui/page-header';
 import { routes } from '@/config/routes';
 import NoResults from '@/components/ui/no-results';
@@ -7,6 +9,8 @@ import dynamic from 'next/dynamic';
 import './style.css';
 import { fetchCategoriesAll, fetchCategoriesAllAdmin } from '@/lib/api/categoryApi';
 import CategoryCard from '../_components/categoryCard';
+import { useEffect, useState } from 'react';
+import { Categories } from '@/types';
 
 // const CategoryCard = dynamic(() => import('../_components/categoryCard'), {
 //   ssr: false,
@@ -26,8 +30,13 @@ const pageHeader = {
 };
 
 const CategoryList = async () => {
-  const categories = await fetchCategoriesAll();
-  console.log(categories)
+  const [categories, setCategories] = useState<Categories[]>([]);
+
+  useEffect(() => {
+    fetchCategoriesAll()
+      .then((data) => setCategories(data))
+      .catch((err) => console.error('Error fetching categories:', err));
+  }, []);
 
   const categoriesFound = categories?.length;
 
