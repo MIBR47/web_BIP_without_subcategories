@@ -67,7 +67,7 @@ const AboutUsSection = () => {
                         <br /><br />
                         Produk kami telah mengantongi <strong>ISO 9001:2015</strong>, <strong>CPAKB</strong>, dan lulus uji <strong>IEC 60601</strong>. Komitmen kami adalah menghadirkan produk berkualitas tinggi dan aman.
                         <br /><br />
-                        Dengan moto <em>"Your Perfect Solution for Hospital Equipment Solutions"</em>, kami hadir untuk memberikan solusi terbaik dan layanan purna jual yang unggul.
+                        Dengan moto <em>&quot;Your Perfect Solution for Hospital Equipment Solutions&quot;</em>, kami hadir untuk memberikan solusi terbaik dan layanan purna jual yang unggul.
                     </p>
                     <div className="mt-6">
                         <Button
