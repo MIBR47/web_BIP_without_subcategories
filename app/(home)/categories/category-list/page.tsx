@@ -29,7 +29,7 @@ const pageHeader = {
   ],
 };
 
-const CategoryList = async () => {
+const CategoryList = () => {
   const [categories, setCategories] = useState<Categories[]>([]);
 
   useEffect(() => {
