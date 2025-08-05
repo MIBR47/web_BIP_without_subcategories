@@ -82,7 +82,7 @@ export const fetchCategoriesAllAdmin = async (): Promise<Categories[]> => {
 export const fetchCategoriesAll = async (): Promise<Categories[]> => {
     let url = `${BASE_URL}/category/findall`;
     try {
-        const res = await fetch(url, { cache: 'no-store', });
+        const res = await fetch(url, { next: { revalidate: 60 } });
         if (!res.ok) {
             throw new Error('Failed to fetch categories');
         }
