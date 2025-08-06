@@ -65,7 +65,7 @@ const CategoryList = () => {
 
           <h3 className='text-customBlue text-sm'>
             {subHeaderText}
-            {categoriesFound === 0 && <NoResults />}
+            {/* {categoriesFound === 0 && <NoResults />} */}
           </h3>
 
           <div className='mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr'>
