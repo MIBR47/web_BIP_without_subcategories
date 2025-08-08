@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, startTransition } from 'react';
 import toast from 'react-hot-toast';
 import Image from 'next/image'
+import { BASE_IMAGE_URL } from '../../../lib/global_constant.';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState<Categories[]>([]);
@@ -206,8 +207,10 @@ const CategoriesPage = () => {
                   </td>
                   <td className="py-2 px-4">
                     <Image
-                      src={category.imageURL}
+                      src={BASE_IMAGE_URL + category.imageURL}
                       alt={category.name}
+                      width={12}
+                      height={12}
                       className="w-12 h-12 object-cover rounded-full"
                     />
                   </td>
