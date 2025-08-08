@@ -3,7 +3,7 @@ import { Tab } from '@headlessui/react';
 
 import { cn } from '@/lib/utils';
 import { ProductImage } from '@/types';
-import { BASE_IMAGE_URL } from '@/lib/global_constant.';
+import { BASE_IMAGE_URL } from '@/lib/global_constant';
 
 interface GalleryTabProps {
   image: ProductImage;

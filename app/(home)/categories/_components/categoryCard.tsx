@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import usePreviewModal from '@/hooks/use-preview-modal';
 import MainButton from '@/components/ui/MainButton';
-import { BASE_IMAGE_URL } from '@/lib/global_constant.';
+import { BASE_IMAGE_URL } from '@/lib/global_constant';
 
 interface CategoryCardProps {
   data: Categories;

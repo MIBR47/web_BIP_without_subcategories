@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, startTransition } from 'react';
 import toast from 'react-hot-toast';
 import Image from 'next/image'
-import { BASE_IMAGE_URL } from '../../../lib/global_constant.';
+import { BASE_IMAGE_URL } from '../../../lib/global_constant';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState<Categories[]>([]);

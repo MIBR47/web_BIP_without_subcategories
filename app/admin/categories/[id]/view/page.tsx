@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { fetchCategoryById } from '@/lib/api/categoryApi';
 import { Categories } from '@/types';
 import Image from 'next/image'
+import { BASE_IMAGE_URL } from '@/lib/global_constant';
 
 const CategoryViewPage = () => {
     const router = useRouter();
@@ -42,7 +43,7 @@ const CategoryViewPage = () => {
                         <div className="space-y-8 text-gray-800">
                             <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
                                 <Image
-                                    src={category.imageURL || '/placeholder.png'}
+                                    src={(BASE_IMAGE_URL + category.imageURL) || '/placeholder.png'}
                                     alt={category.name}
                                     className="w-40 h-40 sm:w-48 sm:h-48 rounded-xl object-contain border border-gray-300 flex-shrink-0"
                                     loading="lazy"

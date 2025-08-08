@@ -6,7 +6,7 @@ import { TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { ProductImage } from '@/types';
 
 import GalleryTab from './gallery-tab';
-import { BASE_IMAGE_URL } from '@/lib/global_constant.';
+import { BASE_IMAGE_URL } from '@/lib/global_constant';
 
 interface GalleryProps {
   images: ProductImage[];

@@ -14,7 +14,7 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/ui/card';
-import { BASE_IMAGE_URL } from '@/lib/global_constant.';
+import { BASE_IMAGE_URL } from '@/lib/global_constant';
 
 interface ProductCardProps {
   data: ProductResponse;

@@ -22,7 +22,7 @@ import { handleChange } from "@/lib/utils/formHandler";
 import SelectField from "@/components/form/selectField";
 import InputField from "@/components/form/inputField";
 import { Plus, Trash2 } from "lucide-react";
-import { BASE_IMAGE_URL } from "@/lib/global_constant.";
+import { BASE_IMAGE_URL } from "@/lib/global_constant";
 import Image from 'next/image'
 
 interface Category {
