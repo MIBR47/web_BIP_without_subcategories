@@ -31,7 +31,7 @@ const Gallery: React.FC<GalleryProps> = ({ images = [] }) => {
       <TabPanels className='aspect-square w-full'>
         {sortedImages.map((image) => (
           <TabPanel key={image.id}>
-            <div className='aspect-square relative h-full w-full rounded-lg overflow-hidden'>
+            <div className='aspect-square relative h-full w-full rounded-lg overflow-hidden '>
               <NextImage
                 priority
                 fill

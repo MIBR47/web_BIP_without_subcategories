@@ -35,7 +35,7 @@ const Info: React.FC<InfoProps> = ({ product }) => {
           <button
             onClick={() => setActiveTab('detail')}
             className={`py-2 px-4 font-medium text-sm ${activeTab === 'detail'
-              ? 'border-b-2 border-blue-600 text-blue-600'
+              ? 'border-b-2 border-customBlue text-customBlue'
               : 'border-b-2 border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300'
               }`}
           >
@@ -44,7 +44,7 @@ const Info: React.FC<InfoProps> = ({ product }) => {
           <button
             onClick={() => setActiveTab('additional')}
             className={`py-2 px-4 font-medium text-sm ${activeTab === 'additional'
-              ? 'border-b-2 border-blue-600 text-blue-600'
+              ? 'border-b-2 border-customBlue text-customBlue'
               : 'border-b-2 border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300'
               }`}
           >

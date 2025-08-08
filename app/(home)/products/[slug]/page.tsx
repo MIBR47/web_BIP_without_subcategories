@@ -68,7 +68,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <div className="pt-10 px-4 sm:px-6 md:px-10 xl:px-24">
       {/* <Container> */}
-      <div className="bg-white rounded-xl shadow-md px-4 sm:px-6 lg:px-10 py-10">
+      <div className=" px-4 sm:px-6 lg:px-10 py-10">
         {/* Page Heading */}
         <PageHeader
           title=""
@@ -76,9 +76,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
         />
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-8 ">
           {/* Product Gallery */}
-          <div className="w-full lg:sticky top-24 h-max">
+          <div className="w-full lg:sticky top-24 h-max ">
             <div className="w-full mb-2 font-semibold text-xl lg:text-2xl 4xl:text-[26px] text-customBlue">
               {product.name}
             </div>
@@ -90,7 +90,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
 
           {/* Product Info */}
-          <div className="flex flex-col justify-start border border-gray-300 rounded-md px-6 ">
+          <div className="flex flex-col justify-start border border-gray-500 rounded-md px-6 bg-white shadow-lg">
             {/* <div className="w-full mb-6 text-customBlue" /> */}
             <Info product={product} />
           </div>
