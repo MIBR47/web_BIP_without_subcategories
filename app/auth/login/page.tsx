@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 
 export default function LoginPage() {
     const [username, setUsername] = useState('');
@@ -19,7 +20,7 @@ export default function LoginPage() {
         }
 
         try {
-            const res = await fetch('http://localhost:5000/api/users/login', {
+            const res = await fetch(`${BASE_URL}/users/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }), // 🛠️ kirim username, bukan email
