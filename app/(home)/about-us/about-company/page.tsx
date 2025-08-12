@@ -52,11 +52,12 @@ const AboutCompany = () => {
               Solutions” atau “Solusi Sempurna Anda untuk Peralatan Rumah Sakit”
               dan dedikasi yang tinggi, kami akan selalu berusaha untuk
               menghasilkan produk dan layanan yang terbaik untuk pelanggan kami.
-            </div>
-            <div className='mt-4'>
               Purna jual sempurna adalah target utama kami, karena bagi kami
               pelanggan adalah raja.
             </div>
+            {/* <div className='mt-4'>
+
+            </div> */}
             <div className='mt-4'>
               Dengan demikian, kami percaya bahwa produk BIPMED akan dapat
               menjadi solusi yang terbaik untuk Indonesia.

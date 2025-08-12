@@ -1,9 +1,10 @@
-import CustomProductContent from '../../components/home/contentPages/customProducts';
+import CustomProductSection from '../../components/home/contentPages/productsSection';
 import TkdnProductContent from '../../components/home/contentPages/tkdnProduct';
 import AboutUsSection from '../../components/home/contentPages/aboutUsSection';
 import ProductSection from '../../components/home/contentPages/productSection';
 import { getBillboard } from '@/lib/api/billboardApi';
 import BillboardClientWrapper from './_components/BillboardClientWrapper';
+import LatestNewsSection from '@/components/home/contentPages/lastestNewsSection';
 
 const HomePage = async () => {
 
@@ -21,14 +22,14 @@ const HomePage = async () => {
           <ProductSection />
         </div>
 
-        <CustomProductContent />
-
+        <CustomProductSection />
+        <LatestNewsSection />
         {/* send  mail content */}
-        <div>
+        {/* <div>
           <div className="p-8 px-40 flex-1">
             <h2 className="text-2xl font-bold text-customBlue mb-4">Get in Touch</h2>
             <hr className="mb-4" />
-            {/* <p className="mb-4 text-gray-700">
+            <p className="mb-4 text-gray-700">
               Mohon untuk mengisi informasi Anda dengan tepat dan sesuai dengan yang sebenarnya, agar balasan email Anda bisa sesuai dengan yang Anda harapkan.
             </p>
             <p className="mb-4 text-gray-700">
@@ -36,7 +37,7 @@ const HomePage = async () => {
             </p>
             <p className="mb-6 text-gray-700">
               Kami memastikan bahwa data diri Anda akan aman dan hanya digunakan untuk kepentingan PT BUMI INDAH PUTRA.
-            </p> */}
+            </p>
             <form className="space-y-4">
               <input type="text" placeholder="Name*" className="w-full p-3 border border-gray-300 bg-gray-100 rounded" />
               <input type="email" placeholder="Email*" className="w-full p-3 border border-gray-300 bg-gray-100 rounded" />
@@ -45,7 +46,7 @@ const HomePage = async () => {
               <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded">Kirim Pesan</button>
             </form>
           </div>
-        </div>
+        </div> */}
 
       </div>
     </>

@@ -1,8 +1,7 @@
 // app/(public)/berita/page.tsx
+import BeritaCard from "@/app/(home)/berita/_components/beritaCard";
 import React from "react";
-import BeritaCard from "./_components/beritaCard";
-import LayoutLoader from "@/components/ui/layout-loader";
-import Loading from "../loading";
+// import BeritaCard from "@/components/BeritaCard";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -55,36 +54,30 @@ function formatDate(dateStr?: string | null): string {
 }
 
 export default async function ListBeritaPage() {
-    // Loading state
-    const beritaList = await fetchBerita();
+    let beritaList = await fetchBerita();
 
-    if (!beritaList) {
-        return <div className="py-12 text-center"> <Loading /> </div>
-    } if (beritaList.length === 0) {
+    if (beritaList.length === 0) {
         return <section className="py-12 text-center">Belum ada berita.</section>;
-
     }
 
-    const sortedList = beritaList
-        .sort((a, b) => {
-            const dateA = new Date(a.newsDate || "").getTime();
-            const dateB = new Date(b.newsDate || "").getTime();
-            return dateB - dateA;
-        })
-        .slice(0, 3); // Hanya ambil 3 berita
+    beritaList = beritaList.sort((a, b) => {
+        const dateA = new Date(a.newsDate || "").getTime();
+        const dateB = new Date(b.newsDate || "").getTime();
+        return dateB - dateA;
+    });
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-10">
             <h1 className="text-xl font-bold text-blue-800 mb-6">BERITA</h1>
             <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                {sortedList.map((item, idx) => (
+                {beritaList.slice(0, 3).map((item, idx) => (
                     <BeritaCard
                         key={item.slug || idx}
                         title={item.title}
                         slug={item.slug}
                         date={formatDate(item.newsDate)}
                         excerpt={item.article?.slice(0, 100)}
-                        imageURL={item.imageURL || undefined}
+                        imageURL={item.imageURL || null}
                     />
                 ))}
             </div>

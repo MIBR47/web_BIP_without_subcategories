@@ -74,7 +74,7 @@ const AboutUsSection = () => {
                             asChild
                             className="bg-customBlue hover:bg-customGreen hover:text-white text-white text-base px-6 py-3 rounded-md shadow-md"
                         >
-                            <Link href="/about">Lihat Detail</Link>
+                            <Link href="/about-us/about-company">Lihat Detail</Link>
                         </Button>
                     </div>
                 </motion.div>

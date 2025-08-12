@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Loading from '../loading';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -41,7 +42,7 @@ export default function BeritaPage({ params }: { params: { slug: string } }) {
     }, [params.slug]);
 
     if (!news) {
-        return <div className="p-4 text-red-600">Berita tidak ditemukan.</div>;
+        return <div className="py-12 text-center"> <Loading /> </div>
     }
 
     return (

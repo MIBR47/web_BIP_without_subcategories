@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 
-const CustomProductContent = () => {
+const CustomProductSection = () => {
   return (
     <section className="-mt-20 bg-customBlue text-white py-4 px-4 md:px-8 rounded-2xl max-w-5xl mx-auto shadow-lg relative overflow-hidden">
       {/* Background image overlay */}
@@ -42,4 +42,4 @@ const CustomProductContent = () => {
   );
 };
 
-export default CustomProductContent;
+export default CustomProductSection;
