@@ -151,6 +151,7 @@ const ListBeritaPageAdmin = () => {
                     <Image
                       src={item.imageURL}
                       alt={item.title}
+                      fill
                       className="w-12 h-12 object-cover rounded-full"
                     />
                   </td>
