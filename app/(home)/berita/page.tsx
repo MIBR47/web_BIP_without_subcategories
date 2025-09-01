@@ -4,6 +4,7 @@ import BeritaCard from "./_components/beritaCard";
 import LayoutLoader from "@/components/ui/layout-loader";
 import Loading from "../loading";
 
+export const revalidate = 60;
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 type NewsResponse = {
@@ -17,7 +18,7 @@ type NewsResponse = {
 async function fetchBerita(): Promise<NewsResponse[]> {
     try {
         const res = await fetch(`${BASE_URL}/news/findall?page=1&limit=20`, {
-            cache: "no-store",
+            next: { revalidate: 60 },
         });
 
         if (!res.ok) {
