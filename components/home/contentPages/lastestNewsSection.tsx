@@ -16,7 +16,7 @@ type NewsResponse = {
 async function fetchBerita(): Promise<NewsResponse[]> {
     try {
         const res = await fetch(`${BASE_URL}/news/findall?page=1&limit=20`, {
-            cache: "no-store",
+            next: { revalidate: 60 },
         });
 
         if (!res.ok) {
