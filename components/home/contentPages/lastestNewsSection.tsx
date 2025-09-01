@@ -2,7 +2,7 @@
 import BeritaCard from "@/app/(home)/berita/_components/beritaCard";
 import React from "react";
 // import BeritaCard from "@/components/BeritaCard";
-
+export const revalidate = 60;
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 type NewsResponse = {
