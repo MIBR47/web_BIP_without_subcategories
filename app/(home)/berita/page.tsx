@@ -71,8 +71,7 @@ export default async function ListBeritaPage() {
             const dateA = new Date(a.newsDate || "").getTime();
             const dateB = new Date(b.newsDate || "").getTime();
             return dateB - dateA;
-        })
-        .slice(0, 3); // Hanya ambil 3 berita
+        }); // Hanya ambil 3 berita
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-10">

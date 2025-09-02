@@ -80,6 +80,7 @@ export default function BeritaPage({ params }: { params: { slug: string } }) {
                         src={BASE_IMAGE_URL + news.imageURL}
                         alt={news.title}
                         fill
+                        style={{ objectFit: 'contain' }}
                         className="object-cover"
                     />
                 </div>
