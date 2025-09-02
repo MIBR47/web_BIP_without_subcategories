@@ -75,12 +75,16 @@ export default function BeritaPage({ params }: { params: { slug: string } }) {
 
             {/* Image */}
             {news.imageURL && (
-                <div className="w-full h-[300px] relative rounded overflow-hidden shadow">
+                <div className="relative rounded overflow-hidden shadow">
                     <Image
                         src={BASE_IMAGE_URL + news.imageURL}
                         alt={news.title}
-                        fill
-                        style={{ objectFit: 'contain' }}
+                        // fill
+                        // style={{ objectFit: 'contain' }}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        style={{ width: '100%', height: 'auto' }}
                         className="object-cover"
                     />
                 </div>
