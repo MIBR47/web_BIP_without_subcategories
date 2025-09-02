@@ -1,4 +1,5 @@
 // components/BeritaCard.tsx
+import { BASE_IMAGE_URL } from '@/lib/global_constant';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -16,7 +17,7 @@ export default function BeritaCard({ title, slug, date, excerpt, imageURL }: Pro
             <Link href={`/berita/${slug}`}>
                 <div className="w-full h-48 relative">
                     {imageURL ? (
-                        <Image src={imageURL} alt={title} fill className="object-contain" />
+                        <Image src={BASE_IMAGE_URL + imageURL} alt={title} fill className="object-contain" />
                     ) : (
                         <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
                             No Image

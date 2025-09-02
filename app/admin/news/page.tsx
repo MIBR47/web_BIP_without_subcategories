@@ -9,6 +9,7 @@ import { XCircle, CheckCircle2 } from 'lucide-react';
 // import { deleteCategoryById } from '@/lib/api/categoryApi';
 import { deleteNewsBySlug, fetchNewsAllAdmin } from '@/lib/api/newsApi';
 import Image from 'next/image'
+import { BASE_IMAGE_URL } from '@/lib/global_constant';
 
 const ListBeritaPageAdmin = () => {
   const router = useRouter();
@@ -149,7 +150,7 @@ const ListBeritaPageAdmin = () => {
                   </td>
                   <td className="py-2 px-4">
                     <Image
-                      src={item.imageURL}
+                      src={BASE_IMAGE_URL + item.imageURL}
                       alt={item.title}
                       width={25}
                       height={25}

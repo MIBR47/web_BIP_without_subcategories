@@ -169,6 +169,7 @@ const EditBeritaPage = () => {
                                             : BASE_IMAGE_URL + imagePreview.src
                                     }
                                     alt="Preview"
+                                    fill
                                     className="w-full h-full object-contain bg-white"
                                 />
                             </div>

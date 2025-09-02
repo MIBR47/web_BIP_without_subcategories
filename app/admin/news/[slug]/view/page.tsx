@@ -1,6 +1,7 @@
 // app/news/[slug]/page.tsx
 'use client';
 
+import { BASE_IMAGE_URL } from '@/lib/global_constant';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -75,7 +76,7 @@ export default function BeritaPageAdmin({ params }: { params: { slug: string } }
             {news.imageURL && (
                 <div className="w-full h-[300px] relative rounded overflow-hidden shadow">
                     <Image
-                        src={news.imageURL}
+                        src={BASE_IMAGE_URL + news.imageURL}
                         alt={news.title}
                         fill
                         className="object-cover"
