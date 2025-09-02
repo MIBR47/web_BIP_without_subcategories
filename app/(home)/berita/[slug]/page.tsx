@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Loading from '../loading';
+import { BASE_IMAGE_URL } from '@/lib/global_constant';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -76,7 +77,7 @@ export default function BeritaPage({ params }: { params: { slug: string } }) {
             {news.imageURL && (
                 <div className="w-full h-[300px] relative rounded overflow-hidden shadow">
                     <Image
-                        src={news.imageURL}
+                        src={BASE_IMAGE_URL + news.imageURL}
                         alt={news.title}
                         fill
                         className="object-cover"
