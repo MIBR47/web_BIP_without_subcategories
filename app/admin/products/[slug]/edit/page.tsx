@@ -307,10 +307,11 @@ const ProductEditPage = () => {
                                     key={`old-${index}`}
                                     className="relative w-48 h-48 rounded-md overflow-hidden border bg-white group"
                                 >
-                                    {img.id}
+                                    {/* {img.id} */}
                                     <Image
                                         src={BASE_IMAGE_URL + img.imageURL || "/placeholder.png"}
                                         alt={`Image ${index + 1}`}
+                                        fill
                                         className="w-full h-full object-contain"
                                     />
 
@@ -349,6 +350,7 @@ const ProductEditPage = () => {
                                     <Image
                                         src={img}
                                         alt={`Uploaded ${idx}`}
+                                        fill
                                         className="w-full h-full object-contain"
                                     />
                                     {isPrimary && (

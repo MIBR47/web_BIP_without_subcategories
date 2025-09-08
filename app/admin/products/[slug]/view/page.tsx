@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { ProductResponse } from "@/types";
 import { getProductBySlug } from "@/lib/api/productApi";
 import Image from 'next/image'
+import { BASE_IMAGE_URL } from "@/lib/global_constant";
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 const ProductViewPage = () => {
     const router = useRouter();
@@ -24,6 +25,14 @@ const ProductViewPage = () => {
             .finally(() => setLoading(false));
     }, [slug]);
 
+    const getAuthHeaders = () => {
+        const token = localStorage.getItem("authToken");
+        return {
+            "Content-Type": "application/json",
+            Authorization: token || "",
+        };
+    };
+
     const handleDelete = async () => {
         if (!product) return;
 
@@ -31,8 +40,9 @@ const ProductViewPage = () => {
         if (!confirmed) return;
 
         try {
-            const response = await fetch(`${BASE_URL}/product/admin/${product.id}`, {
+            const response = await fetch(`${BASE_URL}/product/admin/delete/${product.id}`, {
                 method: 'DELETE',
+                headers: getAuthHeaders(),
             });
 
             if (!response.ok) {
@@ -91,9 +101,11 @@ const ProductViewPage = () => {
                                 {product.ProductImage.map((img, index) => (
                                     <div key={index} className="relative">
                                         <Image
-                                            src={img.imageURL || "/placeholder.png"}
+                                            src={BASE_IMAGE_URL + img.imageURL || "/placeholder.png"}
                                             alt={`Image ${index + 1}`}
-                                            className="w-full h-48 object-contain border rounded-md bg-white"
+                                            width={250}
+                                            height={250}
+                                            className="w-full h-50 object-contain border rounded-md bg-white"
                                         />
                                         {img.isPrimary && (
                                             <span className="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded">

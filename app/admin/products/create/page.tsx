@@ -176,7 +176,9 @@ const CreateProductPage = () => {
                                     <Image
                                         src={src}
                                         alt={`product image ${i + 1}`}
-                                        className={`w-full h-32 object-cover rounded-xl border ${primaryIndex === i ? "ring-4 ring-blue-500" : "border-gray-300"}`}
+                                        width={100}
+                                        height={150}
+                                        className={`w-full h-50 object-cover rounded-xl border ${primaryIndex === i ? "ring-4 ring-blue-500" : "border-gray-300"}`}
                                     />
                                     <button
                                         onClick={() => handleRemoveImage(i, setImageFiles, setImagePreviews, primaryIndex, setPrimaryIndex)}
