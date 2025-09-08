@@ -235,8 +235,8 @@ const CreateProductPage = () => {
                 </div> */}
 
                 {/* Deskripsi Produk */}
-                <RichTextEditorField label="Deskripsi Produk" name="other_info" content={formDataDesc.other_info} onChange={handleChangeDesc} />
                 <RichTextEditorField label="Spesifikasi Produk" name="productSpec" content={formDataDesc.productSpec} onChange={handleChangeDesc} />
+                <RichTextEditorField label="Infomarsi Tambahan" name="other_info" content={formDataDesc.other_info} onChange={handleChangeDesc} />
                 {/* <RichTextEditorField label="Manfaat Produk" name="benefits" content={formDataDesc.benefits} onChange={handleChangeDesc} /> */}
 
 

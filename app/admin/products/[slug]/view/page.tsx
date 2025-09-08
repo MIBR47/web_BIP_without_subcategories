@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { ProductResponse } from "@/types";
 import { getProductBySlug } from "@/lib/api/productApi";
 import Image from 'next/image'
-
+const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}`;
 const ProductViewPage = () => {
     const router = useRouter();
     const params = useParams();
@@ -24,6 +24,28 @@ const ProductViewPage = () => {
             .finally(() => setLoading(false));
     }, [slug]);
 
+    const handleDelete = async () => {
+        if (!product) return;
+
+        const confirmed = window.confirm(`Are you sure you want to delete product "${product.name}"?`);
+        if (!confirmed) return;
+
+        try {
+            const response = await fetch(`${BASE_URL}/product/admin/${product.id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete product');
+            }
+
+            alert('Product deleted successfully');
+            router.push('/admin/products'); // Redirect ke list produk setelah hapus
+        } catch (error) {
+            alert('Error deleting product: ' + (error as Error).message);
+        }
+    };
+
     if (loading) return <div className="p-6 text-center text-gray-500">Loading...</div>;
     if (error) return <div className="p-6 text-center text-red-600">{error}</div>;
 
@@ -38,12 +60,21 @@ const ProductViewPage = () => {
                         &larr; Back
                     </button>
                     {product && (
-                        <button
-                            onClick={() => router.push(`/admin/products/${product.slug}/edit`)}
-                            className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
-                        >
-                            Edit Product
-                        </button>
+                        <div className="flex space-x-2">
+                            <button
+                                onClick={() => router.push(`/admin/products/${product.slug}/edit`)}
+                                className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+                            >
+                                Edit Product
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="text-sm bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md"
+                            >
+                                Delete Product
+                            </button>
+                        </div>
+
                     )}
                 </div>
 

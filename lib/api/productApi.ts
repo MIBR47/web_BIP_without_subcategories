@@ -54,29 +54,61 @@ export const createProduct = async (formData: ProductRequest): Promise<number> =
 //         if (!res.ok) throw new Error(`Gagal upload gambar ke-${i + 1}`);
 //     }
 // };
+// export const uploadImages = async (
+//     productId: number,
+//     imageFiles: File[],
+//     primaryIndex: number | null
+// ): Promise<void> => {
+//     for (let i = 0; i < imageFiles.length; i++) {
+//         const formData = new FormData();
+//         formData.append("file", imageFiles[i]);
+//         formData.append("product_id", productId.toString());
+//         formData.append("isPrimary", (i === primaryIndex).toString());
+//         formData.append("iStatus", "Active");
+
+//         const res = await fetch(`${BASE_URL}/product/admin/createImageProduct`, {
+//             method: "POST",
+//             headers: {
+//                 // ❌ Jangan set Content-Type secara manual!
+//                 // ✅ fetch akan otomatis set multipart boundary
+//                 Authorization: getAuthHeaders().Authorization,
+//             },
+//             body: formData,
+//         });
+
+//         if (!res.ok) throw new Error(`Gagal upload gambar ke-${i + 1}`);
+//     }
+// };
 export const uploadImages = async (
     productId: number,
     imageFiles: File[],
     primaryIndex: number | null
 ): Promise<void> => {
+    const errors = [];
     for (let i = 0; i < imageFiles.length; i++) {
-        const formData = new FormData();
-        formData.append("file", imageFiles[i]);
-        formData.append("product_id", productId.toString());
-        formData.append("isPrimary", (i === primaryIndex).toString());
-        formData.append("iStatus", "Active");
+        try {
+            const formData = new FormData();
+            formData.append("file", imageFiles[i]);
+            formData.append("product_id", productId.toString());
+            formData.append("isPrimary", (i === primaryIndex).toString());
+            formData.append("iStatus", "Active");
 
-        const res = await fetch(`${BASE_URL}/product/admin/createImageProduct`, {
-            method: "POST",
-            headers: {
-                // ❌ Jangan set Content-Type secara manual!
-                // ✅ fetch akan otomatis set multipart boundary
-                Authorization: getAuthHeaders().Authorization,
-            },
-            body: formData,
-        });
+            const res = await fetch(`${BASE_URL}/product/admin/createImageProduct`, {
+                method: "POST",
+                headers: {
+                    Authorization: getAuthHeaders().Authorization,
+                },
+                body: formData,
+            });
 
-        if (!res.ok) throw new Error(`Gagal upload gambar ke-${i + 1}`);
+            if (!res.ok) throw new Error(`Gagal upload gambar ke-${i + 1}`);
+        } catch (err) {
+            errors.push(err);
+            // lanjut upload gambar berikutnya
+        }
+    }
+    if (errors.length) {
+        throw new Error(`${errors.length} gambar gagal diupload.`);
     }
 };
 
