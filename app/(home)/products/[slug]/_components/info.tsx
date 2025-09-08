@@ -95,42 +95,10 @@ const Info: React.FC<InfoProps> = ({ product }) => {
         )}
 
         {activeTab === 'additional' && (
-          <div className="space-y-4 text-gray-700">
+          <div className="space-y-4 text-gray-700 ">
             {/* <h2 className="text-lg font-semibold mb-3">Informasi Tambahan</h2> */}
             {/* Link e-Catalogue (jika ada) */}
-            {product.eCatalogURL && (
-              <div className="mt-4">
-                <a
-                  href={product.eCatalogURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-[250px] flex items-center justify-center bg-customBlue gap-1.5 text-sm font-semibold text-white rounded-md border border-slate-300 py-2 px-4 shadow-sm transition-all 
-                            hover:text-white hover:bg-customBlue hover:border-slate-800 hover:shadow-lg"
-                >
-                  Lihat di e-Catalogue.lkpp
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </a>
 
-                {/* <button onClick={ } className="flex items-center rounded-md border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-                  Homepage
-
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 ml-1.5">
-                    <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
-                  </svg>
-                </button> */}
-              </div>
-            )}
             {/* Deskripsi */}
             {productInfo && (
               <div>
