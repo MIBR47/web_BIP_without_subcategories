@@ -12,8 +12,9 @@ import {
     List,
     ListOrdered,
     Strikethrough,
+    ArrowRight,
+    ArrowLeft,
 } from "lucide-react";
-// import { Toggle } from "../ui/toggle";
 import { Editor } from "@tiptap/react";
 import { Toggle } from "@/components/ui/toggle";
 
@@ -21,6 +22,7 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
     if (!editor) {
         return null;
     }
+
     const Options = [
         {
             icon: <Heading1 className="size-4" />,
@@ -83,18 +85,32 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
             preesed: editor.isActive("orderedList"),
         },
         {
+            icon: <ArrowRight className="size-4" />,
+            onClick: () => editor.chain().focus().sinkListItem("listItem").run(),
+            preesed: false,
+            disabled: !editor.can().sinkListItem("listItem"),
+        },
+        {
+            icon: <ArrowLeft className="size-4" />,
+            onClick: () => editor.chain().focus().liftListItem("listItem").run(),
+            preesed: false,
+            disabled: !editor.can().liftListItem("listItem"),
+        },
+        {
             icon: <Highlighter className="size-4" />,
             onClick: () => editor.chain().focus().toggleHighlight().run(),
             preesed: editor.isActive("highlight"),
         },
     ];
+
     return (
-        <div className="border rounded-md p-1 mb-1 bg-slate-50 space-x-2 z-50">
+        <div className="border rounded-md p-1 mb-1 bg-slate-50 space-x-2 z-50 flex flex-wrap">
             {Options.map((option, index) => (
                 <Toggle
                     key={index}
                     pressed={option.preesed}
                     onPressedChange={option.onClick}
+                    disabled={option.disabled}
                 >
                     {option.icon}
                 </Toggle>
