@@ -50,12 +50,10 @@ export interface ProductImage {
   product_id: number;
 }
 export interface ProductDescRequest {
-  // id: number;
   other_info: string;
-  productSpec: string;
-  // benefits: string;
-  // benefit: string;
+  productSpec: { label: string; value: string }[];
 }
+
 export interface ProductDescResponse {
   id: number;
   other_info: string;

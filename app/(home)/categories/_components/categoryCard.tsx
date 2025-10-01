@@ -1,13 +1,9 @@
 'use client';
-import React, { useEffect, useState, MouseEventHandler } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Categories } from '@/types';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import usePreviewModal from '@/hooks/use-preview-modal';
-import MainButton from '@/components/ui/MainButton';
 import { BASE_IMAGE_URL } from '@/lib/global_constant';
 
 interface CategoryCardProps {
@@ -16,86 +12,58 @@ interface CategoryCardProps {
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
   const router = useRouter();
-  const previewModal = usePreviewModal();
-  const primaryImage = data.imageURL;
-
-  const [loading, setLoading] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
-    const mediaQuery = window.matchMedia('(max-width: 640px)');
-    setIsMobile(mediaQuery.matches);
-
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  if (!hasMounted) return null; // Prevent hydration error
+  if (!hasMounted) return null;
 
   const handleClick = () => {
-    setLoading(true);
-    try {
-      router.push(`/categories/${data?.slug}`);
-    } catch (error) {
-      console.error('Navigation error:', error);
-      setLoading(false);
-    }
-  };
-
-  const cardVariant = {
-    initial: { opacity: 0, x: 120, scale: 0.5 },
-    animate: { opacity: 1, x: 0, scale: 1 },
+    router.push(`/categories/${data?.slug}`);
   };
 
   return (
     <motion.div
-      initial="initial"
-      animate="initial"
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.4 }}
-      className="relative rounded-lg overflow-hidden w-full max-w-xs shadow-md"
+      onClick={handleClick}
+      whileHover={{ y: -6 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.25, ease: 'easeInOut' }}
+      className="group relative cursor-pointer rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-xl transition-all duration-300"
     >
-      <div className="relative">
-        <Card className="cursor-pointer" onClick={handleClick}>
-          <CardContent className="h-64">
-            {primaryImage ? (
-              <Image
-                src={BASE_IMAGE_URL + primaryImage}
-                priority
-                height={250}
-                width={250}
-                alt="Category Image"
-                className="object-contain w-full h-full rounded-md"
-              />
-            ) : (
-              <div className="bg-gray-200 w-full h-full flex items-center justify-center rounded-md">
-                <span className="text-gray-500">No Image Available</span>
-              </div>
-            )}
-          </CardContent>
-          <CardFooter className="cursor-pointer text-customBlue text-left text-md bg-gray-200 p-4">
+      {/* Image Section */}
+      <div className="relative w-full h-60">
+        {data.imageURL ? (
+          <Image
+            src={BASE_IMAGE_URL + data.imageURL}
+            alt={data.name}
+            fill
+            className="object-contain"
+            priority
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
+            No Image
+          </div>
+        )}
+
+        {/* Overlay with title */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute bottom-4 left-4 z-20">
+          <h3 className="text-lg font-semibold text-white drop-shadow-md group-hover:text-blue-300 transition-colors duration-300">
             {data.name.trim()}
-          </CardFooter>
-        </Card>
+          </h3>
+        </div>
       </div>
 
-      {/* {(
-        <motion.div
-          className={cn('absolute p-4 left-0 right-0 top-0 bottom-0 bg-[#AEC6CF]/80')}
-          variants={cardVariant}
-        >
-          <div className="pt-[50%] flex justify-center">
-            <MainButton
-              text="Lihat Produk"
-              classes="bg-customGreen text-white font-bold hover:bg-customBlue"
-              action={handleClick}
-            />
-          </div>
-        </motion.div>
-      )} */}
+      {/* Optional footer */}
+      <div className="px-4 py-3 flex justify-between items-center bg-white">
+        <span className="text-xs text-gray-500">Explore</span>
+        <span className="text-blue-600 font-medium text-sm group-hover:underline">
+          →
+        </span>
+      </div>
     </motion.div>
   );
 };

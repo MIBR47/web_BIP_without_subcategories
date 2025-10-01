@@ -65,9 +65,8 @@ const MainButton = forwardRef<HTMLButtonElement, MainButtonProps>(
     return !isLoading ? (
       <Button
         form={form}
-        className={`${
-          isSecondaryVariant ? ' text-white  bg-customGreen' : 'bg-primary'
-        } text-white font-bold  ${propWidth} md:${propWidth}  select-none rounded-md hover:opacity-90 ${variant_hover} ${size_height} ${classes}`}
+        className={`${isSecondaryVariant ? ' text-white  bg-customGreen' : 'bg-primary'
+          } text-white font-bold  ${propWidth} md:${propWidth}  select-none rounded-md hover:opacity-90 ${variant_hover} ${size_height} ${classes}`}
         onClick={!disabled ? action : () => undefined}
         onMouseEnter={!disabled ? hoverAction : () => undefined}
         onMouseLeave={!disabled ? leaveAction : () => undefined}
@@ -100,9 +99,8 @@ const MainButton = forwardRef<HTMLButtonElement, MainButtonProps>(
       </Button>
     ) : (
       <Button
-        className={`bg-customGreen text-white ${propWidth} md:${propWidth} select-none rounded-md cursor-not-allowed ${size_height} ${
-          classes ? classes : ''
-        }`}
+        className={`bg-customGreen text-white ${propWidth} md:${propWidth} select-none rounded-md cursor-not-allowed ${size_height} ${classes ? classes : ''
+          }`}
         ref={ref}
         disabled
       >
