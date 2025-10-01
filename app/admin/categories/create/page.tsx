@@ -120,6 +120,8 @@ const CreateCategoryPage = () => {
                                     <Image
                                         src={imagePreview}
                                         alt="Uploaded"
+                                        width={600} // misalnya 600px
+                                        height={400} 
                                         className="w-full h-full object-contain bg-white"
                                     />
                                 </div>
@@ -225,6 +227,8 @@ const CreateCategoryPage = () => {
                         <Image
                             src={imagePreview}
                             alt="Preview"
+                            height={1000}
+                            width={1000}
                             className="max-w-full max-h-screen object-contain rounded-xl"
                         />
                         <button

@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function RegisterPage() {
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const router = useRouter();
@@ -18,7 +18,7 @@ export default function RegisterPage() {
             const res = await fetch('http://localhost:5000/api/users/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({ name, username, password }),
             });
 
             const data = await res.json();
@@ -57,12 +57,12 @@ export default function RegisterPage() {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">Email</label>
+                        <label className="block text-gray-700 mb-2">Username</label>
                         <input
-                            type="email"
+                            type="username"
                             className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#035ea2]"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             required
                         />
                     </div>
