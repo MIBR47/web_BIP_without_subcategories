@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Phone, Mail } from 'lucide-react';
-import { FaInstagram, FaFacebookF, FaYoutube } from 'react-icons/fa';
+import { FaInstagram, FaYoutube } from 'react-icons/fa';
 import { useMediaQuery } from 'react-responsive';
 
 const phoneNumbers = ['021-82731750', '021-82731806', '021-82731834'];
@@ -12,14 +12,12 @@ const Footer = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 640px)' });
 
   return (
-    <div className='py-5 px-4 md:px-8 lg:px-4 xl:px-26 2xl:px-4 bg-customBlue2 text-sm text-slate-100 mt-0'>
+    <footer className='mt-auto py-5 px-4 md:px-8 lg:px-4 xl:px-26 2xl:px-4 bg-customBlue2 text-sm text-slate-100'>
       <div
         className={`w-full ${isMobile ? 'flex flex-col items-center' : 'grid grid-cols-1 md:grid-cols-3 gap-8'}`}
       >
         {/* LEFT */}
-        <div
-          className={`flex flex-col gap-2 ${isMobile ? 'items-center text-center' : 'items-start'}`}
-        >
+        <div className={`flex flex-col gap-2 ${isMobile ? 'items-center text-center' : 'items-start'}`}>
           <div className='flex items-center justify-center'>
             <Link href='/'>
               <Image
@@ -28,7 +26,7 @@ const Footer = () => {
                 width={isMobile ? 300 : 200}
                 height={isMobile ? 80 : 70}
                 className='object-cover object-center'
-                style={{ width: 'auto', height: 'auto' }} // Maintain aspect ratio
+                style={{ width: 'auto', height: 'auto' }}
                 loading='eager'
                 decoding='async'
                 priority
@@ -37,20 +35,15 @@ const Footer = () => {
           </div>
           <div className='mb-3'>
             <div>Alex Bangun Cipendawa Baru</div>
-            <div>RT.003 RW.002, Bantar Gebang </div>
-            <div> Kota Bekasi, Jawa Barat, 17151</div>
+            <div>RT.003 RW.002, Bantar Gebang</div>
+            <div>Kota Bekasi, Jawa Barat, 17151</div>
           </div>
         </div>
+
         {/* CENTER */}
-        <div
-          className={`flex flex-col gap-2 mb-3 ${isMobile ? 'items-center text-center' : 'items-center'}`} // Added padding
-        >
-          <div
-            className={`flex flex-col ${isMobile ? 'items-center' : 'items-start'}`} // Added padding-left
-          >
-            <h1 className='font-medium text-md items-start mb-4'>
-              Kontak Kami di
-            </h1>
+        <div className={`flex flex-col gap-2 mb-3 ${isMobile ? 'items-center text-center' : 'items-center'}`}>
+          <div className={`flex flex-col ${isMobile ? 'items-center' : 'items-start'}`}>
+            <h1 className='font-medium text-md mb-4'>Kontak Kami di</h1>
             {phoneNumbers.map((number, index) => (
               <div key={index} className='flex items-start justify-center mb-1'>
                 <Phone className='mr-2' size={16} />
@@ -65,18 +58,13 @@ const Footer = () => {
             ))}
           </div>
         </div>
+
         {/* RIGHT */}
         <div className='flex justify-end pr-4'>
-          <div
-            className={`flex flex-col gap-2 ${isMobile ? 'items-center text-center' : 'items-start text-left'}`}
-          >
-            <h1 className='font-medium text-md justify-start text-left items-start mb-4'>
-              Kunjungi kami di
-            </h1>
-            <div
-              className={`flex flex-col text-left ${isMobile ? 'items-center' : 'items-start'}`}
-            >
-              <div className='mb-3 flex justify-start text-left items-start'>
+          <div className={`flex flex-col gap-2 ${isMobile ? 'items-center text-center' : 'items-start text-left'}`}>
+            <h1 className='font-medium text-md mb-4'>Kunjungi kami di</h1>
+            <div className={`flex flex-col ${isMobile ? 'items-center' : 'items-start'}`}>
+              <div className='mb-3 flex items-start'>
                 <Link
                   href='https://www.instagram.com/bipmed_ptbumiindahputra?igsh=OHVoODR0OTMwdGZw'
                   target='_blank'
@@ -87,8 +75,7 @@ const Footer = () => {
                   <span>bipmed@instagram</span>
                 </Link>
               </div>
-
-              <div className='mb-3 flex justify-start text-left items-start'>
+              <div className='mb-3 flex items-start'>
                 <Link
                   href='https://www.youtube.com/watch?v=z6IbKBkJwRw'
                   target='_blank'
@@ -103,10 +90,11 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <p className="text-center text-sm text-gray-500 text-white py-4">
+
+      <p className="text-center text-sm text-white py-4">
         Copyright © {new Date().getFullYear()} - PT. Bumi Indah Putra. All Rights Reserved
       </p>
-    </div>
+    </footer>
   );
 };
 
